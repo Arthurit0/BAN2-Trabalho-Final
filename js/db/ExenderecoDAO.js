@@ -1,4 +1,4 @@
-import connect from "../db/db";
+import connect from "./connectDB";
 
 const db = await connect();
 
@@ -13,7 +13,7 @@ const enderecoModel = {
         return await db.query('INSERT INTO ENDERECO (DADOS, TELEFONE) VALUES ($1, $2)', [dados, telefone]);
     },
     async alterEndereco(codEnd, dados, telefone) {
-
+        return await db.query('UPDATE ENDERECO SET ')
     }
 }
 

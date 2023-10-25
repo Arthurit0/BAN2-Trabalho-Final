@@ -1,6 +1,6 @@
 {
-    "name": "backend",
-    "module": "index.js",
+    "name": "ban2-trab-final",
+    "module": "index.ts",
     "type": "module",
     "devDependencies": {
         "bun-types": "latest"
@@ -9,10 +9,13 @@
         "typescript": "^5.0.0"
     },
     "dependencies": {
+        "@types/express": "^4.17.20",
+        "@types/lodash": "^4.14.200",
+        "@types/pg": "^8.10.7",
         "express": "^4.18.2",
-        "pg": "^8.11.3"
+        "lodash": "^4.17.21"
     },
     "scripts": {
-        "start": "bun --hot run ./index.js"
+        "start": "bun run index.ts"
     }
 }

@@ -10,4 +10,10 @@ class ConexaoBD {
             database: 'ban2_trab_final'
         })
     }
+
+    async connect() {
+        return await this.pool.connect();
+    }
 }
+
+module.exports = ConexaoBD

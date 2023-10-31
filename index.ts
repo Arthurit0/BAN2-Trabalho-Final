@@ -9,7 +9,7 @@ app.listen(port, () => {
     console.log(`Servidor escutando na porta ${port}`);
 });
 
-let endereco = new Endereco(1, 'teste', 'teste', 'teste', 'teste', 'teste', 'teste', 'teste');
+let endereco = new Endereco(1, 'teste', 2, 'teste', 'teste', 'teste', 'teste', 'teste');
 
 console.log(endereco.nrCasa);
 

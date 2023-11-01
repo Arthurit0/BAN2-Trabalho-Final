@@ -41,7 +41,7 @@ export default class Produtor {
         this._nmEmpresa = nmEmpresa;
     }
 
-    equal(obj: Produtor) {
+    public equal(obj: Produtor) {
         return _.isEqual(obj, this);
     }
 }

@@ -1,5 +1,6 @@
 import express from 'express';
 import Endereco from './models/Endereco';
+import autorPersistence from './persistence/autorPersistence';
 
 let port = 3000;
 
@@ -9,9 +10,11 @@ app.listen(port, () => {
     console.log(`Servidor escutando na porta ${port}`);
 });
 
-let endereco = new Endereco(1, 'teste', 2, 'teste', 'teste', 'teste', 'teste', 'teste');
+let musicoQrys = new autorPersistence();
 
-console.log(endereco.nrCasa);
+let musicos = await musicoQrys.querySelectAllMusicos();
+
+console.log(musicos);
 
 // console.log(await enderecoModel.getAllEnderecos())
 // console.log(await enderecoModel.getEndereco(4).then((res) => {

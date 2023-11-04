@@ -1,31 +1,31 @@
 import _ from 'lodash';
 
 export default class Disco {
-    private _cdDisco: number;
-    private _cdAutor: number;
-    private _cdProdutor: number;
+    private _cdDisco!: number;
+    private _cdAutor!: number;
+    private _cdProdutor!: number;
     private _cdLocalGravacao?: number;
     private _dtGrav?: Date;
     private _fmtGrav?: string;
     private _dsTitulo?: string;
 
-    constructor(
-        cdDisco: number,
-        cdAutor: number,
-        cdProdutor: number,
-        cdLocalGravacao?: number,
-        dtGrav?: Date,
-        fmtGrav?: string,
-        dsTitulo?: string
-    ) {
-        this._cdDisco = cdDisco;
-        this._cdAutor = cdAutor;
-        this._cdProdutor = cdProdutor;
-        this._cdLocalGravacao = cdLocalGravacao;
-        this._dtGrav = dtGrav;
-        this._fmtGrav = fmtGrav;
-        this._dsTitulo = dsTitulo;
-    }
+    // constructor(
+    //     cdDisco: number,
+    //     cdAutor: number,
+    //     cdProdutor: number,
+    //     cdLocalGravacao?: number,
+    //     dtGrav?: Date,
+    //     fmtGrav?: string,
+    //     dsTitulo?: string
+    // ) {
+    //     this._cdDisco = cdDisco;
+    //     this._cdAutor = cdAutor;
+    //     this._cdProdutor = cdProdutor;
+    //     this._cdLocalGravacao = cdLocalGravacao;
+    //     this._dtGrav = dtGrav;
+    //     this._fmtGrav = fmtGrav;
+    //     this._dsTitulo = dsTitulo;
+    // }
 
     public get cdDisco(): number {
         return this._cdDisco;

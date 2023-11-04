@@ -1,28 +1,32 @@
 import _ from 'lodash';
 
 export default class Musica {
-    private _cdMusica: number;
-    private _ds_titulo: string;
+    private _cdMusica!: number;
+    private _dsTitulo!: string;
     private _tpDuracao?: number;
     private _fmtArquivo?: string;
 
-    constructor(cdMusica: number, ds_titulo: string, tpDuracao?: number, fmtArquivo?: string) {
-        this._cdMusica = cdMusica;
-        this._ds_titulo = ds_titulo;
-        this._tpDuracao = tpDuracao;
-        this._fmtArquivo = fmtArquivo;
-    }
+    // constructor(cdMusica: number, dsTitulo: string, tpDuracao?: number, fmtArquivo?: string) {
+    //     this._cdMusica = cdMusica;
+    //     this._dsTitulo = dsTitulo;
+    //     this._tpDuracao = tpDuracao;
+    //     this._fmtArquivo = fmtArquivo;
+    // }
 
-    public get cdMusica() {
+    public get cdMusica(): number {
         return this._cdMusica;
     }
 
-    public get ds_titulo() {
-        return this._ds_titulo;
+    public set cdMusica(cdMusica: number) {
+        this._cdMusica = cdMusica;
     }
 
-    public set ds_titulo(ds_titulo: string) {
-        this._ds_titulo = ds_titulo;
+    public get dsTitulo(): string {
+        return this._dsTitulo;
+    }
+
+    public set dsTitulo(dsTitulo: string) {
+        this._dsTitulo = dsTitulo;
     }
 
     public get tpDuracao(): number | undefined {

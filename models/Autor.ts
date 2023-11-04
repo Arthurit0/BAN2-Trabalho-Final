@@ -1,9 +1,13 @@
 import _ from 'lodash';
 
 export class Autor {
-    private _cdAutor: number;
+    private _cdAutor!: number;
 
-    constructor(cdAutor: number) {
+    // constructor(cdAutor: number) {
+    //     this._cdAutor = cdAutor;
+    // }
+
+    public set cdAutor(cdAutor: number) {
         this._cdAutor = cdAutor;
     }
 
@@ -17,23 +21,27 @@ export class Autor {
 }
 
 export class Musico extends Autor {
-    private _nrReg: number;
+    private _nrReg!: number;
     private _cdEnd?: number;
     private _nmMusico?: string;
     private _nmArtistico?: string;
 
-    constructor(
-        cdAutor: number,
-        nrReg: number,
-        cdEnd?: number,
-        nmMusico?: string,
-        nmArtistico?: string
-    ) {
-        super(cdAutor);
+    // constructor(
+    //     cdAutor: number,
+    //     nrReg: number,
+    //     cdEnd?: number,
+    //     nmMusico?: string,
+    //     nmArtistico?: string
+    // ) {
+    //     super(cdAutor);
+    //     this._nrReg = nrReg;
+    //     this._cdEnd = cdEnd;
+    //     this._nmMusico = nmMusico;
+    //     this._nmArtistico = nmArtistico;
+    // }
+
+    public set nrReg(nrReg: number) {
         this._nrReg = nrReg;
-        this._cdEnd = cdEnd;
-        this._nmMusico = nmMusico;
-        this._nmArtistico = nmArtistico;
     }
 
     public get nrReg() {
@@ -70,19 +78,23 @@ export class Musico extends Autor {
 }
 
 export class Banda extends Autor {
-    private _cdBanda: number;
+    private _cdBanda!: number;
     private _nmBanda?: string;
     private _dtFormacao?: Date;
 
-    constructor(cdAutor: number, cdBanda: number, nmBanda?: string, dtFormacao?: Date) {
-        super(cdAutor);
-        this._cdBanda = cdBanda;
-        this._nmBanda = nmBanda;
-        this._dtFormacao = dtFormacao;
-    }
+    // constructor(cdAutor: number, cdBanda: number, nmBanda?: string, dtFormacao?: Date) {
+    //     super(cdAutor);
+    //     this._cdBanda = cdBanda;
+    //     this._nmBanda = nmBanda;
+    //     this._dtFormacao = dtFormacao;
+    // }
 
     public get cdBanda(): number {
         return this._cdBanda;
+    }
+
+    public set cdBanda(cdBanda: number) {
+        this._cdBanda = cdBanda;
     }
 
     public get nmBanda(): string | undefined {

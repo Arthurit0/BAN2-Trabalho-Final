@@ -1,20 +1,24 @@
 import _ from 'lodash';
 
 export default class Produtor {
-    private _cdProd: number;
-    private _cdEnd: number;
-    private _dnmProdutor: string;
+    private _cdProd!: number;
+    private _cdEnd!: number;
+    private _nmProdutor!: string;
     private _nmEmpresa?: string;
 
-    constructor(cdProd: number, cdEnd: number, dnmProdutor: string, nmEmpresa?: string) {
-        this._cdProd = cdProd;
-        this._cdEnd = cdEnd;
-        this._dnmProdutor = dnmProdutor;
-        this._nmEmpresa = nmEmpresa;
-    }
+    // constructor(cdProd: number, cdEnd: number, nmProdutor: string, nmEmpresa?: string) {
+    //     this._cdProd = cdProd;
+    //     this._cdEnd = cdEnd;
+    //     this._nmProdutor = nmProdutor;
+    //     this._nmEmpresa = nmEmpresa;
+    // }
 
     public get cdProd(): number {
         return this._cdProd;
+    }
+
+    public set cdProd(cdProd: number) {
+        this._cdProd = cdProd;
     }
 
     public get cdEnd(): number {
@@ -25,12 +29,12 @@ export default class Produtor {
         this._cdEnd = cdEnd;
     }
 
-    public get dnmProdutor(): string {
-        return this._dnmProdutor;
+    public get nmProdutor(): string {
+        return this._nmProdutor;
     }
 
-    public set dnmProdutor(dnmProdutor: string) {
-        this._dnmProdutor = dnmProdutor;
+    public set nmProdutor(nmProdutor: string) {
+        this._nmProdutor = nmProdutor;
     }
 
     public get nmEmpresa(): string | undefined {

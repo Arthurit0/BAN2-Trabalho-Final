@@ -1,28 +1,32 @@
 import _ from 'lodash';
 
 export default class Instrumento {
-    private _cdInstr: number;
-    private _cdStudio: number;
+    private _cdInstr!: number;
+    private _cdStudio!: number;
     private _nmInstr?: string;
     private _tipInstr?: string;
     private _nmMarca?: string;
 
-    constructor(
-        cdInstr: number,
-        cdStudio: number,
-        nmInstr?: string,
-        tipInstr?: string,
-        nmMarca?: string
-    ) {
-        this._cdInstr = cdInstr;
-        this._cdStudio = cdStudio;
-        this._nmInstr = nmInstr;
-        this._tipInstr = tipInstr;
-        this._nmMarca = nmMarca;
-    }
+    // constructor(
+    //     cdInstr: number,
+    //     cdStudio: number,
+    //     nmInstr?: string,
+    //     tipInstr?: string,
+    //     nmMarca?: string
+    // ) {
+    //     this._cdInstr = cdInstr;
+    //     this._cdStudio = cdStudio;
+    //     this._nmInstr = nmInstr;
+    //     this._tipInstr = tipInstr;
+    //     this._nmMarca = nmMarca;
+    // }
 
     public get cdInstr(): number {
         return this._cdInstr;
+    }
+
+    public set cdInstr(cdInstr: number) {
+        this._cdInstr = cdInstr;
     }
 
     public get cdStudio(): number {

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Minha Aplicação ITIL</title>
+        <link rel="stylesheet" type="text/css" href="/front.css" />
+    </head>
+    <body>
+        <header>
+            <h1>Minha Aplicação ITIL</h1>
+        </header>
+        <nav>
+            <a href="#autor">Autor</a>
+            <a href="#disco">Disco</a>
+            <a href="#endereco">Endereço</a>
+            <a href="#instrumento">Instrumento</a>
+            <a href="#musica">Musica</a>
+            <a href="#produtor">Produtor</a>
+            <a href="#studio">Studio</a>
+        </nav>
+        <section id="autor">
+            <h2>Autor</h2>
+            <!-- Formulário para adicionar novo autor -->
+            <form>
+                <label for="numeroRegistro">Número de Registro:</label>
+                <input type="text" id="numeroRegistro" name="numeroRegistro" required />
+
+                <label for="codigoEndereco">Código Endereço:</label>
+                <input type="combobox" id="codigoEndereco" name="codigoEndereco" required />
+
+                <label for="numeroMusico">Número Músico:</label>
+                <input type="text" id="numeroMusico" name="numeroMusico" required />
+
+                <label for="numeroArtista">Número Artista:</label>
+                <input type="text" id="numeroArtista" name="numeroArtista" required />
+
+                <button type="submit">Adicionar Autor</button>
+            </form>
+
+            <!-- Lista de autores do banco de dados -->
+            <ul>
+                <li>Autor 1</li>
+                <li>Autor 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <section id="disco">
+            <h2>Disco</h2>
+            <!-- Formulário para adicionar novo disco -->
+            <form>
+                <label for="numeroRegistroDisco">Número de Registro:</label>
+                <input type="text" id="numeroRegistroDisco" name="numeroRegistroDisco" required />
+
+                <label for="codigoEnderecoDisco">Código Endereço:</label>
+                <input type="text" id="codigoEnderecoDisco" name="codigoEnderecoDisco" required />
+
+                <label for="numeroMusicoDisco">Número Músico:</label>
+                <input type="text" id="numeroMusicoDisco" name="numeroMusicoDisco" required />
+
+                <label for="numeroArtistaDisco">Número Artista:</label>
+                <input type="text" id="numeroArtistaDisco" name="numeroArtistaDisco" required />
+
+                <button type="submit">Adicionar Disco</button>
+            </form>
+
+            <!-- Lista de discos do banco de dados -->
+            <ul>
+                <li>Disco 1</li>
+                <li>Disco 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <section id="endereco">
+            <h2>Endereço</h2>
+            <!-- Formulário para adicionar novo endereço -->
+            <form>
+                <label for="codigoEndereco">Código Endereço:</label>
+                <input type="text" id="codigoEndereco" name="codigoEndereco" required />
+
+                <label for="numeroRua">Número da Rua:</label>
+                <input type="text" id="numeroRua" name="numeroRua" required />
+
+                <label for="numeroCasa">Número Casa:</label>
+                <input type="text" id="numeroCasa" name="numeroCasa" required />
+
+                <label for="nomeBairro">Nome Bairro:</label>
+                <input type="text" id="nomeBairro" name="nomeBairro" required />
+
+                <label for="nomeCidade">Nome Cidade:</label>
+                <input type="text" id="nomeCidade" name="nomeCidade" required />
+
+                <label for="nomeEstado">Nome Estado:</label>
+                <input type="text" id="nomeEstado" name="nomeEstado" required />
+
+                <label for="nomePais">Nome Pais:</label>
+                <input type="text" id="nomePais" name="nomePais" required />
+
+                <label for="telefoneContato">Telefone Contato:</label>
+                <input type="text" id="telefoneContato" name="telefoneContato" required />
+
+                <button type="submit">Adicionar Endereço</button>
+            </form>
+
+            <!-- Lista de endereços do banco de dados -->
+            <ul>
+                <li>Endereço 1</li>
+                <li>Endereço 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <section id="instrumento">
+            <h2>Instrumento</h2>
+            <!-- Formulário para adicionar novo instrumento -->
+            <form>
+                <label for="codigoInstrumento">Código Instrumento:</label>
+                <input type="text" id="codigoInstrumento" name="codigoInstrumento" required />
+
+                <label for="codigoEstudioInstrumento">Código Estúdio:</label>
+                <input
+                    type="text"
+                    id="codigoEstudioInstrumento"
+                    name="codigoEstudioInstrumento"
+                    required
+                />
+
+                <label for="numeroInstrumento">Número Instrumento:</label>
+                <input type="text" id="numeroInstrumento" name="numeroInstrumento" required />
+
+                <label for="tipoInstrumento">Tipo Instrumento:</label>
+                <input type="text" id="tipoInstrumento" name="tipoInstrumento" required />
+
+                <label for="marcaInstrumento">Nome da Marca:</label>
+                <input type="text" id="marcaInstrumento" name="marcaInstrumento" required />
+
+                <button type="submit">Adicionar Instrumento</button>
+            </form>
+
+            <!-- Lista de instrumentos do banco de dados -->
+            <ul>
+                <li>Instrumento 1</li>
+                <li>Instrumento 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <section id="musica">
+            <h2>Musica</h2>
+            <!-- Formulário para adicionar nova música -->
+            <form>
+                <label for="codigoMusica">Código Música:</label>
+                <input type="text" id="codigoMusica" name="codigoMusica" required />
+
+                <label for="tituloDiscoMusica">Título do Disco:</label>
+                <input type="text" id="tituloDiscoMusica" name="tituloDiscoMusica" required />
+
+                <label for="duracaoMusica">Tempo de Duração:</label>
+                <input type="text" id="duracaoMusica" name="duracaoMusica" required />
+
+                <label for="formatoArquivo">Formato do Arquivo:</label>
+                <input type="text" id="formatoArquivo" name="formatoArquivo" required />
+
+                <button type="submit">Adicionar Música</button>
+            </form>
+
+            <!-- Lista de músicas do banco de dados -->
+            <ul>
+                <li>Música 1</li>
+                <li>Música 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <section id="produtor">
+            <h2>Produtor</h2>
+            <!-- Formulário para adicionar novo produtor -->
+            <form>
+                <label for="codigoProdutor">Código Produtor:</label>
+                <input type="text" id="codigoProdutor" name="codigoProdutor" required />
+
+                <label for="codigoEnderecoProdutor">Código Endereço:</label>
+                <input
+                    type="text"
+                    id="codigoEnderecoProdutor"
+                    name="codigoEnderecoProdutor"
+                    required
+                />
+
+                <label for="dnmProdutor">DNM Produtor:</label>
+                <input type="text" id="dnmProdutor" name="dnmProdutor" required />
+
+                <label for="numeroEmpresa">Número Empresa:</label>
+                <input type="text" id="numeroEmpresa" name="numeroEmpresa" required />
+
+                <button type="submit">Adicionar Produtor</button>
+            </form>
+
+            <!-- Lista de produtores do banco de dados -->
+            <ul>
+                <li>Produtor 1</li>
+                <li>Produtor 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <section id="studio">
+            <h2>Studio</h2>
+            <!-- Formulário para adicionar novo estúdio -->
+            <form>
+                <label for="codigoStudio">Código Studio:</label>
+                <input type="text" id="codigoStudio" name="codigoStudio" required />
+
+                <label for="codigoEnderecoStudio">Código Endereço:</label>
+                <input type="text" id="codigoEnderecoStudio" name="codigoEnderecoStudio" required />
+
+                <label for="numeroStudio">Número Studio:</label>
+                <input type="text" id="numeroStudio" name="numeroStudio" required />
+
+                <button type="submit">Adicionar Studio</button>
+            </form>
+
+            <!-- Lista de estúdios do banco de dados -->
+            <ul>
+                <li>Studio 1</li>
+                <li>Studio 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+        </section>
+
+        <script src="front.js"></script>
+    </body>
+</html>

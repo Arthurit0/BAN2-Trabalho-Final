@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
 export default class Produtor {
-    private _cdProd!: number;
-    private _cdEnd!: number;
+    private _cdProdutor!: number;
+    private _cdEndereco!: number;
     private _nmProdutor!: string;
     private _nmEmpresa?: string;
 
@@ -13,20 +13,20 @@ export default class Produtor {
     //     this._nmEmpresa = nmEmpresa;
     // }
 
-    public get cdProd(): number {
-        return this._cdProd;
+    public get cdProdutor(): number {
+        return this._cdProdutor;
     }
 
-    public set cdProd(cdProd: number) {
-        this._cdProd = cdProd;
+    public set cdProdutor(cdProd: number) {
+        this._cdProdutor = cdProd;
     }
 
-    public get cdEnd(): number {
-        return this._cdEnd;
+    public get cdEndereco(): number {
+        return this._cdEndereco;
     }
 
-    public set cdEnd(cdEnd: number) {
-        this._cdEnd = cdEnd;
+    public set cdEndereco(cdEnd: number) {
+        this._cdEndereco = cdEnd;
     }
 
     public get nmProdutor(): string {
@@ -45,7 +45,16 @@ export default class Produtor {
         this._nmEmpresa = nmEmpresa;
     }
 
-    public equal(obj: Produtor) {
+    public equals(obj: Produtor) {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Produtor {
+        const produtor = new this();
+        produtor._cdProdutor = res.cd_prod;
+        produtor._cdEndereco = res.cd_end;
+        produtor._nmProdutor = res.nm_produtor;
+        produtor._nmEmpresa = res.nm_empresa;
+        return produtor;
     }
 }

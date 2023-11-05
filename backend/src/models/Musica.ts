@@ -45,7 +45,16 @@ export default class Musica {
         this._fmtArquivo = fmtArquivo;
     }
 
-    public equal(obj: Musica): boolean {
+    public equals(obj: Musica): boolean {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Musica {
+        const musica = new this();
+        musica._cdMusica = res.cd_musica;
+        musica._dsTitulo = res.ds_titulo;
+        musica._tpDuracao = res.tp_duracao;
+        musica._fmtArquivo = res.fmt_arquivo;
+        return musica;
     }
 }

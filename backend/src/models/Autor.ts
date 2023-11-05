@@ -1,11 +1,12 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export class Autor {
     private _cdAutor!: number;
 
-    // constructor(cdAutor: number) {
-    //     this._cdAutor = cdAutor;
-    // }
+    constructor(cdAutor: number) {
+        this._cdAutor = cdAutor;
+    }
 
     public set cdAutor(cdAutor: number) {
         this._cdAutor = cdAutor;
@@ -15,15 +16,15 @@ export class Autor {
         return this._cdAutor;
     }
 
-    equal(obj: Autor) {
+    public equals(obj: Autor) {
         return _.isEqual(obj, this);
     }
 }
 
 export class Musico extends Autor {
     private _nrReg!: number;
-    private _cdEnd?: number;
-    private _nmMusico?: string;
+    private _cdEndereco?: number;
+    private _nmMusico!: string;
     private _nmArtistico?: string;
 
     // constructor(
@@ -44,16 +45,16 @@ export class Musico extends Autor {
         this._nrReg = nrReg;
     }
 
-    public get nrReg() {
+    public get nrReg(): number {
         return this._nrReg;
     }
 
-    public get cdEnd(): number | undefined {
-        return this._cdEnd;
+    public get cdEndereco(): number | undefined {
+        return this._cdEndereco;
     }
 
-    public set cdEnd(cdEnd: number) {
-        this._cdEnd = cdEnd;
+    public set cdEndereco(cdEnd: number) {
+        this._cdEndereco = cdEnd;
     }
 
     public get nmMusico(): string | undefined {
@@ -72,17 +73,26 @@ export class Musico extends Autor {
         this._nmArtistico = strNmArtistico;
     }
 
-    equal(obj: Musico): boolean {
+    public equals(obj: Musico): boolean {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Musico {
+        const musico = new Musico(res.cd_autor);
+        musico._nrReg = res.nr_reg;
+        musico._cdEndereco = res.cd_end;
+        musico._nmMusico = res.nm_musico;
+        musico._nmArtistico = res.nm_artistico;
+        return musico;
     }
 }
 
 export class Banda extends Autor {
     private _cdBanda!: number;
     private _nmBanda?: string;
-    private _dtFormacao?: Date;
+    private _dtFormacao?: Date | string;
 
-    // constructor(cdAutor: number, cdBanda: number, nmBanda?: string, dtFormacao?: Date) {
+    // constructor(cdAutor: number, cdBanda: number, nmBanda?: string, dtFormacao?: Date | string) {
     //     super(cdAutor);
     //     this._cdBanda = cdBanda;
     //     this._nmBanda = nmBanda;
@@ -105,15 +115,23 @@ export class Banda extends Autor {
         this._nmBanda = nmBanda;
     }
 
-    public get dtFormacao(): Date | undefined {
+    public get dtFormacao(): Date | string | undefined {
         return this._dtFormacao;
     }
 
-    public set dtFormacao(dtFormacao: Date) {
+    public set dtFormacao(dtFormacao: Date | string) {
         this._dtFormacao = dtFormacao;
     }
 
-    public equal(obj: Banda): boolean {
+    public equals(obj: Banda): boolean {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Banda {
+        let banda = new this(res.cd_autor);
+        banda._cdBanda = res.cd_banda;
+        banda._nmBanda = res.nm_banda;
+        banda._dtFormacao = moment(res.dt_formacao).format('DD/MM/YYYY');
+        return banda;
     }
 }

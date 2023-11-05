@@ -79,7 +79,18 @@ export default class Disco {
         this._fmtGrav = fmtGrav;
     }
 
-    public equal(obj: Disco) {
+    public equals(obj: Disco) {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Disco {
+        const disco = new this();
+        disco._cdAutor = res.cd_autor;
+        disco._cdProdutor = res.cd_produtor;
+        disco._cdLocalGravacao = res.cd_local_gravacao;
+        disco._dtGrav = res.dt_grav;
+        disco._fmtGrav = res.fmt_grav;
+        disco._dsTitulo = res.ds_titulo;
+        return disco;
     }
 }

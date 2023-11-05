@@ -94,7 +94,20 @@ export default class Endereco {
         this._dsTelefone = dsTelefone;
     }
 
-    public equal(obj: Endereco): boolean {
+    public equals(obj: Endereco): boolean {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Endereco {
+        const endereco = new this();
+        endereco._cdEnd = res.cd_end;
+        endereco._nmRua = res.nm_rua;
+        endereco._nrCasa = res.nr_casa;
+        endereco._nmBairro = res.nm_bairro;
+        endereco._nmCidade = res.nm_cidade;
+        endereco._nmEstado = res.nm_estado;
+        endereco._nmPais = res.nm_pais;
+
+        return endereco;
     }
 }

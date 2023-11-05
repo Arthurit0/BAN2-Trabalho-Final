@@ -2,20 +2,20 @@ import _ from 'lodash';
 
 export default class Instrumento {
     private _cdInstr!: number;
-    private _cdStudio!: number;
+    private _cdEstudio!: number;
     private _nmInstr?: string;
     private _tipInstr?: string;
     private _nmMarca?: string;
 
     // constructor(
     //     cdInstr: number,
-    //     cdStudio: number,
+    //     cdEstudio: number,
     //     nmInstr?: string,
     //     tipInstr?: string,
     //     nmMarca?: string
     // ) {
     //     this._cdInstr = cdInstr;
-    //     this._cdStudio = cdStudio;
+    //     this._cdStudio = cdEstudio;
     //     this._nmInstr = nmInstr;
     //     this._tipInstr = tipInstr;
     //     this._nmMarca = nmMarca;
@@ -29,12 +29,12 @@ export default class Instrumento {
         this._cdInstr = cdInstr;
     }
 
-    public get cdStudio(): number {
-        return this._cdStudio;
+    public get cdEstudio(): number {
+        return this._cdEstudio;
     }
 
-    public set cdStudio(cdStudio: number) {
-        this._cdStudio = cdStudio;
+    public set cdEstudio(cdEstudio: number) {
+        this._cdEstudio = cdEstudio;
     }
 
     public get nmInstr(): string | undefined {
@@ -61,7 +61,17 @@ export default class Instrumento {
         this._nmMarca = nmMarca;
     }
 
-    public equal(obj: Instrumento) {
+    public equals(obj: Instrumento) {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Instrumento {
+        const instrumento = new this();
+        instrumento._cdInstr = res.cd_instr;
+        instrumento._cdEstudio = res.cd_estudio;
+        instrumento._nmInstr = res.nm_instr;
+        instrumento._tipInstr = res.tip_instr;
+        instrumento._nmMarca = res.nm_marca;
+        return instrumento;
     }
 }

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export default class Endereco {
-    private _cdEnd: number;
+    private _cdEnd!: number;
     private _nmRua?: string;
     private _nrCasa?: number;
     private _nmBairro?: string;
@@ -10,28 +10,32 @@ export default class Endereco {
     private _nmPais?: string;
     private _dsTelefone?: string;
 
-    constructor(
-        cdEnd: number,
-        nmRua?: string,
-        nrCasa?: number,
-        nmBairro?: string,
-        nmCidade?: string,
-        nmEstado?: string,
-        nmPais?: string,
-        dsTelefone?: string
-    ) {
-        this._cdEnd = cdEnd;
-        this._nmRua = nmRua;
-        this._nrCasa = nrCasa;
-        this._nmBairro = nmBairro;
-        this._nmCidade = nmCidade;
-        this._nmEstado = nmEstado;
-        this._nmPais = nmPais;
-        this._dsTelefone = dsTelefone;
-    }
+    // constructor(
+    //     cdEnd: number,
+    //     nmRua?: string,
+    //     nrCasa?: number,
+    //     nmBairro?: string,
+    //     nmCidade?: string,
+    //     nmEstado?: string,
+    //     nmPais?: string,
+    //     dsTelefone?: string
+    // ) {
+    //     this._cdEnd = cdEnd;
+    //     this._nmRua = nmRua;
+    //     this._nrCasa = nrCasa;
+    //     this._nmBairro = nmBairro;
+    //     this._nmCidade = nmCidade;
+    //     this._nmEstado = nmEstado;
+    //     this._nmPais = nmPais;
+    //     this._dsTelefone = dsTelefone;
+    // }
 
     public get cdEnd(): number {
         return this._cdEnd;
+    }
+
+    public set cdEnd(cdEnd: number) {
+        this._cdEnd = cdEnd;
     }
 
     public get nmRua(): string | undefined {
@@ -90,7 +94,20 @@ export default class Endereco {
         this._dsTelefone = dsTelefone;
     }
 
-    public equal(obj: Endereco): boolean {
+    public equals(obj: Endereco): boolean {
         return _.isEqual(obj, this);
+    }
+
+    public static fromPostgresSql(res: any): Endereco {
+        const endereco = new this();
+        endereco._cdEnd = res.cd_end;
+        endereco._nmRua = res.nm_rua;
+        endereco._nrCasa = res.nr_casa;
+        endereco._nmBairro = res.nm_bairro;
+        endereco._nmCidade = res.nm_cidade;
+        endereco._nmEstado = res.nm_estado;
+        endereco._nmPais = res.nm_pais;
+
+        return endereco;
     }
 }

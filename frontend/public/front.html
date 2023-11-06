@@ -4,11 +4,11 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Minha Aplicação ITIL</title>
-        <link rel="stylesheet" type="text/css" href="/front.css" />
+        <link rel="stylesheet" type="text/css" href="front.css" />
     </head>
     <body>
         <header>
-            <h1>Minha Aplicação ITIL</h1>
+            <h1>Minha Aplicação</h1>
         </header>
         <nav>
             <a href="#autor">Autor</a>
@@ -21,6 +21,13 @@
         </nav>
         <section id="autor">
             <h2>Autor</h2>
+            <!-- Lista de autores do banco de dados -->
+            <ul>
+                <li>Autor 1</li>
+                <li>Autor 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+            
             <!-- Formulário para adicionar novo autor -->
             <form>
                 <label for="numeroRegistro">Número de Registro:</label>
@@ -38,18 +45,21 @@
                 <button type="submit">Adicionar Autor</button>
             </form>
 
-            <!-- Lista de autores do banco de dados -->
-            <ul>
-                <li>Autor 1</li>
-                <li>Autor 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+            
         </section>
 
         <section id="disco">
             <h2>Disco</h2>
-            <!-- Formulário para adicionar novo disco -->
-            <form>
+            <!-- Lista de discos do banco de dados -->
+            <ul>
+                <li>Disco 1</li>
+                <li>Disco 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+            
+            <button id="toggleDiscoForm">Mostrar Formulário de Disco</button>
+            <!-- Formulário para adicionar novo estúdio -->
+            <form id="DiscoForm" class="hidden">
                 <label for="numeroRegistroDisco">Número de Registro:</label>
                 <input type="text" id="numeroRegistroDisco" name="numeroRegistroDisco" required />
 
@@ -65,18 +75,20 @@
                 <button type="submit">Adicionar Disco</button>
             </form>
 
-            <!-- Lista de discos do banco de dados -->
-            <ul>
-                <li>Disco 1</li>
-                <li>Disco 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+            
         </section>
 
         <section id="endereco">
             <h2>Endereço</h2>
-            <!-- Formulário para adicionar novo endereço -->
-            <form>
+             <!-- Lista de endereços do banco de dados -->
+             <ul>
+                <li>Endereço 1</li>
+                <li>Endereço 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+            <button id="toggleEnderecoForm">Mostrar Formulário de Endereco</button>
+            <!-- Formulário para adicionar novo estúdio -->
+            <form id="EnderecoForm" class="hidden">
                 <label for="codigoEndereco">Código Endereço:</label>
                 <input type="text" id="codigoEndereco" name="codigoEndereco" required />
 
@@ -104,18 +116,23 @@
                 <button type="submit">Adicionar Endereço</button>
             </form>
 
-            <!-- Lista de endereços do banco de dados -->
-            <ul>
-                <li>Endereço 1</li>
-                <li>Endereço 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+           
         </section>
 
         <section id="instrumento">
             <h2>Instrumento</h2>
+            <!-- Lista de instrumentos do banco de dados -->
+            <ul>
+                <li>Instrumento 1</li>
+                <li>Instrumento 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+            <!-- Botão para mostrar/ocultar formulário de Studio -->
+            <button id="toggleInstrumentoForm">Mostrar Formulário de Instrumento</button>
+            <!-- Formulário para adicionar novo estúdio -->
+            <form id="InstrumentoForm" class="hidden">
             <!-- Formulário para adicionar novo instrumento -->
-            <form>
+            
                 <label for="codigoInstrumento">Código Instrumento:</label>
                 <input type="text" id="codigoInstrumento" name="codigoInstrumento" required />
 
@@ -139,18 +156,23 @@
                 <button type="submit">Adicionar Instrumento</button>
             </form>
 
-            <!-- Lista de instrumentos do banco de dados -->
-            <ul>
-                <li>Instrumento 1</li>
-                <li>Instrumento 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+            
         </section>
 
         <section id="musica">
             <h2>Musica</h2>
+            <!-- Lista de músicas do banco de dados -->
+            <ul>
+                <li>Música 1</li>
+                <li>Música 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+            <button id="toggleMusicaForm">Mostrar Formulário de Musica</button>
+            <!-- Formulário para adicionar novo estúdio -->
+            <form id="MusicaForm" class="hidden">
+            
             <!-- Formulário para adicionar nova música -->
-            <form>
+            
                 <label for="codigoMusica">Código Música:</label>
                 <input type="text" id="codigoMusica" name="codigoMusica" required />
 
@@ -166,18 +188,20 @@
                 <button type="submit">Adicionar Música</button>
             </form>
 
-            <!-- Lista de músicas do banco de dados -->
-            <ul>
-                <li>Música 1</li>
-                <li>Música 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+            
         </section>
 
         <section id="produtor">
             <h2>Produtor</h2>
-            <!-- Formulário para adicionar novo produtor -->
-            <form>
+            <ul>
+                <li>Produtor 1</li>
+                <li>Produtor 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+                <!-- Botão para mostrar/ocultar formulário de Studio -->
+            <button id="toggleProdutorForm">Mostrar Formulário de produtor</button>
+            <!-- Formulário para adicionar novo estúdio -->
+            <form id="produtorForm" class="hidden">
                 <label for="codigoProdutor">Código Produtor:</label>
                 <input type="text" id="codigoProdutor" name="codigoProdutor" required />
 
@@ -199,17 +223,22 @@
             </form>
 
             <!-- Lista de produtores do banco de dados -->
-            <ul>
-                <li>Produtor 1</li>
-                <li>Produtor 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+            
         </section>
 
         <section id="studio">
             <h2>Studio</h2>
+            <!-- Lista de estúdios do banco de dados -->
+            <ul>
+                <li>Studio 1</li>
+                <li>Studio 2</li>
+                <!-- Adicione mais itens conforme necessário -->
+            </ul>
+            
+            <!-- Botão para mostrar/ocultar formulário de Studio -->
+            <button id="toggleStudioForm">Mostrar Formulário de Studio</button>
             <!-- Formulário para adicionar novo estúdio -->
-            <form>
+            <form id="studioForm" class="hidden">
                 <label for="codigoStudio">Código Studio:</label>
                 <input type="text" id="codigoStudio" name="codigoStudio" required />
 
@@ -219,15 +248,11 @@
                 <label for="numeroStudio">Número Studio:</label>
                 <input type="text" id="numeroStudio" name="numeroStudio" required />
 
-                <button type="submit">Adicionar Studio</button>
+                <button id="toggleStudioForm">Mostrar/Esconder Formulário de Studio</button>
+
             </form>
 
-            <!-- Lista de estúdios do banco de dados -->
-            <ul>
-                <li>Studio 1</li>
-                <li>Studio 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
+            
         </section>
 
         <script src="front.js"></script>

@@ -1,133 +1,125 @@
-DROP SCHEMA public CASCADE;
+-- Criação do esquema público após limpar o esquema existente
+DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
 
+-- Criação das tabelas
 CREATE TABLE enderecos (
-	cd_endereco serial PRIMARY KEY,
-	nm_rua varchar(100) NULL,
-	nr_casa int NULL,
-	nm_bairro varchar(100) NULL,
-	nm_cidade varchar(100) NULL,
-	nm_estado varchar(100) NULL,
-	nm_pais varchar(100) NULL,
-	ds_telefone varchar(20) NULL
+    cd_endereco serial PRIMARY KEY,
+    nm_rua varchar(100),
+    nr_casa int,
+    nm_bairro varchar(100),
+    nm_cidade varchar(100),
+    nm_estado varchar(100),
+    nm_pais varchar(100),
+    ds_telefone varchar(20)
 );
 
 CREATE TABLE autores (
-	cd_autor serial PRIMARY KEY
+    cd_autor serial PRIMARY KEY
 );
 
 CREATE TABLE musicos (
-	nr_reg serial PRIMARY KEY,
-	cd_endereco int NULL, -- Relação Mora
-	cd_autor int NOT NULL,
-	nm_musico varchar(100) NOT NULL,
-	nm_artistico varchar(50) NULL,
-	CONSTRAINT endereco_fk FOREIGN KEY(cd_endereco) REFERENCES enderecos(cd_endereco),
-	CONSTRAINT autor_fk FOREIGN KEY(cd_autor) REFERENCES autores(cd_autor)
+    nr_reg serial PRIMARY KEY,
+    cd_endereco int,
+    cd_autor int NOT NULL,
+    nm_musico varchar(100) NOT NULL,
+    nm_artistico varchar(50),
+    CONSTRAINT endereco_fk FOREIGN KEY (cd_endereco) REFERENCES enderecos(cd_endereco) ON DELETE SET NULL,
+    CONSTRAINT autor_fk FOREIGN KEY (cd_autor) REFERENCES autores(cd_autor) ON DELETE CASCADE
 );
 
 CREATE TABLE bandas (
-	cd_banda serial PRIMARY KEY,
-	cd_autor int NOT NULL,
-	nm_banda varchar(100) NOT NULL,
-	dt_formacao date NULL,
-	CONSTRAINT autor_fk FOREIGN KEY(cd_autor) REFERENCES autores(cd_autor)
+    cd_banda serial PRIMARY KEY,
+    cd_autor int NOT NULL,
+    nm_banda varchar(100) NOT NULL,
+    dt_formacao date,
+    CONSTRAINT autor_fk FOREIGN KEY (cd_autor) REFERENCES autores(cd_autor) ON DELETE CASCADE
 );
 
--- Equivale ao "forma"
 CREATE TABLE musicos_em_banda (
-	nr_reg int NOT NULL,
-	cd_banda int NOT NULL,
-	CONSTRAINT musico_fk FOREIGN KEY(nr_reg) REFERENCES musicos(nr_reg),
-	CONSTRAINT banda_fk FOREIGN KEY(cd_banda) REFERENCES bandas(cd_banda)
+    nr_reg int NOT NULL,
+    cd_banda int NOT NULL,
+    CONSTRAINT musico_fk FOREIGN KEY (nr_reg) REFERENCES musicos(nr_reg) ON DELETE CASCADE,
+    CONSTRAINT banda_fk FOREIGN KEY (cd_banda) REFERENCES bandas(cd_banda) ON DELETE CASCADE
 );
 
 CREATE TABLE musicas(
-	cd_musica serial PRIMARY KEY,
-	ds_titulo varchar(100) NOT NULL,
-	ds_genero varchar(50) NULL,
-	tp_duracao int NULL,
-	fmt_arquivo varchar(5) NULL
+    cd_musica serial PRIMARY KEY,
+    ds_titulo varchar(100) NOT NULL,
+    ds_genero varchar(50),
+    tp_duracao int,
+    fmt_arquivo varchar(5)
 );
 
--- Equivale ao "participa"
 CREATE TABLE autores_da_musica(
-	cd_autor int NOT NULL,
-	cd_musica int NOT NULL,
-	CONSTRAINT autor_fk FOREIGN KEY(cd_autor) REFERENCES autores(cd_autor),
-	CONSTRAINT musica_fk FOREIGN KEY(cd_musica) REFERENCES musicas(cd_musica)
+    cd_autor int NOT NULL,
+    cd_musica int NOT NULL,
+    CONSTRAINT autor_fk FOREIGN KEY (cd_autor) REFERENCES autores(cd_autor) ON DELETE CASCADE,
+    CONSTRAINT musica_fk FOREIGN KEY (cd_musica) REFERENCES musicas(cd_musica) ON DELETE CASCADE
 );
 
 CREATE TABLE produtores(
-	cd_prod serial PRIMARY KEY,
-	cd_endereco int NOT NULL,
-	nm_produtor varchar(100) NOT NULL,
-	nm_empresa varchar(100) NULL,
-	CONSTRAINT endereco_fk FOREIGN KEY(cd_endereco) REFERENCES enderecos(cd_endereco)
+    cd_produtor serial PRIMARY KEY,
+    cd_endereco int NOT NULL,
+    nm_produtor varchar(100) NOT NULL,
+    nm_empresa varchar(100),
+    CONSTRAINT endereco_fk FOREIGN KEY (cd_endereco) REFERENCES enderecos(cd_endereco) ON DELETE SET NULL
 );
 
 CREATE TABLE estudios(
-	cd_estudio serial PRIMARY KEY,
-	cd_endereco int NOT NULL,
-	nm_estudio varchar(100) NOT NULL,
-	CONSTRAINT endereco_fk FOREIGN KEY(cd_endereco) REFERENCES enderecos(cd_endereco)
+    cd_estudio serial PRIMARY KEY,
+    cd_endereco int NOT NULL,
+    nm_estudio varchar(100) NOT NULL,
+    CONSTRAINT endereco_fk FOREIGN KEY (cd_endereco) REFERENCES enderecos(cd_endereco) ON DELETE SET NULL
 );
 
 CREATE TABLE discos(
-	cd_disco serial PRIMARY KEY,
-	cd_autor int NOT NULL, -- Relação Grava
-	cd_produtor int NOT NULL, -- Relação Produz
-	cd_local_gravacao int NULL,
-	dt_grav date NOT NULL,
-	ds_titulo varchar(100) NOT NULL,
-	CONSTRAINT autor_fk FOREIGN KEY(cd_autor) REFERENCES autores(cd_autor),
-	CONSTRAINT produtor_fk FOREIGN KEY(cd_produtor) REFERENCES produtores(cd_prod),
-	CONSTRAINT local_gravacao_fk FOREIGN KEY(cd_local_gravacao) REFERENCES estudios(cd_estudio)
-	);
-
--- Equivale ao "contem"
-CREATE TABLE musicas_em_disco(
-	cd_disco int NOT NULL,
-	cd_musica int NOT NULL,
-	CONSTRAINT disco_fk FOREIGN KEY(cd_disco) REFERENCES discos(cd_disco),
-	CONSTRAINT musica_fk FOREIGN KEY(cd_musica) REFERENCES musicas(cd_musica)
+    cd_disco serial PRIMARY KEY,
+    cd_autor int NOT NULL,
+    cd_produtor int NULL,
+    cd_local_gravacao int,
+    dt_grav date NOT NULL,
+    ds_titulo varchar(100) NOT NULL,
+    CONSTRAINT autor_fk FOREIGN KEY (cd_autor) REFERENCES autores(cd_autor) ON DELETE CASCADE,
+    CONSTRAINT produtor_fk FOREIGN KEY (cd_produtor) REFERENCES produtores(cd_produtor) ON DELETE SET NULL,
+    CONSTRAINT local_gravacao_fk FOREIGN KEY (cd_local_gravacao) REFERENCES estudios(cd_estudio) ON DELETE SET NULL
 );
 
---CREATE TABLE local_gravacao(
---	cod_disco int NOT NULL,
---	cod_studio int NOT NULL,
---	dt_gravacao date NOT NULL,
---	CONSTRAINT disco_fk FOREIGN KEY(cod_disco) REFERENCES discos(cod_disco),
---	CONSTRAINT studio_fk FOREIGN KEY(cod_studio) REFERENCES estudios(cod_studio)
---);
+CREATE TABLE musicas_em_disco(
+    cd_disco int NOT NULL,
+    cd_musica int NOT NULL,
+    CONSTRAINT disco_fk FOREIGN KEY (cd_disco) REFERENCES discos(cd_disco) ON DELETE CASCADE,
+    CONSTRAINT musica_fk FOREIGN KEY (cd_musica) REFERENCES musicas(cd_musica)
+);
 
 CREATE TABLE instrumentos (
-	cd_instr serial PRIMARY KEY,
-	cd_estudio int NOT NULL, -- Relação Pertence
-	nm_instr varchar(25) NOT NULL,
-	tip_instr varchar(25) NULL,
-	nm_marca varchar(50) NULL,
-	CONSTRAINT estudio_fk FOREIGN KEY(cd_estudio) REFERENCES estudios(cd_estudio)
+    cd_instrumento serial PRIMARY KEY,
+    cd_estudio int NOT NULL,
+    nm_instr varchar(25) NOT NULL,
+    tip_instr varchar(25),
+    nm_marca varchar(50),
+    CONSTRAINT estudio_fk FOREIGN KEY (cd_estudio) REFERENCES estudios(cd_estudio) ON DELETE CASCADE
 );
 
--- Equivale ao "toca"
 CREATE TABLE toca_instr (
-	cd_instr int NOT NULL,
-	nr_reg int NOT NULL,
-	dt_uso date NOT NULL,
-	CONSTRAINT instr_fk FOREIGN KEY(cd_instr) REFERENCES instrumentos(cd_instr),
-	CONSTRAINT musico_fk FOREIGN KEY(nr_reg) REFERENCES musicos(nr_reg) 
+    cd_instrumento int NOT NULL,
+    nr_reg int NOT NULL,
+    dt_uso date NOT NULL,
+    CONSTRAINT instr_fk FOREIGN KEY (cd_instrumento) REFERENCES instrumentos(cd_instrumento) ON DELETE CASCADE,
+    CONSTRAINT musico_fk FOREIGN KEY (nr_reg) REFERENCES musicos(nr_reg) ON DELETE CASCADE
 );
 
+-- Função para criação de autor
 CREATE OR REPLACE FUNCTION cria_autor()
 RETURNS INTEGER AS $$
 DECLARE
     novo_cd_autor INTEGER;
 BEGIN
     INSERT INTO autores DEFAULT VALUES RETURNING cd_autor INTO novo_cd_autor;
-   RETURN novo_cd_autor;
+    RETURN novo_cd_autor;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 INSERT INTO enderecos (nm_rua, nr_casa, nm_bairro, nm_cidade, nm_estado, nm_pais, ds_telefone) VALUES
@@ -202,7 +194,7 @@ INSERT INTO instrumentos (cd_estudio, nm_instr, tip_instr, nm_marca) VALUES
 (3, 'Bateria', 'Percussão', 'Yamaha'),
 (4, 'Teclado', 'Percussão', 'Roland');
 
-INSERT INTO toca_instr (cd_instr, nr_reg, dt_uso) VALUES
+INSERT INTO toca_instr (cd_instrumento, nr_reg, dt_uso) VALUES
 (1, 1, '2022-05-05'),
 (2, 2, '2022-06-06'),
 (3, 3, '2022-07-07'),

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export default class Endereco {
-    private _cdEnd!: number;
+    private _cdEndereco!: number;
     private _nmRua?: string;
     private _nrCasa?: number;
     private _nmBairro?: string;
@@ -11,7 +11,7 @@ export default class Endereco {
     private _dsTelefone?: string;
 
     // constructor(
-    //     cdEnd: number,
+    //     cdEndereco: number,
     //     nmRua?: string,
     //     nrCasa?: number,
     //     nmBairro?: string,
@@ -20,7 +20,7 @@ export default class Endereco {
     //     nmPais?: string,
     //     dsTelefone?: string
     // ) {
-    //     this._cdEnd = cdEnd;
+    //     this._cdEndereco = cdEndereco;
     //     this._nmRua = nmRua;
     //     this._nrCasa = nrCasa;
     //     this._nmBairro = nmBairro;
@@ -30,12 +30,12 @@ export default class Endereco {
     //     this._dsTelefone = dsTelefone;
     // }
 
-    public get cdEnd(): number {
-        return this._cdEnd;
+    public get cdEndereco(): number {
+        return this._cdEndereco;
     }
 
-    public set cdEnd(cdEnd: number) {
-        this._cdEnd = cdEnd;
+    public set cdEndereco(cdEndereco: number) {
+        this._cdEndereco = cdEndereco;
     }
 
     public get nmRua(): string | undefined {
@@ -100,7 +100,7 @@ export default class Endereco {
 
     public static fromPostgresSql(res: any): Endereco {
         const endereco = new this();
-        endereco._cdEnd = res.cd_end;
+        endereco._cdEndereco = res.cd_endereco;
         endereco._nmRua = res.nm_rua;
         endereco._nrCasa = res.nr_casa;
         endereco._nmBairro = res.nm_bairro;

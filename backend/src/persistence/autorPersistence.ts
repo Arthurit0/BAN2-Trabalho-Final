@@ -16,7 +16,7 @@ export default class autorPersistence {
         const musico = await conn
             .query('SELECT * FROM MUSICOS WHERE NR_REG = $1', [nrReg])
             .then((res) => {
-                return res.rows.map((row: any) => Musico.fromPostgresSql(row));
+                return Musico.fromPostgresSql(res.rows[0]);
             });
 
         return musico;
@@ -34,16 +34,10 @@ export default class autorPersistence {
         const banda = await conn
             .query('SELECT * FROM BANDAS WHERE CD_BANDA = $1', [cdBanda])
             .then((res) => {
-                return res.rows.map((row: any) => Banda.fromPostgresSql(row));
+                return Banda.fromPostgresSql(res.rows[0]);
             });
 
         return banda;
-    }
-
-    public static async selectAllAutores(): Promise<any[]> {
-        const allMusicos = await this.selectAllMusicos();
-        const allBandas = await this.selectAllBandas();
-        return [allMusicos, allBandas];
     }
 
     public static async selectAllMusicosFromBanda(cdBanda: number): Promise<Musico[]> {
@@ -75,6 +69,15 @@ export default class autorPersistence {
             .then((res) => res.rows[0].nr_reg);
     }
 
+    public static async getAutoresDaMusica(cdMusica: number): Promise<any> {
+        return await conn
+            .query(
+                'SELECT * FROM AUTORES LEFT JOIN AUTORES_DA_MUSICA USING(CD_AUTOR) LEFT JOIN MUSICA USING CD_MUSICA = $1',
+                [cdMusica]
+            )
+            .then((res) => res.rows);
+    }
+
     public static async insertMusico(musico: Musico): Promise<number> {
         try {
             const result = await conn.query(
@@ -87,6 +90,19 @@ export default class autorPersistence {
             return nrReg;
         } catch (err) {
             throw `Ocorreu um erro na inserção do novo músico: ${err}`;
+        }
+    }
+
+    public static async assignMusicoInBanda(nrReg: number, cdBanda: number): Promise<string> {
+        try {
+            await conn.query('INSERT INTO MUSICOS_EM_BANDA (NR_REG, CD_BANDA) VALUES ($1, $2)', [
+                nrReg,
+                cdBanda,
+            ]);
+
+            return `Músico de código ${nrReg} entrou na banda ${cdBanda}`;
+        } catch (err) {
+            throw `Ocorreu um erro na inserção do músico na banda: ${err}`;
         }
     }
 
@@ -112,9 +128,11 @@ export default class autorPersistence {
     }
 
     public static async deleteMusico(nrReg: number): Promise<string> {
-        const verExistencia = await conn.query('SELECT 1 FROM MUSICOS WHERE NR_REG = $1', [nrReg]);
+        const verExistencia = await conn
+            .query('SELECT 1 FROM MUSICOS WHERE NR_REG = $1', [nrReg])
+            .then((res) => res.rowCount);
 
-        if (!verExistencia.rowCount) {
+        if (!verExistencia) {
             return `Músico com Nr. Reg ${nrReg} não existe!`;
         } else {
             try {

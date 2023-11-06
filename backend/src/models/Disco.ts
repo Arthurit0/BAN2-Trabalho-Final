@@ -6,7 +6,6 @@ export default class Disco {
     private _cdProdutor!: number;
     private _cdLocalGravacao?: number;
     private _dtGrav?: Date;
-    private _fmtGrav?: string;
     private _dsTitulo?: string;
 
     // constructor(
@@ -23,12 +22,15 @@ export default class Disco {
     //     this._cdProdutor = cdProdutor;
     //     this._cdLocalGravacao = cdLocalGravacao;
     //     this._dtGrav = dtGrav;
-    //     this._fmtGrav = fmtGrav;
     //     this._dsTitulo = dsTitulo;
     // }
 
     public get cdDisco(): number {
         return this._cdDisco;
+    }
+
+    public set cdDisco(cdDisco: number) {
+        this._cdDisco = cdDisco;
     }
 
     public get cdAutor(): number {
@@ -71,25 +73,17 @@ export default class Disco {
         this._dsTitulo = dsTitulo;
     }
 
-    public get fmtGrav(): string | undefined {
-        return this._fmtGrav;
-    }
-
-    public set fmtGrav(fmtGrav: string) {
-        this._fmtGrav = fmtGrav;
-    }
-
     public equals(obj: Disco) {
         return _.isEqual(obj, this);
     }
 
     public static fromPostgresSql(res: any): Disco {
         const disco = new this();
+        disco._cdDisco = res.cd_disco;
         disco._cdAutor = res.cd_autor;
         disco._cdProdutor = res.cd_produtor;
         disco._cdLocalGravacao = res.cd_local_gravacao;
         disco._dtGrav = res.dt_grav;
-        disco._fmtGrav = res.fmt_grav;
         disco._dsTitulo = res.ds_titulo;
         return disco;
     }

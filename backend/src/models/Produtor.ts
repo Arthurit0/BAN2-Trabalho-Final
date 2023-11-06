@@ -51,8 +51,8 @@ export default class Produtor {
 
     public static fromPostgresSql(res: any): Produtor {
         const produtor = new this();
-        produtor._cdProdutor = res.cd_prod;
-        produtor._cdEndereco = res.cd_end;
+        produtor._cdProdutor = res.cd_produtor;
+        produtor._cdEndereco = res.cd_endereco;
         produtor._nmProdutor = res.nm_produtor;
         produtor._nmEmpresa = res.nm_empresa;
         return produtor;

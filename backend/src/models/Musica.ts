@@ -3,6 +3,7 @@ import _ from 'lodash';
 export default class Musica {
     private _cdMusica!: number;
     private _dsTitulo!: string;
+    private _dsGenero?: string;
     private _tpDuracao?: number;
     private _fmtArquivo?: string;
 
@@ -29,6 +30,14 @@ export default class Musica {
         this._dsTitulo = dsTitulo;
     }
 
+    public get dsGenero(): string | undefined {
+        return this._dsGenero;
+    }
+
+    public set dsGenero(dsGenero: string) {
+        this._dsGenero = dsGenero;
+    }
+
     public get tpDuracao(): number | undefined {
         return this._tpDuracao;
     }
@@ -53,6 +62,7 @@ export default class Musica {
         const musica = new this();
         musica._cdMusica = res.cd_musica;
         musica._dsTitulo = res.ds_titulo;
+        musica._dsGenero = res.ds_genero;
         musica._tpDuracao = res.tp_duracao;
         musica._fmtArquivo = res.fmt_arquivo;
         return musica;

@@ -4,7 +4,7 @@ import Estudio from '../models/Estudio';
 const conn = new connectDB();
 
 export default class estudioPersistence {
-    public async selectAllEstudios(): Promise<Estudio[]> {
+    public static async selectAllEstudios(): Promise<Estudio[]> {
         const allEstudios = await conn.query('SELECT * FROM ESTUDIOS').then((res) => {
             return res.rows.map((row: any) => Estudio.fromPostgresSql(row));
         });
@@ -12,17 +12,17 @@ export default class estudioPersistence {
         return allEstudios;
     }
 
-    public async selectEstudio(cdEstudio: number): Promise<Estudio> {
+    public static async selectEstudio(cdEstudio: number): Promise<Estudio> {
         const estudio = await conn
             .query('SELECT * FROM ESTUDIOS WHERE CD_ESTUDIO = $1', [cdEstudio])
             .then((res) => {
-                return res.rows.map((row: any) => Estudio.fromPostgresSql(row));
+                return Estudio.fromPostgresSql(res.rows[0]);
             });
 
         return estudio;
     }
 
-    public async insertEstudio(estudio: Estudio): Promise<number> {
+    public static async insertEstudio(estudio: Estudio): Promise<number> {
         try {
             const result = await conn.query(
                 'INSERT INTO ESTUDIOS (CD_ENDERECO, NM_ESTUDIO) VALUES ($1, $2) RETURNING CD_ESTUDIO',
@@ -36,7 +36,7 @@ export default class estudioPersistence {
         }
     }
 
-    public async updateEstudio(estudio: Estudio): Promise<string> {
+    public static async updateEstudio(estudio: Estudio): Promise<string> {
         if (!estudio.cdEstudio) return 'Código do estúdio a alterar não informado!';
 
         try {
@@ -51,12 +51,12 @@ export default class estudioPersistence {
         }
     }
 
-    public async deleteEstudio(cdEstudio: number): Promise<string> {
-        const verExistencia = await conn.query('SELECT 1 FROM ESTUDIOS WHERE CD_ESTUDIO = $1', [
-            cdEstudio,
-        ]);
+    public static async deleteEstudio(cdEstudio: number): Promise<string> {
+        const verExistencia = await conn
+            .query('SELECT 1 FROM ESTUDIOS WHERE CD_ESTUDIO = $1', [cdEstudio])
+            .then((res) => res.rowCount);
 
-        if (!verExistencia.rowCount) {
+        if (!verExistencia) {
             return `Estúdio com código ${cdEstudio} não existe!`;
         } else {
             try {

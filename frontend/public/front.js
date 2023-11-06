@@ -24,6 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
         studioForm.classList.remove('hidden');
     });
 
+    const toggleDiscoForm = document.getElementById('toggleDiscoForm');
+    const DiscoForm = document.getElementById('DiscoForm');
+    toggleDiscoForm.addEventListener('click', function () {
+        toggleDiscoForm.classList.add('hidden');
+        DiscoForm.classList.remove('hidden');
+    });
+
     const toggleProdutorForm = document.getElementById('toggleProdutorForm');
     const produtorForm = document.getElementById('produtorForm');
     toggleProdutorForm.addEventListener('click', function () {
@@ -31,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         produtorForm.classList.remove('hidden');
     });
 
+    
     const toggleMusicaForm = document.getElementById('toggleMusicaForm');
     const MusicaForm = document.getElementById('MusicaForm');
     toggleMusicaForm.addEventListener('click', function () {
@@ -53,10 +61,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     
-    const toggleDiscoForm = document.getElementById('toggleDiscoForm');
-    const DiscoForm = document.getElementById('DiscoForm');
-    toggleDiscoForm.addEventListener('click', function () {
-        toggleDiscoForm.classList.add('hidden');
-        DiscoForm.classList.remove('hidden'); 
-    });
+    
 });

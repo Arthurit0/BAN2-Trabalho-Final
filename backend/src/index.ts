@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import autorRouter from './routes/autorRoutes';
 import discoRouter from './routes/discoRoutes';
 import enderecoRouter from './routes/enderecoRoutes';
@@ -11,6 +12,7 @@ let port = 8080;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/', autorRouter);

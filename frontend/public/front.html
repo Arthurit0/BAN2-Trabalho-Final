@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" href="front.css" />
     </head>
     <body>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <header>
             <h1>Minha Aplicação</h1>
         </header>
@@ -17,315 +18,239 @@
             <a href="#instrumento">Instrumento</a>
             <a href="#musica">Musica</a>
             <a href="#produtor">Produtor</a>
-            <a href="#studio">Studio</a>
+            <a href="#estudio">Estudio</a>
         </nav>
+
         <section id="autor">
             <h2>Autor</h2>
-            <!-- Abas para Todos, Músico e Banda -->
             <div class="tabs">
-                <button class="tablinks" onclick="openTab(event, 'todos')">Todos</button>
-                <button class="tablinks" onclick="openTab(event, 'musico')">Músico</button>
-                <button class="tablinks" onclick="openTab(event, 'banda')">Banda</button>
+                <button class="tablinks" id="botao-todos">Todos</button>
+                <button class="tablinks" id="botao-musico">Músico</button>
+                <button class="tablinks" id="botao-banda">Banda</button>
             </div>
-        
-            <!-- Conteúdo da aba Todos -->
-            <div id="Autor" class="tabcontent">
-                <!-- Lista de todos os autores do banco de dados -->
-                <ul>
-                    <li>Autor 1</li>
-                    <li>Autor 2</li>
-                    <!-- Adicione mais itens conforme necessário -->
-                </ul>
-        
-                <!-- Formulário para adicionar novo autor -->
-                <form>
-                    <!-- Inputs comuns para todos -->
-                    <label for="Codigo Autor">Número de Registro:</label>
-                    <input type="number" id="CodigoAutor" name="numeroRegistro" required />
-        
-                    <!-- Botão para adicionar autor -->
-                    <button type="submit">Adicionar Autor</button>
-                </form>
+
+            <div id="todos" class="tabcontent">
+                <table id="tabela-todos" class="db-table">
+                    <!-- Conteúdo da tabela Todos será inserido aqui -->
+                </table>
             </div>
-        
-            <!-- Conteúdo da aba Músico -->
+
             <div id="musico" class="tabcontent">
-                <!-- Lista de músicos do banco de dados -->
-                <ul>
-                    <li>Músico 1</li>
-                    <li>Músico 2</li>
-                    <!-- Adicione mais itens conforme necessário -->
-                </ul>
-        
-                <!-- Formulário para adicionar novo músico -->
-                <form>
-                    <!-- Inputs específicos para músico -->
-                    <label for="numeroRegistroMusico">Número de Registro Músico:</label>
-                    <input type="number" id="numeroRegistroMusico" name="numeroRegistroMusico" required />
-        
-                    <label for="CodigoEndereco">Codigo Endereco:</label>
-                    <input type="number" id="CodigoEndereco" name="Codigo Endereco" required />
-                    
-                    <label for="NomeMusico">Nome Musico:</label>
-                    <input type="text" id="NomeMusico" name="Nome Musico" required />
+                <table id="tabela-musicos" class="db-table">
+                    <thead>
+                        <th>Código</th>
+                        <th>Nm. Músico</th>
+                        <th>Nm. Artístico</th>
+                        <th>Cd. Endereço</th>
+                    </thead>
+                </table>
+                <button class="toggleForm" data-form="musicoForm">
+                    Mostrar Formulário de Músico
+                </button>
+                <form id="musicoForm" class="formContent hidden">
+                    <label for="inputEnderecoMusico">Endereço:</label>
+                    <input
+                        type="number"
+                        id="cdEnderecoMusico"
+                        name="inputEnderecoMusico"
+                        required
+                    />
 
-                    <label for="NomeArtistico">Nome Artistico:</label>
-                    <input type="text" id="NomeArtistico" name="NomeArtistico " required />
+                    <label for="inputNmMusico">Nome Musico:</label>
+                    <input type="text" id="nmMusico" name="inputNmMusico" required />
 
-                    <!-- Botão para adicionar músico -->
+                    <label for="inputNmArtistico">Nome Artistico:</label>
+                    <input type="text" id="NmArtistico" name="inputNmArtistico " required />
                     <button type="submit">Adicionar Músico</button>
                 </form>
             </div>
-        
-            <!-- Conteúdo da aba Banda -->
+
             <div id="banda" class="tabcontent">
-                <!-- Lista de bandas do banco de dados -->
-                <ul>
-                    <li>Banda 1</li>
-                    <li>Banda 2</li>
-                    <!-- Adicione mais itens conforme necessário -->
-                </ul>
-        
-                <!-- Formulário para adicionar nova banda -->
-                <form>
-                    <!-- Inputs específicos para banda -->
-                    <label for="CodigoBanda">Codigo da Banda:</label>
-                    <input type="number" id="CodigoBanda" name="CodigoBanda" required />
-        
-                    <label for="NomeBanda">Nome Banda:</label>
-                    <input type="text" id="NomeBanda" name="Nome Banda" required />
-        
-                    <label for="Datadeformacao">Data de formacao:</label>
-                    <input type="date" id="Datadeformacao" name="Data de formacao" required />
-                
-                    <!-- Botão para adicionar banda -->
+                <table id="tabela-banda" class="db-table">
+                    <!-- Conteúdo da tabela Bandas será inserido aqui -->
+                </table>
+                <button class="toggleForm" data-form="bandaForm">
+                    Mostrar Formulário de Banda
+                </button>
+                <form id="bandaForm" class="formContent hidden">
+                    <label for="inputNomeBanda">Nome Banda:</label>
+                    <input type="text" id="nmBanda" name="inputNomeBanda" required />
+
+                    <label for="inputDataFormacao">Data de formacao:</label>
+                    <input type="date" id="dtFormacao" name="inputDataFormacao" required />
+
                     <button type="submit">Adicionar Banda</button>
                 </form>
             </div>
-        
-            <!-- Script para alternar entre as abas -->
-            <script>
-                function openTab(evt, tabName) {
-                    var i, tabcontent, tablinks;
-                    tabcontent = document.getElementsByClassName("tabcontent");
-                    for (i = 0; i < tabcontent.length; i++) {
-                        tabcontent[i].style.display = "none";
-                    }
-                    tablinks = document.getElementsByClassName("tablinks");
-                    for (i = 0; i < tablinks.length; i++) {
-                        tablinks[i].className = tablinks[i].className.replace(" active", "");
-                    }
-                    document.getElementById(tabName).style.display = "block";
-                    evt.currentTarget.className += " active";
-                }
-            </script>
         </section>
-        
 
         <section id="disco">
             <h2>Disco</h2>
-            <!-- Lista de discos do banco de dados -->
-            <ul>
-                <li>Disco 1</li>
-                <li>Disco 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
-            
-            <button id="toggleDiscoForm">Mostrar Formulário de Disco</button>
-            <!-- Formulário para adicionar novo estúdio -->
-            <form id="DiscoForm" class="hidden">
-                <label for="CodigoDisco">Codigo Disco:</label>
-                <input type="number" id="CodigoDisco" name="Codigo Disco" required />
+            <table id="tabela-disco" class="db-table">
+                <!-- Conteúdo da tabela Discos será inserido aqui -->
+            </table>
+            <button class="toggleForm" data-form="discoForm">Mostrar Formulário de Disco</button>
+            <form id="discoForm" class="formContent hidden">
+                <label for="inputCodigoAutor">Código de Registro:</label>
+                <input type="number" id="inputCodigoAutor" name="CodigoAutor" required />
 
-                <label for="Codigo Autor">Codigo de Registro:</label>
-                <input type="number" id="CodigoAutor" name="numeroRegistro" required />
-                
-                <label for="Codigo Produtor">Codigo de Produtor:</label>
-                <input type="number" id="CodigoProdutor" name="Codigo de Produtor" required />
+                <label for="inputCodigoProdutor">Código de Produtor:</label>
+                <input type="number" id="inputCodigoProdutor" name="CodigoProdutor" required />
 
-                <label for="codigoLocalGravacao">codigo Local Gravacao:</label>
-                <input type="number" id="codigoLocalGravacao" name="codigo Local Gravacao" required />
+                <label for="inputCodigoLocalGravacao">Código Local Gravação:</label>
+                <input
+                    type="number"
+                    id="inputCodigoLocalGravacao"
+                    name="codigoLocalGravacao"
+                    required
+                />
 
-                <label for="DataGravacao">Data Gravacao</label>
-                <input type="date" id="DataGravacao" name="Data Gravacao" required />
+                <label for="inputDataGravacao">Data Gravação:</label>
+                <input type="date" id="inputDataGravacao" name="DataGravacao" required />
 
-                <label for="DiscoTitulo">Titulo do Disco </label>
-                <input type="text" id="DiscoTitulo" name="TituloDisco  " required />
+                <label for="inputDiscoTitulo">Título do Disco:</label>
+                <input type="text" id="inputDiscoTitulo" name="DiscoTitulo" required />
 
                 <button type="submit">Adicionar Disco</button>
             </form>
-
-            
         </section>
 
         <section id="endereco">
             <h2>Endereço</h2>
-             <!-- Lista de endereços do banco de dados -->
-             <ul>
-                <li>Endereço 1</li>
-                <li>Endereço 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
-            <button id="toggleEnderecoForm">Mostrar Formulário de Endereco</button>
-            <!-- Formulário para adicionar novo estúdio -->
-            <form id="EnderecoForm" class="hidden">
-                <label for="codigoEndereco">Código Endereço:</label>
-                <input type="number" id="codigoEndereco" name="codigoEndereco" required />
+            <table id="tabela-endereco" class="db-table">
+                <!-- Conteúdo da tabela Endereços será inserido aqui -->
+            </table>
+            <button class="toggleForm" data-form="enderecoForm">
+                Mostrar Formulário de Endereço
+            </button>
+            <form id="enderecoForm" class="formContent hidden">
+                <label for="inputNumeroRua">Número da Rua:</label>
+                <input type="text" id="inputNumeroRua" name="NumeroRua" required />
 
-                <label for="numeroRua">Número da Rua:</label>
-                <input type="text" id="numeroRua" name="numeroRua" required />
+                <label for="inputNumeroCasa">Número Casa:</label>
+                <input type="number" id="inputNumeroCasa" name="NumeroCasa" required />
 
-                <label for="numeroCasa">Número Casa:</label>
-                <input type="number" id="numeroCasa" name="numeroCasa" required />
+                <label for="inputNomeBairro">Nome Bairro:</label>
+                <input type="text" id="inputNomeBairro" name="NomeBairro" required />
 
-                <label for="nomeBairro">Nome Bairro:</label>
-                <input type="text" id="nomeBairro" name="nomeBairro" required />
+                <label for="inputNomeCidade">Nome Cidade:</label>
+                <input type="text" id="inputNomeCidade" name="NomeCidade" required />
 
-                <label for="nomeCidade">Nome Cidade:</label>
-                <input type="text" id="nomeCidade" name="nomeCidade" required />
+                <label for="inputNomeEstado">Nome Estado:</label>
+                <input type="text" id="inputNomeEstado" name="NomeEstado" required />
 
-                <label for="nomeEstado">Nome Estado:</label>
-                <input type="text" id="nomeEstado" name="nomeEstado" required />
+                <label for="inputNomePais">Nome País:</label>
+                <input type="text" id="inputNomePais" name="NomePais" required />
 
-                <label for="nomePais">Nome Pais:</label>
-                <input type="text" id="nomePais" name="nomePais" required />
-
-                <label for="telefoneContato">Telefone Contato:</label>
-                <input type="text" id="telefoneContato" name="telefoneContato" required />
+                <label for="inputTelefoneContato">Telefone Contato:</label>
+                <input type="text" id="inputTelefoneContato" name="TelefoneContato" required />
 
                 <button type="submit">Adicionar Endereço</button>
             </form>
-
-           
         </section>
 
         <section id="instrumento">
             <h2>Instrumento</h2>
-            <!-- Lista de instrumentos do banco de dados -->
-            <ul>
-                <li>Instrumento 1</li>
-                <li>Instrumento 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
-            <!-- Botão para mostrar/ocultar formulário de Studio -->
-            <button id="toggleInstrumentoForm">Mostrar Formulário de Instrumento</button>
-            <!-- Formulário para adicionar novo estúdio -->
-            <form id="InstrumentoForm" class="hidden">
-            <!-- Formulário para adicionar novo instrumento -->
-            
-                <label for="codigoInstrumento">Código Instrumento:</label>
-                <input type="number" id="codigoInstrumento" name="codigoInstrumento" required />
+            <table id="tabela-instrumento" class="db-table">
+                <!-- Conteúdo da tabela Instrumentos será inserido aqui -->
+            </table>
+            <button class="toggleForm" data-form="InstrumentoForm">
+                Mostrar Formulário de Instrumento
+            </button>
+            <form id="InstrumentoForm" class="formContent hidden">
+                <label for="inputCodigoEstudioInstrumento">Código Estúdio:</label>
+                <input
+                    type="number"
+                    id="inputCodigoEstudioInstrumento"
+                    name="codigoEstudioInstrumento"
+                    required
+                />
 
-                <label for="codigoEstudioInstrumento">Código Estúdio:</label>
-                <input type="number" id="codigoEstudioInstrumento" name="codigoEstudioInstrumento" required/>
+                <label for="inputNumeroInstrumento">Número Instrumento:</label>
+                <input type="text" id="inputNumeroInstrumento" name="numeroInstrumento" required />
 
-                <label for="numeroInstrumento">Número Instrumento:</label>
-                <input type="text" id="numeroInstrumento" name="numeroInstrumento" required />
+                <label for="inputTipoInstrumento">Tipo Instrumento:</label>
+                <input type="text" id="inputTipoInstrumento" name="tipoInstrumento" required />
 
-                <label for="tipoInstrumento">Tipo Instrumento:</label>
-                <input type="text" id="tipoInstrumento" name="tipoInstrumento" required />
-
-                <label for="marcaInstrumento">Nome da Marca:</label>
-                <input type="text" id="marcaInstrumento" name="marcaInstrumento" required />
+                <label for="inputMarcaInstrumento">Nome da Marca:</label>
+                <input type="text" id="inputMarcaInstrumento" name="marcaInstrumento" required />
 
                 <button type="submit">Adicionar Instrumento</button>
             </form>
-
-            
         </section>
 
         <section id="musica">
-            <h2>Musica</h2>
-            <!-- Lista de músicas do banco de dados -->
-            <ul>
-                <li>Música 1</li>
-                <li>Música 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
-            <button id="toggleMusicaForm">Mostrar Formulário de Musica</button>
-            <!-- Formulário para adicionar novo estúdio -->
-            <form id="MusicaForm" class="hidden">
-            
-            <!-- Formulário para adicionar nova música -->
-            
-                <label for="codigoMusica">Código Música:</label>
-                <input type="number" id="codigoMusica" name="codigo Musica" required />
+            <h2>Música</h2>
+            <table id="tabela-musica" class="db-table">
+                <!-- Conteúdo da tabela Músicas será inserido aqui -->
+            </table>
+            <button class="toggleForm" data-form="MusicaForm">Mostrar Formulário de Música</button>
+            <form id="MusicaForm" class="formContent hidden">
+                <label for="inputTituloMusica">Título da Música:</label>
+                <input type="text" id="inputTituloMusica" name="tituloMusica" required />
 
-                <label for="tituloDiscoMusica">Título do Disco:</label>
-                <input type="text" id="tituloDiscoMusica" name="titulo Disco Musica" required />
+                <label for="inputGeneroMusica">Gênero Música:</label>
+                <input type="text" id="inputGeneroMusica" name="generoMusica" required />
 
-                <label for="GeneroMusica">Genero Musica:</label>
-                <input type="number" id="GeneroMusica" name="Genero Musica" required />
+                <label for="inputDuracaoMusica">Duração (em segundos):</label>
+                <input type="number" id="inputDuracaoMusica" name="duracaoMusica" required />
 
-                <label for="duracaoMusica">Tempo de Duração:</label>
-                <input type="number" id="duracaoMusica" name="duracao Musica" required />
-                
-                <label for="formatoArquivo">Formato do Arquivo:</label>
-                <input type="text" id="formatoArquivo" name="formato Arquivo" required />
+                <label for="inputFormatoArquivo">Formato do Arquivo:</label>
+                <input type="text" id="inputFormatoArquivo" name="formatoArquivo" required />
 
                 <button type="submit">Adicionar Música</button>
             </form>
-
-            
         </section>
 
         <section id="produtor">
             <h2>Produtor</h2>
-            <ul>
-                <li>Produtor 1</li>
-                <li>Produtor 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
-                <!-- Botão para mostrar/ocultar formulário de Studio -->
-            <button id="toggleProdutorForm">Mostrar Formulário de produtor</button>
-            <!-- Formulário para adicionar novo estúdio -->
-            <form id="produtorForm" class="hidden">
-                <label for="codigoProdutor">Código Produtor:</label>
-                <input type="number" id="codigoProdutor" name="codigoProdutor" required />
+            <table id="tabela-produtor" class="db-table">
+                <!-- Conteúdo da tabela Produtores será inserido aqui -->
+            </table>
+            <button class="toggleForm" data-form="produtorForm">
+                Mostrar Formulário de Produtor
+            </button>
+            <form id="produtorForm" class="formContent hidden">
+                <label for="inputCodigoEnderecoProdutor">Código Endereço:</label>
+                <input
+                    type="number"
+                    id="inputCodigoEnderecoProdutor"
+                    name="codigoEnderecoProdutor"
+                    required
+                />
 
-                <label for="codigoEnderecoProdutor">Código Endereço:</label>
-                <input type="number" id="codigoEnderecoProdutor" name="codigoEnderecoProdutor" required />
+                <label for="inputNomeProdutor">Nome Produtor:</label>
+                <input type="text" id="inputNomeProdutor" name="NomeProdutor" required />
 
-                <label for="NomeProdutor">Nome Produtor:</label>
-                <input type="text" id="NomeProdutor" name="Nome Produtor" required />
-
-                <label for="NomeEmpresa">Nome Empresa:</label>
-                <input type="text" id="NomeEmpresa" name="Nome Empresa" required />
+                <label for="inputNomeEmpresa">Nome Empresa:</label>
+                <input type="text" id="inputNomeEmpresa" name="NomeEmpresa" required />
 
                 <button type="submit">Adicionar Produtor</button>
             </form>
-
-            <!-- Lista de produtores do banco de dados -->
-            
         </section>
 
-        <section id="studio">
-            <h2>Studio</h2>
-            <!-- Lista de estúdios do banco de dados -->
-            <ul>
-                <li>Studio 1</li>
-                <li>Studio 2</li>
-                <!-- Adicione mais itens conforme necessário -->
-            </ul>
-            
-            <!-- Botão para mostrar/ocultar formulário de Studio -->
-            <button id="toggleStudioForm">Mostrar Formulário de Studio</button>
-            <!-- Formulário para adicionar novo estúdio -->
-            <form id="studioForm" class="hidden">
-                <label for="codigoStudio">Código Studio:</label>
-                <input type="number" id="codigoStudio" name="codigoStudio" required />
+        <section id="estudio">
+            <h2>Estúdios</h2>
+            <table id="tabela-estudio" class="db-table">
+                <!-- Conteúdo da tabela Estúdios será inserido aqui -->
+            </table>
+            <button class="toggleForm" data-form="estudioForm">
+                Mostrar Formulário de Estúdio
+            </button>
+            <form id="estudioForm" class="formContent hidden">
+                <label for="inputCodigoEnderecoEstudio">Código Endereço:</label>
+                <input
+                    type="number"
+                    id="inputCodigoEnderecoEstudio"
+                    name="codigoEnderecoEstudio"
+                    required
+                />
 
-                <label for="codigoEnderecoStudio">Código Endereço:</label>
-                <input type="number" id="codigoEnderecoStudio" name="codigo Endereco Studio" required />
+                <label for="inputNomeEstudio">Nome do Estúdio:</label>
+                <input type="text" id="inputNomeEstudio" name="nomeEstudio" required />
 
-                <label for="Nome Studio">Número Studio:</label>
-                <input type="text" id="numeroStudio" name="numeroStudio" required />
-
-                <button id="toggleStudioForm">Mostrar/Esconder Formulário de Studio</button>
-
+                <button type="submit">Adicionar Estúdio</button>
             </form>
-
-            
         </section>
 
         <script src="front.js"></script>

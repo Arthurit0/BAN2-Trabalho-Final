@@ -53,8 +53,8 @@ export class Musico extends Autor {
         return this._cdEndereco;
     }
 
-    public set cdEndereco(cdEnd: number) {
-        this._cdEndereco = cdEnd;
+    public set cdEndereco(cdEndereco: number) {
+        this._cdEndereco = cdEndereco;
     }
 
     public get nmMusico(): string | undefined {
@@ -80,7 +80,7 @@ export class Musico extends Autor {
     public static fromPostgresSql(res: any): Musico {
         const musico = new Musico(res.cd_autor);
         musico._nrReg = res.nr_reg;
-        musico._cdEndereco = res.cd_end;
+        musico._cdEndereco = res.cd_endereco;
         musico._nmMusico = res.nm_musico;
         musico._nmArtistico = res.nm_artistico;
         return musico;

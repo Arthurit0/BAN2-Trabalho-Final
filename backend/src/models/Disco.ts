@@ -1,17 +1,16 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export default class Disco {
     private _cdDisco!: number;
     private _cdAutor!: number;
-    private _cdProdutor!: number;
     private _cdLocalGravacao?: number;
-    private _dtGrav?: Date;
+    private _dtGrav?: Date | string;
     private _dsTitulo?: string;
 
     // constructor(
     //     cdDisco: number,
     //     cdAutor: number,
-    //     cdProdutor: number,
     //     cdLocalGravacao?: number,
     //     dtGrav?: Date,
     //     fmtGrav?: string,
@@ -19,7 +18,6 @@ export default class Disco {
     // ) {
     //     this._cdDisco = cdDisco;
     //     this._cdAutor = cdAutor;
-    //     this._cdProdutor = cdProdutor;
     //     this._cdLocalGravacao = cdLocalGravacao;
     //     this._dtGrav = dtGrav;
     //     this._dsTitulo = dsTitulo;
@@ -41,14 +39,6 @@ export default class Disco {
         this._cdAutor = cdAutor;
     }
 
-    public get cdProdutor(): number {
-        return this._cdProdutor;
-    }
-
-    public set cdProdutor(cdProdutor: number) {
-        this._cdProdutor = cdProdutor;
-    }
-
     public get cdLocalGravacao(): number | undefined {
         return this._cdLocalGravacao;
     }
@@ -57,11 +47,11 @@ export default class Disco {
         this._cdLocalGravacao = cdLocalGravacao;
     }
 
-    public get dtGrav(): Date | undefined {
+    public get dtGrav(): Date | string | undefined {
         return this._dtGrav;
     }
 
-    public set dtGrav(dtGrav: Date) {
+    public set dtGrav(dtGrav: Date | string) {
         this._dtGrav = dtGrav;
     }
 
@@ -81,9 +71,8 @@ export default class Disco {
         const disco = new this();
         disco._cdDisco = res.cd_disco;
         disco._cdAutor = res.cd_autor;
-        disco._cdProdutor = res.cd_produtor;
         disco._cdLocalGravacao = res.cd_local_gravacao;
-        disco._dtGrav = res.dt_grav;
+        disco._dtGrav = moment(res.dt_grav).format('DD/MM/YYYY');
         disco._dsTitulo = res.ds_titulo;
         return disco;
     }

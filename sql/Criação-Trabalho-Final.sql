@@ -58,14 +58,6 @@ CREATE TABLE autores_da_musica(
     CONSTRAINT musica_fk FOREIGN KEY (cd_musica) REFERENCES musicas(cd_musica) ON DELETE CASCADE
 );
 
-CREATE TABLE produtores(
-    cd_produtor serial PRIMARY KEY,
-    cd_endereco int NOT NULL,
-    nm_produtor varchar(100) NOT NULL,
-    nm_empresa varchar(100),
-    CONSTRAINT endereco_fk FOREIGN KEY (cd_endereco) REFERENCES enderecos(cd_endereco) ON DELETE SET NULL
-);
-
 CREATE TABLE estudios(
     cd_estudio serial PRIMARY KEY,
     cd_endereco int NOT NULL,
@@ -76,12 +68,10 @@ CREATE TABLE estudios(
 CREATE TABLE discos(
     cd_disco serial PRIMARY KEY,
     cd_autor int NOT NULL,
-    cd_produtor int NULL,
     cd_local_gravacao int,
     dt_grav date NOT NULL,
     ds_titulo varchar(100) NOT NULL,
     CONSTRAINT autor_fk FOREIGN KEY (cd_autor) REFERENCES autores(cd_autor) ON DELETE CASCADE,
-    CONSTRAINT produtor_fk FOREIGN KEY (cd_produtor) REFERENCES produtores(cd_produtor) ON DELETE SET NULL,
     CONSTRAINT local_gravacao_fk FOREIGN KEY (cd_local_gravacao) REFERENCES estudios(cd_estudio) ON DELETE SET NULL
 );
 
@@ -164,19 +154,12 @@ INSERT INTO autores_da_musica (cd_autor, cd_musica) VALUES
 (3, 3),
 (4, 4);
 
-INSERT INTO produtores (cd_endereco, nm_produtor, nm_empresa) VALUES
-(1, 'Produtor M', 'Empresa N'),
-(2, 'Produtor O', 'Empresa P'),
-(3, 'Produtor Q', 'Empresa R'),
-(4, 'Produtor S', 'Empresa T');
-
 INSERT INTO estudios (cd_endereco, nm_estudio) VALUES
 (1, 'Estudio U'),
 (2, 'Estudio V'),
 (3, 'Estudio W'),
 (4, 'Estudio X');
 
-INSERT INTO discos (cd_autor, cd_produtor, cd_local_gravacao, dt_grav, ds_titulo) VALUES
 (1, 1, 1, '2022-01-01', 'Disco Y'),
 (2, 2, 2, '2022-02-02', 'Disco Z'),
 (3, 3, 3, '2022-03-03', 'Disco AA'),

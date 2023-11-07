@@ -98,7 +98,7 @@ autorRouter.post('/bandas', async (req, res) => {
         const bandaData = req.body;
         const newBanda = new Banda(await autorPersistence.newCdAutor());
         newBanda.nmBanda = bandaData.nmBanda;
-        newBanda.dtFormacao = bandaData.dtFormacao; // Ajuste de acordo com o formato esperado, se necessário
+        newBanda.dtFormacao = bandaData.dtFormacao;
 
         const cdBanda = await autorPersistence.insertBanda(newBanda);
 

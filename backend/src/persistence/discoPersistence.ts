@@ -25,14 +25,8 @@ export default class discoPersistence {
     public static async insertDisco(disco: Disco): Promise<number> {
         try {
             const result = await conn.query(
-                'INSERT INTO DISCOS (CD_AUTOR, CD_PRODUTOR, CD_LOCAL_GRAVACAO, DT_GRAV, DS_TITULO) VALUES ($1, $2, $3, $4, $5) RETURNING CD_DISCO',
-                [
-                    disco.cdAutor,
-                    disco.cdProdutor,
-                    disco.cdLocalGravacao,
-                    disco.dtGrav,
-                    disco.dsTitulo,
-                ]
+                'INSERT INTO DISCOS (CD_AUTOR, CD_LOCAL_GRAVACAO, DT_GRAV, DS_TITULO) VALUES ($1, $2, $3, $4) RETURNING CD_DISCO',
+                [disco.cdAutor, disco.cdLocalGravacao, disco.dtGrav, disco.dsTitulo],
             );
 
             const cdDisco = result.rows[0].cd_disco;
@@ -50,15 +44,8 @@ export default class discoPersistence {
 
         try {
             await conn.query(
-                'UPDATE DISCOS SET CD_AUTOR = $1, CD_PRODUTOR = $2, CD_LOCAL_GRAVACAO = $3, DT_GRAV = $4, DS_TITULO = $5 WHERE CD_DISCO = $6',
-                [
-                    disco.cdAutor,
-                    disco.cdProdutor,
-                    disco.cdLocalGravacao,
-                    disco.dtGrav,
-                    disco.dsTitulo,
-                    disco.cdDisco,
-                ]
+                'UPDATE DISCOS SET CD_AUTOR = $1, CD_LOCAL_GRAVACAO = $2, DT_GRAV = $3, DS_TITULO = $4 WHERE CD_DISCO = $5',
+                [disco.cdAutor, disco.cdLocalGravacao, disco.dtGrav, disco.dsTitulo, disco.cdDisco],
             );
 
             return `Disco com código ${disco.cdDisco} alterado com sucesso!`;

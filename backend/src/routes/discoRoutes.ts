@@ -33,11 +33,11 @@ discoRouter.get('/discos/:cdDisco', async (req, res) => {
 
 // Inserir um novo disco
 discoRouter.post('/discos', async (req, res) => {
+    console.log();
     try {
         const discoData = req.body;
         const newDisco = new Disco();
         newDisco.cdAutor = discoData.cdAutor;
-        newDisco.cdProdutor = discoData.cdProdutor;
         newDisco.cdLocalGravacao = discoData.cdLocalGravacao;
         newDisco.dtGrav = discoData.dtGrav;
         newDisco.dsTitulo = discoData.dsTitulo;
@@ -59,7 +59,6 @@ discoRouter.put('/discos/:cdDisco', async (req, res) => {
         const discoUpdt = _.cloneDeep(discoOrig);
 
         discoUpdt.cdAutor = updtIfDiff(discoUpdt.cdAutor, updtData.cdAutor);
-        discoUpdt.cdProdutor = updtIfDiff(discoUpdt.cdProdutor, updtData.cdProdutor);
         discoUpdt.cdLocalGravacao = updtIfDiff(discoUpdt.cdLocalGravacao, updtData.cdLocalGravacao);
         discoUpdt.dtGrav = updtIfDiff(discoUpdt.dtGrav, updtData.dtGrav);
         discoUpdt.dsTitulo = updtIfDiff(discoUpdt.dsTitulo, updtData.dsTitulo);

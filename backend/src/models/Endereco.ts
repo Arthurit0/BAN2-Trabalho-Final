@@ -107,6 +107,7 @@ export default class Endereco {
         endereco._nmCidade = res.nm_cidade;
         endereco._nmEstado = res.nm_estado;
         endereco._nmPais = res.nm_pais;
+        endereco._dsTelefone = res.ds_telefone;
 
         return endereco;
     }

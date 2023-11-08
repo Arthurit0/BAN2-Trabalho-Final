@@ -54,6 +54,24 @@ button {
     cursor: pointer;
 }
 
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+}
+
+option {
+    padding: 8px;
+    background-color: #fff;
+    border: none;
+}
+
 .hidden {
     display: none;
 }

@@ -12,10 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
             section.style.display = 'block';
 
             // Verifica qual aba foi clicada e chama a função de fetch correspondente
-            if (targetId === 'musico') {
+            if (targetId === 'autores') {
+                fetchAutores();
+            } else if (targetId === 'musico') {
                 fetchMusicos();
             } else if (targetId === 'banda') {
                 fetchBandas();
+            } else if (targetId === 'musicos-in-banda') {
+                fetchMusicosInBanda();
             } else if (targetId === 'disco') {
                 fetchDiscos();
             } else if (targetId === 'endereco') {
@@ -30,17 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Abas Autor
-    function showTab(tabName) {
-        const tabs = document.querySelectorAll('#autor .tabcontent');
-        tabs.forEach(tab => tab.style.display = 'none');
-        document.getElementById(tabName).style.display = 'block';
-    }
-
-    // document.getElementById('botao-todos').addEventListener('click', () => { showTab('todos') });
-    document.getElementById('botao-musico').addEventListener('click', () => { showTab('musico'); fetchMusicos() });
-    document.getElementById('botao-banda').addEventListener('click', () => { showTab('banda'); fetchBandas() });
-
     // Toogle Forms
     const toggleFormButtons = document.querySelectorAll('.toggleForm');
     toggleFormButtons.forEach(button => {
@@ -50,6 +43,33 @@ document.addEventListener('DOMContentLoaded', function () {
             form.classList.toggle('hidden');
             this.textContent = form.classList.contains('hidden') ? 'Mostrar Formulário' : 'Ocultar Formulário';
         });
+    });
+
+    // Abas
+    function showTab(sectionName, tabName) {
+        const tabs = document.querySelectorAll(`${sectionName} .tabcontent`);
+        tabs.forEach(tab => tab.style.display = 'none');
+
+        const activeTab = document.querySelector(`${sectionName} #${tabName}`);
+        if (activeTab) {
+            activeTab.style.display = 'block';
+        }
+    }
+
+    // Abas carregadas ao clicar nas seções
+    showTab('#autor', 'autores');
+    fetchAutores();
+
+
+    // Funções ao abrir aba:
+    document.getElementById('botao-autores').addEventListener('click', () => { showTab('#autor', 'autores'); fetchAutores() });
+    document.getElementById('botao-musico').addEventListener('click', () => { showTab('#autor', 'musico'); fetchMusicos() });
+    document.getElementById('botao-banda').addEventListener('click', () => { showTab('#autor', 'banda'); fetchBandas() });
+    document.getElementById('botao-musicos-in-banda').addEventListener('click', () => {
+        showTab('#autor', 'musicos-in-banda');
+        fetchMusicosInBanda();
+        fetchMusicosParaSelecao();
+        fetchBandasParaSelecao();
     });
 
     // Musicos
@@ -160,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         enviarMusica(dadosMusica);
     });
 
-    // Musicas
+    // Estudios
     const estudioForm = document.getElementById('estudioForm');
 
     estudioForm.addEventListener('submit', function (e) {
@@ -176,9 +196,21 @@ document.addEventListener('DOMContentLoaded', function () {
         enviarEstudio(dadosEstudio);
     });
 
+    // MusicosInBanda
+    const musicosInBandaForm = document.getElementById('musicosInBandaForm');
 
-    // Inicialmente, mostrar apenas a tabela na seção Autor
-    showTab('musicos')
+    musicosInBandaForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(musicosInBandaForm);
+
+        const dadosMusicoInBanda = {
+            nrReg: formData.get('selectMusicoInBanda'),
+            cdBanda: formData.get('selectBandaForMusico'),
+        };
+
+        enviarMusicoInBanda(dadosMusicoInBanda);
+    });
 });
 
 function fetchMusicos() {
@@ -236,6 +268,60 @@ function fetchBandas() {
             });
         })
         .catch(error => console.error('Erro ao buscar bandas:', error));
+}
+
+function fetchAutores() {
+    axios.get('http://localhost:8080/autores')
+        .then(response => response.data)
+        .then(autores => {
+            const tabela = document.getElementById('tabela-autores');
+            tabela.innerHTML = '';
+
+            const header = tabela.createTHead();
+            const headerRow = header.insertRow();
+            const headers = ['Código Autor', 'Nm. Artista'];
+
+            headers.forEach(text => {
+                const cell = headerRow.insertCell();
+                cell.textContent = text;
+            });
+
+            const tbody = tabela.createTBody();
+
+            autores.forEach(autor => {
+                const linha = tbody.insertRow();
+                linha.insertCell(0).textContent = autor.cd_autor;
+                linha.insertCell(1).textContent = autor.nm_autor;
+            });
+        })
+        .catch(error => console.error('Erro ao buscar autores:', error));
+}
+
+function fetchMusicosInBanda() {
+    axios.get('http://localhost:8080/musicos-in-banda')
+        .then(response => response.data)
+        .then(musicosInBandas => {
+            const tabela = document.getElementById('tabela-musicos-in-banda');
+            tabela.innerHTML = '';
+
+            const header = tabela.createTHead();
+            const headerRow = header.insertRow();
+            const headers = ['Músico', 'Banda'];
+
+            headers.forEach(text => {
+                const cell = headerRow.insertCell();
+                cell.textContent = text;
+            });
+
+            const tbody = tabela.createTBody();
+
+            musicosInBandas.forEach(musicoInBanda => {
+                const linha = tbody.insertRow();
+                linha.insertCell(0).textContent = musicoInBanda.nm_artistico || musicoInBanda.nm_musico;
+                linha.insertCell(1).textContent = musicoInBanda.nm_banda;
+            });
+        })
+        .catch(error => console.error('Erro ao buscar musicos em banda:', error));
 }
 
 function fetchDiscos() {
@@ -391,7 +477,7 @@ function fetchEstudios() {
         .catch(error => console.error('Erro ao buscar intrumentos:', error));
 }
 
-async function enviarMusico(dadosMusico) {
+function enviarMusico(dadosMusico) {
     axios.post('http://localhost:8080/musicos', dadosMusico)
         .then(response => {
             fetchMusicos();
@@ -401,7 +487,7 @@ async function enviarMusico(dadosMusico) {
         });
 }
 
-async function enviarBanda(dadosBanda) {
+function enviarBanda(dadosBanda) {
     axios.post('http://localhost:8080/bandas', dadosBanda)
         .then(response => {
             fetchBandas();
@@ -411,7 +497,7 @@ async function enviarBanda(dadosBanda) {
         });
 }
 
-async function enviarDisco(dadosDisco) {
+function enviarDisco(dadosDisco) {
     axios.post('http://localhost:8080/discos', dadosDisco)
         .then(response => {
             fetchDiscos();
@@ -421,7 +507,7 @@ async function enviarDisco(dadosDisco) {
         });
 }
 
-async function enviarEndereco(dadosEndereco) {
+function enviarEndereco(dadosEndereco) {
     axios.post('http://localhost:8080/enderecos', dadosEndereco)
         .then(response => {
             fetchEnderecos();
@@ -431,7 +517,7 @@ async function enviarEndereco(dadosEndereco) {
         });
 }
 
-async function enviarInstrumento(dadosInstrumento) {
+function enviarInstrumento(dadosInstrumento) {
     axios.post('http://localhost:8080/instrumentos', dadosInstrumento)
         .then(response => {
             fetchInstrumentos();
@@ -441,7 +527,7 @@ async function enviarInstrumento(dadosInstrumento) {
         });
 }
 
-async function enviarMusica(dadosMusica) {
+function enviarMusica(dadosMusica) {
     axios.post('http://localhost:8080/musicas', dadosMusica)
         .then(response => {
             fetchMusicas();
@@ -451,7 +537,7 @@ async function enviarMusica(dadosMusica) {
         });
 }
 
-async function enviarEstudio(dadosEstudio) {
+function enviarEstudio(dadosEstudio) {
     axios.post('http://localhost:8080/estudios', dadosEstudio)
         .then(response => {
             fetchEstudios();
@@ -461,3 +547,44 @@ async function enviarEstudio(dadosEstudio) {
         });
 }
 
+function enviarMusicoInBanda(dadosMusicoInBanda) {
+    axios.post('http://localhost:8080/musico-in-banda/', dadosMusicoInBanda).then(response => {
+        fetchMusicosInBanda();
+    }).catch(error => {
+        console.error('Erro:', error);
+    });
+}
+
+function fetchMusicosParaSelecao() {
+    axios.get('http://localhost:8080/musicos')
+        .then(response => response.data)
+        .then(musicos => {
+            const selectMusico = document.getElementById('selectMusico');
+            selectMusico.innerHTML = '';
+
+            musicos.forEach(musico => {
+                const option = document.createElement('option');
+                option.value = musico._nrReg;
+                option.textContent = musico._nmMusico;
+                selectMusico.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao buscar musicos:', error));
+}
+
+function fetchBandasParaSelecao() {
+    axios.get('http://localhost:8080/bandas')
+        .then(response => response.data)
+        .then(bandas => {
+            const selectBanda = document.getElementById('selectBanda');
+            selectBanda.innerHTML = '';
+
+            bandas.forEach(banda => {
+                const option = document.createElement('option');
+                option.value = banda._cdBanda;
+                option.textContent = banda._nmBanda;
+                selectBanda.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao buscar musicos:', error));
+}

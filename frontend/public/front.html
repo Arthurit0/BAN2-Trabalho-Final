@@ -23,14 +23,15 @@
         <section id="autor">
             <h2>Autor</h2>
             <div class="tabs">
-                <!-- <button class="tablinks" id="botao-todos">Todos</button> -->
+                <button class="tablinks" id="botao-autores">Todos</button>
                 <button class="tablinks" id="botao-musico">Músico</button>
                 <button class="tablinks" id="botao-banda">Banda</button>
+                <button class="tablinks" id="botao-musicos-in-banda">Músicos em Banda</button>
             </div>
 
-            <div id="todos" class="tabcontent">
-                <table id="tabela-todos" class="db-table">
-                    <!-- Conteúdo da tabela Todos será inserido aqui -->
+            <div id="autores" class="tabcontent">
+                <table id="tabela-autores" class="db-table">
+                    <!-- Conteúdo de Autores será inserido aqui -->
                 </table>
             </div>
 
@@ -71,6 +72,25 @@
                     <input type="date" id="dtFormacao" name="inputDataFormacao" required />
 
                     <button type="submit">Adicionar Banda</button>
+                </form>
+            </div>
+
+            <div id="musicos-in-banda" class="tabcontent">
+                <table id="tabela-musicos-in-banda" class="db-table"></table>
+
+                <button class="toggleForm" data-form="musicosInBandaForm">
+                    Inserir Músico em Banda
+                </button>
+                <form id="musicosInBandaForm" class="formContent hidden">
+                    <label for="selectMusicoInBanda">Músico:</label>
+                    <select id="selectMusico" name="selectMusicoInBanda"></select>
+
+                    <label for="selectBandaForMusico">Banda:</label>
+                    <select id="selectBanda" name="selectBandaForMusico">
+                        <!-- Opções de bandas serão inseridas aqui -->
+                    </select>
+
+                    <button type="submit">Relacionar</button>
                 </form>
             </div>
         </section>

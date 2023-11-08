@@ -63,6 +63,24 @@ autorRouter.post('/musicos', async (req, res) => {
     }
 });
 
+autorRouter.get('/autores', async (req, res) => {
+    try {
+        const allAutores = await autorPersistence.selectAllAutores();
+        res.json(allAutores);
+    } catch (err) {
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+    }
+});
+
+autorRouter.get('/musicos-in-banda', async (req, res) => {
+    try {
+        const musicosInBanda = await autorPersistence.selectAllMusicosInBanda();
+        res.json(musicosInBanda);
+    } catch (err) {
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+    }
+});
+
 autorRouter.put('/musicos/:nrReg', async (req, res) => {
     try {
         const nrReg = parseInt(req.params.nrReg);
@@ -136,10 +154,10 @@ autorRouter.delete('/bandas/:cdBanda', async (req, res) => {
     }
 });
 
-autorRouter.post('/musicos/:nrReg/bandas/:cdBanda', async (req, res) => {
+autorRouter.post('/musico-in-banda', async (req, res) => {
     try {
-        const nrReg = parseInt(req.params.nrReg);
-        const cdBanda = parseInt(req.params.cdBanda);
+        const musicoInBandaData = req.body;
+        const { nrReg, cdBanda } = musicoInBandaData;
 
         const message = await autorPersistence.assignMusicoInBanda(nrReg, cdBanda);
 

@@ -40,11 +40,32 @@ export default class autorPersistence {
         return banda;
     }
 
-    public static async selectAllMusicosFromBanda(cdBanda: number): Promise<Musico[]> {
+    public static async selectAllAutores(): Promise<any[]> {
+        const allAutores = conn
+            .query(
+                `SELECT CD_AUTOR, NM_MUSICO AS NM_AUTOR FROM MUSICOS UNION
+                                       SELECT CD_AUTOR, NM_BANDA AS NM_AUTOR FROM BANDAS ORDER BY CD_AUTOR;`,
+            )
+            .then((res) => res.rows);
+
+        return allAutores;
+    }
+
+    public static async selectAllMusicosInBanda(): Promise<any[]> {
+        const musicosInBanda = conn
+            .query(
+                `SELECT NM_ARTISTICO, NM_MUSICO, NM_BANDA FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) LEFT JOIN BANDAS USING(CD_BANDA)`,
+            )
+            .then((res) => res.rows);
+
+        return musicosInBanda;
+    }
+
+    public static async selectMusicosFromBanda(cdBanda: number): Promise<Musico[]> {
         const musicosDaBanda = await conn
             .query(
                 'SELECT * FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) WHERE CD_BANDA = $1',
-                [cdBanda]
+                [cdBanda],
             )
             .then((res) => {
                 return res.rows.map((row: any) => Musico.fromPostgresSql(row));
@@ -73,7 +94,7 @@ export default class autorPersistence {
         return await conn
             .query(
                 'SELECT * FROM AUTORES LEFT JOIN AUTORES_DA_MUSICA USING(CD_AUTOR) LEFT JOIN MUSICA USING CD_MUSICA = $1',
-                [cdMusica]
+                [cdMusica],
             )
             .then((res) => res.rows);
     }
@@ -82,7 +103,7 @@ export default class autorPersistence {
         try {
             const result = await conn.query(
                 'INSERT INTO MUSICOS (CD_AUTOR, CD_ENDERECO, NM_MUSICO, NM_ARTISTICO) VALUES ($1, $2, $3, $4) RETURNING NR_REG',
-                [musico.cdAutor, musico.cdEndereco, musico.nmMusico, musico.nmArtistico]
+                [musico.cdAutor, musico.cdEndereco, musico.nmMusico, musico.nmArtistico],
             );
 
             const nrReg = result.rows[0].nr_reg;
@@ -100,7 +121,7 @@ export default class autorPersistence {
                 cdBanda,
             ]);
 
-            return `Músico de código ${nrReg} entrou na banda ${cdBanda}`;
+            return `Músico de código ${nrReg} entrou na banda ${cdBanda}!`;
         } catch (err) {
             throw `Ocorreu um erro na inserção do músico na banda: ${err}`;
         }
@@ -118,7 +139,7 @@ export default class autorPersistence {
                     musico.nmMusico,
                     musico.nmArtistico,
                     musico.nrReg,
-                ]
+                ],
             );
 
             return `Músico com Nr. Reg ${musico.nrReg} alterado com sucesso!`;
@@ -148,7 +169,7 @@ export default class autorPersistence {
         try {
             const result = await conn.query(
                 'INSERT INTO BANDAS (CD_AUTOR, NM_BANDA, DT_FORMACAO) VALUES ($1, $2, $3) RETURNING CD_BANDA',
-                [banda.cdAutor, banda.nmBanda, banda.dtFormacao]
+                [banda.cdAutor, banda.nmBanda, banda.dtFormacao],
             );
             const cdBanda = result.rows[0].cd_banda;
 
@@ -164,7 +185,7 @@ export default class autorPersistence {
         try {
             await conn.query(
                 'UPDATE BANDAS SET NM_BANDA = $1, DT_FORMACAO = $2 WHERE CD_BANDA = $3',
-                [banda.nmBanda, banda.dtFormacao, banda.cdBanda]
+                [banda.nmBanda, banda.dtFormacao, banda.cdBanda],
             );
             return `Banda com código ${banda.cdBanda} alterada com sucesso!`;
         } catch (err) {

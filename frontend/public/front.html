@@ -41,13 +41,8 @@
                     Mostrar Formulário de Músico
                 </button>
                 <form id="musicoForm" class="formContent hidden">
-                    <label for="inputEnderecoMusico">Endereço:</label>
-                    <input
-                        type="number"
-                        id="cdEnderecoMusico"
-                        name="inputEnderecoMusico"
-                        required
-                    />
+                    <label for="selectEnderecoMusico">Endereço:</label>
+                    <select name="SelectEnderecoMusico" class="selectEndereco"></select>
 
                     <label for="inputNmMusico">Nome Musico:</label>
                     <input type="text" id="nmMusico" name="inputNmMusico" required />
@@ -83,10 +78,10 @@
                 </button>
                 <form id="musicosInBandaForm" class="formContent hidden">
                     <label for="selectMusicoInBanda">Músico:</label>
-                    <select id="selectMusico" name="selectMusicoInBanda"></select>
+                    <select class="selectMusico" name="selectMusicoInBanda"></select>
 
                     <label for="selectBandaForMusico">Banda:</label>
-                    <select id="selectBanda" name="selectBandaForMusico">
+                    <select class="selectBanda" name="selectBandaForMusico">
                         <!-- Opções de bandas serão inseridas aqui -->
                     </select>
 
@@ -102,16 +97,11 @@
             <button class="toggleForm" data-form="discoForm">Mostrar Formulário de Disco</button>
 
             <form id="discoForm" class="formContent hidden">
-                <label for="inputCodigoAutor">Código Autor:</label>
-                <input type="number" id="cdAutor" name="inputCodigoAutor" required />
+                <label for="selectAutorDisco">Autor:</label>
+                <select name="selectAutorDisco" class="selectAutor"></select>
 
-                <label for="inputCodigoLocalGravacao">Código Local Gravação:</label>
-                <input
-                    type="number"
-                    id="cdLocalGravacao"
-                    name="inputCodigoLocalGravacao"
-                    required
-                />
+                <label for="selectEstudioDisco">Local Gravação:</label>
+                <select name="selectEstudioDisco" class="selectEstudio"></select>
 
                 <label for="inputDataGravacao">Data Gravação:</label>
                 <input type="date" id="dtGravacao" name="inputDataGravacao" required />
@@ -121,6 +111,8 @@
 
                 <button type="submit">Adicionar Disco</button>
             </form>
+
+            </div>
         </section>
 
         <section id="endereco">
@@ -162,13 +154,8 @@
                 Mostrar Formulário de Instrumento
             </button>
             <form id="instrumentoForm" class="formContent hidden">
-                <label for="inputCodigoEstudioInstrumento">Código Estúdio:</label>
-                <input
-                    type="number"
-                    id="inputCodigoEstudioInstrumento"
-                    name="inputCodigoEstudioInstrumento"
-                    required
-                />
+                <label for="selectEstudioInstrumento">Estúdio:</label>
+                <select name="selectEstudioInstrumento" class="selectEstudio"></select>
 
                 <label for="inputNomeInstrumento">Nome Instrumento:</label>
                 <input type="text" id="inputNomeInstrumento" name="inputNomeInstrumento" required />
@@ -220,13 +207,8 @@
                 Mostrar Formulário de Estúdio
             </button>
             <form id="estudioForm" class="formContent hidden">
-                <label for="inputCodigoEnderecoEstudio">Código Endereço:</label>
-                <input
-                    type="number"
-                    id="inputCodigoEnderecoEstudio"
-                    name="inputCodigoEnderecoEstudio"
-                    required
-                />
+                <label for="SelectEnderecoMusico">Código Endereço:</label>
+                <select name="SelectEnderecoMusico" class="selectEndereco"></select>
 
                 <label for="inputNomeEstudio">Nome do Estúdio:</label>
                 <input type="text" id="inputNomeEstudio" name="inputNomeEstudio" required />

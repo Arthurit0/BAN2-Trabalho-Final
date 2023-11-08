@@ -54,7 +54,7 @@ export default class autorPersistence {
     public static async selectAllMusicosInBanda(): Promise<any[]> {
         const musicosInBanda = conn
             .query(
-                `SELECT NM_ARTISTICO, NM_MUSICO, NM_BANDA FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) LEFT JOIN BANDAS USING(CD_BANDA)`,
+                `SELECT DISTINCT NM_ARTISTICO, NM_MUSICO, NM_BANDA FROM MUSICOS_EM_BANDA  LEFT JOIN MUSICOS USING(NR_REG) LEFT JOIN BANDAS USING(CD_BANDA)`,
             )
             .then((res) => res.rows);
 

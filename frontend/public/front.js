@@ -22,13 +22,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 fetchMusicosInBanda();
             } else if (targetId === 'disco') {
                 fetchDiscos();
+                fetchAutoresParaSelecao();
+                fetchEstudiosParaSelecao();
             } else if (targetId === 'endereco') {
                 fetchEnderecos();
             } else if (targetId === 'instrumento') {
                 fetchInstrumentos();
+                fetchEstudiosParaSelecao();
             } else if (targetId === 'musica') {
                 fetchMusicas();
             } else if (targetId === 'estudio') {
+                fetchEnderecosParaSelecao();
                 fetchEstudios();
             }
         });
@@ -59,11 +63,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Abas carregadas ao clicar nas seções
     showTab('#autor', 'autores');
     fetchAutores();
+    showTab('#disco', 'discos');
 
 
     // Funções ao abrir aba:
     document.getElementById('botao-autores').addEventListener('click', () => { showTab('#autor', 'autores'); fetchAutores() });
-    document.getElementById('botao-musico').addEventListener('click', () => { showTab('#autor', 'musico'); fetchMusicos() });
+    document.getElementById('botao-musico').addEventListener('click', () => { showTab('#autor', 'musico'); fetchMusicos(); fetchEnderecosParaSelecao() });
     document.getElementById('botao-banda').addEventListener('click', () => { showTab('#autor', 'banda'); fetchBandas() });
     document.getElementById('botao-musicos-in-banda').addEventListener('click', () => {
         showTab('#autor', 'musicos-in-banda');
@@ -71,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchMusicosParaSelecao();
         fetchBandasParaSelecao();
     });
+
 
     // Musicos
     const musicoForm = document.getElementById('musicoForm');
@@ -81,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(musicoForm);
 
         const dadosMusico = {
-            cdEndereco: formData.get('inputEnderecoMusico'),
+            cdEndereco: formData.get('SelectEnderecoMusico'),
             nmMusico: formData.get('inputNmMusico'),
             nmArtistico: formData.get('inputNmArtistico')
         };
@@ -114,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(discoForm);
 
         const dadosDisco = {
-            cdAutor: formData.get('inputCodigoAutor'),
-            cdLocalGravacao: formData.get('inputCodigoLocalGravacao'),
+            cdAutor: formData.get('selectAutorDisco'),
+            cdLocalGravacao: formData.get('selectEstudioDisco'),
             dtGrav: formData.get('inputDataGravacao'),
             dsTitulo: formData.get('inputDiscoTitulo')
         };
@@ -153,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(instrumentoForm);
 
         const dadosInstrumento = {
-            cdEstudio: formData.get('inputCodigoEstudioInstrumento'),
+            cdEstudio: formData.get('selectEstudioInstrumento'),
             nmInstr: formData.get('inputNomeInstrumento'),
             tipInstr: formData.get('inputTipoInstrumento'),
             nmMarca: formData.get('inputMarcaInstrumento')
@@ -189,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(estudioForm);
 
         const dadosEstudio = {
-            cdEndereco: formData.get('inputCodigoEnderecoEstudio'),
+            cdEndereco: formData.get('SelectEnderecoMusico'),
             nmEstudio: formData.get('inputNomeEstudio')
         };
 
@@ -298,6 +304,7 @@ function fetchAutores() {
 }
 
 function fetchMusicosInBanda() {
+    console.log('teste')
     axios.get('http://localhost:8080/musicos-in-banda')
         .then(response => response.data)
         .then(musicosInBandas => {
@@ -559,15 +566,18 @@ function fetchMusicosParaSelecao() {
     axios.get('http://localhost:8080/musicos')
         .then(response => response.data)
         .then(musicos => {
-            const selectMusico = document.getElementById('selectMusico');
-            selectMusico.innerHTML = '';
+            const allSelects = document.querySelectorAll('.selectMusico');
 
-            musicos.forEach(musico => {
-                const option = document.createElement('option');
-                option.value = musico._nrReg;
-                option.textContent = musico._nmMusico;
-                selectMusico.appendChild(option);
-            });
+            allSelects.forEach((selectMusico) => {
+                selectMusico.innerHTML = '';
+
+                musicos.forEach(musico => {
+                    const option = document.createElement('option');
+                    option.value = musico._nrReg;
+                    option.textContent = musico._nmMusico;
+                    selectMusico.appendChild(option);
+                });
+            })
         })
         .catch(error => console.error('Erro ao buscar musicos:', error));
 }
@@ -576,15 +586,78 @@ function fetchBandasParaSelecao() {
     axios.get('http://localhost:8080/bandas')
         .then(response => response.data)
         .then(bandas => {
-            const selectBanda = document.getElementById('selectBanda');
-            selectBanda.innerHTML = '';
+            const allSelects = document.querySelectorAll('.selectBanda');
 
-            bandas.forEach(banda => {
-                const option = document.createElement('option');
-                option.value = banda._cdBanda;
-                option.textContent = banda._nmBanda;
-                selectBanda.appendChild(option);
-            });
+            allSelects.forEach((selectBanda) => {
+                selectBanda.innerHTML = '';
+
+                bandas.forEach(banda => {
+                    const option = document.createElement('option');
+                    option.value = banda._cdBanda;
+                    option.textContent = banda._nmBanda;
+                    selectBanda.appendChild(option);
+                });
+            })
         })
-        .catch(error => console.error('Erro ao buscar musicos:', error));
+        .catch(error => console.error('Erro ao buscar bandas:', error));
+}
+
+function fetchEnderecosParaSelecao() {
+    axios.get('http://localhost:8080/enderecos')
+        .then(response => response.data)
+        .then(enderecos => {
+            const allSelects = document.querySelectorAll('.selectEndereco');
+
+            allSelects.forEach((selectEndereco) => {
+                selectEndereco.innerHTML = '';
+
+                enderecos.forEach(endereco => {
+                    const option = document.createElement('option');
+                    option.value = endereco._cdEndereco;
+                    option.textContent = `${endereco._nmRua}, ${endereco._nrCasa} - ${endereco._nmCidade}, ${endereco._nmEstado} - ${endereco._nmPais}`;
+                    selectEndereco.appendChild(option);
+                });
+            })
+        })
+        .catch(error => console.error('Erro ao buscar enderecos:', error));
+}
+
+function fetchAutoresParaSelecao() {
+    axios.get('http://localhost:8080/autores')
+        .then(response => response.data)
+        .then(autores => {
+            const allSelects = document.querySelectorAll('.selectAutor');
+
+            allSelects.forEach((selectAutor) => {
+                selectAutor.innerHTML = '';
+
+                autores.forEach(autor => {
+                    const option = document.createElement('option');
+                    option.value = autor.cd_autor;
+                    option.textContent = autor.nm_autor;
+                    selectAutor.appendChild(option);
+                });
+            })
+        })
+        .catch(error => console.error('Erro ao buscar autores:', error));
+}
+
+function fetchEstudiosParaSelecao() {
+    axios.get('http://localhost:8080/estudios')
+        .then(response => response.data)
+        .then(estudios => {
+            const allSelects = document.querySelectorAll('.selectEstudio');
+
+            allSelects.forEach((selectEstudio) => {
+                selectEstudio.innerHTML = '';
+
+                estudios.forEach(estudio => {
+                    const option = document.createElement('option');
+                    option.value = estudio._cdEstudio;
+                    option.textContent = estudio._nmEstudio;
+                    selectEstudio.appendChild(option);
+                });
+            })
+        })
+        .catch(error => console.error('Erro ao buscar autores:', error));
 }

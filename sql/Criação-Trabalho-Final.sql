@@ -111,7 +111,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-
 INSERT INTO enderecos (nm_rua, nr_casa, nm_bairro, nm_cidade, nm_estado, nm_pais, ds_telefone) VALUES
 ('Rua A', 10, 'Bairro X', 'Cidade Y', 'Estado Z', 'País W', '12345678'),
 ('Avenida B', 20, 'Bairro X', 'Cidade Y', 'Estado Z', 'País W', '23456789'),
@@ -129,11 +128,16 @@ INSERT INTO musicos (cd_endereco, cd_autor, nm_musico, nm_artistico) VALUES
 (3, 3, 'Musico C', 'Artista C'),
 (4, 4, 'Musico D', 'Artista D');
 
+SELECT cria_autor();
+SELECT cria_autor();
+SELECT cria_autor();
+SELECT cria_autor();
+
 INSERT INTO bandas (cd_autor, nm_banda, dt_formacao) VALUES
-(1, 'Banda E', '2000-01-01'),
-(2, 'Banda F', '2001-02-02'),
-(3, 'Banda G', '2002-03-03'),
-(4, 'Banda H', '2003-04-04');
+(5, 'Banda E', '2000-01-01'),
+(6, 'Banda F', '2001-02-02'),
+(7, 'Banda G', '2002-03-03'),
+(8, 'Banda H', '2003-04-04');
 
 INSERT INTO musicos_em_banda (nr_reg, cd_banda) VALUES
 (1, 1),
@@ -160,10 +164,11 @@ INSERT INTO estudios (cd_endereco, nm_estudio) VALUES
 (3, 'Estudio W'),
 (4, 'Estudio X');
 
-(1, 1, 1, '2022-01-01', 'Disco Y'),
-(2, 2, 2, '2022-02-02', 'Disco Z'),
-(3, 3, 3, '2022-03-03', 'Disco AA'),
-(4, 4, 4, '2022-04-04', 'Disco BB');
+INSERT INTO discos (cd_autor, cd_local_gravacao, dt_grav, ds_titulo) VALUES
+(1, 1, '2022-01-01', 'Disco Y'),
+(2, 2, '2022-02-02', 'Disco Z'),
+(3, 3, '2022-03-03', 'Disco AA'),
+(4, 4, '2022-04-04', 'Disco BB');
 
 INSERT INTO musicas_em_disco (cd_disco, cd_musica) VALUES
 (1, 1),

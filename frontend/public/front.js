@@ -304,7 +304,6 @@ function fetchAutores() {
 }
 
 function fetchMusicosInBanda() {
-    console.log('teste')
     axios.get('http://localhost:8080/musicos-in-banda')
         .then(response => response.data)
         .then(musicosInBandas => {

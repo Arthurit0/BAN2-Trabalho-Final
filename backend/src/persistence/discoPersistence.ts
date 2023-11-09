@@ -66,12 +66,7 @@ export default class discoPersistence {
                 await conn.query('DELETE FROM DISCOS WHERE CD_DISCO = $1', [cdDisco]);
                 return `Deleção do disco com código ${cdDisco} bem sucedida.`;
             } catch (err: any) {
-                if (err.code === '23503') {
-                    // Código de erro do PostgreSQL para violação de chave estrangeira
-                    return `O disco com código ${cdDisco} não pode ser deletado porque existem músicas relacionadas a ele.`;
-                } else {
-                    throw `Ocorreu um erro na remoção do disco com código ${cdDisco}: ${err}`;
-                }
+                throw `Ocorreu um erro na remoção do disco com código ${cdDisco}: ${err}`;
             }
         }
     }

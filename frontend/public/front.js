@@ -77,145 +77,141 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchBandasParaSelecao();
     });
 
+    // Puxando formulários:
+    const musicoForm = document.getElementById('musicoForm');
+    const bandaForm = document.getElementById('bandaForm');
+    const discoForm = document.getElementById('discoForm');
+    const enderecoForm = document.getElementById('enderecoForm');
+    const instrumentoForm = document.getElementById('instrumentoForm');
+    const musicaForm = document.getElementById('musicaForm');
+    const estudioForm = document.getElementById('estudioForm');
+
+    const musicosInBandaForm = document.getElementById('musicosInBandaForm');
+
+    // Listeners para submit de cada formulário:
 
     // Musicos
-    const musicoForm = document.getElementById('musicoForm');
-
     musicoForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const formData = new FormData(musicoForm);
 
         const dadosMusico = {
-            cdEndereco: formData.get('SelectEnderecoMusico'),
-            nmMusico: formData.get('inputNmMusico'),
-            nmArtistico: formData.get('inputNmArtistico')
+            cdEndereco: formData.get('enderecoMusico'),
+            nmMusico: formData.get('nmMusico'),
+            nmArtistico: formData.get('nmArtistico')
         };
 
         enviarMusico(dadosMusico);
     });
 
     // Bandas
-    const bandaForm = document.getElementById('bandaForm');
-
     bandaForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const formData = new FormData(bandaForm);
 
         const dadosBanda = {
-            nmBanda: formData.get('inputNomeBanda'),
-            dtFormacao: formData.get('inputDataFormacao'),
+            nmBanda: formData.get('nmBanda'),
+            dtFormacao: formData.get('dtFormacao'),
         };
 
         enviarBanda(dadosBanda);
     });
 
-    // Discos
-    const discoForm = document.getElementById('discoForm');
-
-    discoForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(discoForm);
-
-        const dadosDisco = {
-            cdAutor: formData.get('selectAutorDisco'),
-            cdLocalGravacao: formData.get('selectEstudioDisco'),
-            dtGrav: formData.get('inputDataGravacao'),
-            dsTitulo: formData.get('inputDiscoTitulo')
-        };
-
-        enviarDisco(dadosDisco);
-    });
-
-    // Enderecos
-    const enderecoForm = document.getElementById('enderecoForm');
-
-    enderecoForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(enderecoForm);
-
-        const dadosEndereco = {
-            nmRua: formData.get('inputNomeRua'),
-            nrCasa: formData.get('inputNumeroCasa'),
-            nmBairro: formData.get('inputNomeBairro'),
-            nmCidade: formData.get('inputNomeCidade'),
-            nmEstado: formData.get('inputNomeEstado'),
-            nmPais: formData.get('inputNomePais'),
-            dsTelefone: formData.get('inputTelefoneEstudio')
-        };
-
-        enviarEndereco(dadosEndereco);
-    });
-
-    // Instrumentos
-    const instrumentoForm = document.getElementById('instrumentoForm');
-
-    instrumentoForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(instrumentoForm);
-
-        const dadosInstrumento = {
-            cdEstudio: formData.get('selectEstudioInstrumento'),
-            nmInstr: formData.get('inputNomeInstrumento'),
-            tipInstr: formData.get('inputTipoInstrumento'),
-            nmMarca: formData.get('inputMarcaInstrumento')
-        };
-
-        enviarInstrumento(dadosInstrumento);
-    });
-
-    // Musicas
-    const musicaForm = document.getElementById('musicaForm');
-
-    musicaForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(musicaForm);
-
-        const dadosMusica = {
-            dsTitulo: formData.get('inputTituloMusica'),
-            dsGenero: formData.get('inputGeneroMusica'),
-            tpDuracao: formData.get('inputDuracaoMusica'),
-            fmtArquivo: formData.get('inputFormatoArquivo')
-        };
-
-        enviarMusica(dadosMusica);
-    });
-
-    // Estudios
-    const estudioForm = document.getElementById('estudioForm');
-
-    estudioForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(estudioForm);
-
-        const dadosEstudio = {
-            cdEndereco: formData.get('SelectEnderecoMusico'),
-            nmEstudio: formData.get('inputNomeEstudio')
-        };
-
-        enviarEstudio(dadosEstudio);
-    });
-
     // MusicosInBanda
-    const musicosInBandaForm = document.getElementById('musicosInBandaForm');
-
     musicosInBandaForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const formData = new FormData(musicosInBandaForm);
 
         const dadosMusicoInBanda = {
-            nrReg: formData.get('selectMusicoInBanda'),
-            cdBanda: formData.get('selectBandaForMusico'),
+            nrReg: formData.get('musicoInBanda'),
+            cdBanda: formData.get('bandaForMusico'),
         };
 
         enviarMusicoInBanda(dadosMusicoInBanda);
+    });
+
+    // Musicas
+    musicaForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(musicaForm);
+
+        const dadosMusica = {
+            dsTitulo: formData.get('dsTitulo'),
+            dsGenero: formData.get('dsGenero'),
+            tpDuracao: formData.get('tpDuracao'),
+            fmtArquivo: formData.get('fmtArquivo')
+        };
+
+        enviarMusica(dadosMusica);
+    });
+
+    // Estudios
+    estudioForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(estudioForm);
+
+        const dadosEstudio = {
+            cdEndereco: formData.get('enderecoEstudio'),
+            nmEstudio: formData.get('nmEstudio')
+        };
+
+        enviarEstudio(dadosEstudio);
+    });
+
+    // Discos
+    discoForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(discoForm);
+
+        const dadosDisco = {
+            cdAutor: formData.get('autorDisco'),
+            cdLocalGravacao: formData.get('estudioDisco'),
+            dtGrav: formData.get('dtGravacao'),
+            dsTitulo: formData.get('dsTituloDisco')
+        };
+
+        enviarDisco(dadosDisco);
+    });
+
+    // Instrumentos
+    instrumentoForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(instrumentoForm);
+
+        const dadosInstrumento = {
+            cdEstudio: formData.get('estudioInstrumento'),
+            nmInstr: formData.get('nmInstrumento'),
+            tipInstr: formData.get('tipoInstrumento'),
+            nmMarca: formData.get('nmMarca')
+        };
+
+        enviarInstrumento(dadosInstrumento);
+    });
+
+    // Enderecos
+    enderecoForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(enderecoForm);
+
+        const dadosEndereco = {
+            nmRua: formData.get('nmRua'),
+            nrCasa: formData.get('nrCasa'),
+            nmBairro: formData.get('nmBairro'),
+            nmCidade: formData.get('nmCidade'),
+            nmEstado: formData.get('nmEstado'),
+            nmPais: formData.get('nmPais'),
+            dsTelefone: formData.get('dsTelefoneEstudio')
+        };
+
+        enviarEndereco(dadosEndereco);
     });
 });
 

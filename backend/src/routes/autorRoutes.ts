@@ -9,6 +9,9 @@ function updtIfDiff(orig: any, updt: any) {
     return updt && orig !== updt ? updt : orig;
 }
 
+// Rotas de Músicos:
+
+// Selecionar todos os músicos
 autorRouter.get('/musicos', async (req, res) => {
     try {
         const allMusicos = await autorPersistence.selectAllMusicos();
@@ -18,11 +21,63 @@ autorRouter.get('/musicos', async (req, res) => {
     }
 });
 
-autorRouter.get('/musicos/:nrReg', async (req, res) => {
+// Selecionar um músico
+autorRouter.get('/musicos', async (req, res) => {
     try {
-        const nrReg = parseInt(req.params.nrReg);
+        const nrReg = req.body.nrReg;
         const musico = await autorPersistence.selectMusico(nrReg);
         res.json(musico);
+    } catch (err: any) {
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+    }
+});
+
+// Inserir um músico
+autorRouter.post('/musicos', async (req, res) => {
+    try {
+        const musicoData = req.body;
+        const newMusico = new Musico(await autorPersistence.newCdAutor());
+
+        const { cdEndereco, nmMusico, nmArtistico } = musicoData;
+
+        newMusico.cdEndereco = cdEndereco;
+        newMusico.nmMusico = nmMusico;
+        newMusico.nmArtistico = nmArtistico;
+
+        const nrReg = await autorPersistence.insertMusico(newMusico);
+
+        res.status(201).json({ nrReg });
+    } catch (err: any) {
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+    }
+});
+
+// Atualizar um músico
+autorRouter.put('/musicos', async (req, res) => {
+    try {
+        const { nrReg, cdAutor, cdEndereco, nmMusico, nmArtistico } = req.body;
+
+        const musicoOrig = await autorPersistence.selectMusico(nrReg);
+        const musicoUpdt = _.cloneDeep(musicoOrig);
+
+        musicoUpdt.cdAutor = updtIfDiff(musicoUpdt.cdAutor, cdAutor);
+        musicoUpdt.cdEndereco = updtIfDiff(musicoUpdt.cdEndereco, cdEndereco);
+        musicoUpdt.nmMusico = updtIfDiff(musicoUpdt.nmMusico, nmMusico);
+        musicoUpdt.nmArtistico = updtIfDiff(musicoUpdt.nmArtistico, nmArtistico);
+
+        const message = await autorPersistence.updateMusico(musicoUpdt);
+
+        res.send(message);
+    } catch (err) {
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+    }
+});
+
+autorRouter.delete('/musicos/:nrReg', async (req, res) => {
+    try {
+        const nrReg = parseInt(req.params.nrReg);
+        const message = await autorPersistence.deleteMusico(nrReg);
+        res.send(message);
     } catch (err: any) {
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
@@ -47,22 +102,6 @@ autorRouter.get('/bandas/:cdBanda', async (req, res) => {
     }
 });
 
-autorRouter.post('/musicos', async (req, res) => {
-    try {
-        const musicoData = req.body;
-        const newMusico = new Musico(await autorPersistence.newCdAutor());
-        newMusico.cdEndereco = musicoData.cdEndereco;
-        newMusico.nmMusico = musicoData.nmMusico;
-        newMusico.nmArtistico = musicoData.nmArtistico;
-
-        const nrReg = await autorPersistence.insertMusico(newMusico);
-
-        res.status(201).json({ nrReg });
-    } catch (err: any) {
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
-    }
-});
-
 autorRouter.get('/autores', async (req, res) => {
     try {
         const allAutores = await autorPersistence.selectAllAutores();
@@ -74,39 +113,9 @@ autorRouter.get('/autores', async (req, res) => {
 
 autorRouter.get('/musicos-in-banda', async (req, res) => {
     try {
-        const musicosInBanda = await autorPersistence.selectAllMusicosInBanda();
+        const musicosInBanda = await autorPersistence.selectAllMusicosInBandas();
         res.json(musicosInBanda);
     } catch (err) {
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
-    }
-});
-
-autorRouter.put('/musicos/:nrReg', async (req, res) => {
-    try {
-        const nrReg = parseInt(req.params.nrReg);
-        const updtData = req.body;
-        const musicoOrig = await autorPersistence.selectMusico(nrReg);
-        const musicoUpdt = _.cloneDeep(musicoOrig);
-
-        musicoUpdt.cdAutor = updtIfDiff(musicoUpdt.cdAutor, updtData.cdAutor);
-        musicoUpdt.cdEndereco = updtIfDiff(musicoUpdt.cdEndereco, updtData.cdEndereco);
-        musicoUpdt.nmMusico = updtIfDiff(musicoUpdt.nmMusico, updtData.nmMusico);
-        musicoUpdt.nmArtistico = updtIfDiff(musicoUpdt.nmArtistico, updtData.nmArtistico);
-
-        const message = await autorPersistence.updateMusico(musicoUpdt);
-
-        res.send(message);
-    } catch (err) {
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
-    }
-});
-
-autorRouter.delete('/musicos/:nrReg', async (req, res) => {
-    try {
-        const nrReg = parseInt(req.params.nrReg);
-        const message = await autorPersistence.deleteMusico(nrReg);
-        res.send(message);
-    } catch (err: any) {
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });

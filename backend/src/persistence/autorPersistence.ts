@@ -4,6 +4,20 @@ import { Musico, Banda } from '../models/Autor';
 const conn = new connectDB();
 
 export default class autorPersistence {
+    public static async newCdAutor(): Promise<number> {
+        return await conn.query('SELECT CRIA_AUTOR()').then((res) => res.rows[0].cria_autor);
+    }
+
+    public static async selectAllAutores(): Promise<any[]> {
+        const allAutores = conn
+            .query(
+                `SELECT CD_AUTOR, NM_MUSICO AS NM_AUTOR FROM MUSICOS UNION SELECT CD_AUTOR, NM_BANDA AS NM_AUTOR FROM BANDAS ORDER BY CD_AUTOR;`,
+            )
+            .then((res) => res.rows);
+
+        return allAutores;
+    }
+
     public static async selectAllMusicos(): Promise<Musico[]> {
         const allMusicos = await conn.query('SELECT * FROM MUSICOS').then((res) => {
             return res.rows.map((row: any) => Musico.fromPostgresSql(row));
@@ -22,83 +36,6 @@ export default class autorPersistence {
         return musico;
     }
 
-    public static async selectAllBandas(): Promise<Banda[]> {
-        const allBandas = await conn.query('SELECT * FROM BANDAS').then((res) => {
-            return res.rows.map((row: any) => Banda.fromPostgresSql(row));
-        });
-
-        return allBandas;
-    }
-
-    public static async selectBanda(cdBanda: number): Promise<Banda> {
-        const banda = await conn
-            .query('SELECT * FROM BANDAS WHERE CD_BANDA = $1', [cdBanda])
-            .then((res) => {
-                return Banda.fromPostgresSql(res.rows[0]);
-            });
-
-        return banda;
-    }
-
-    public static async selectAllAutores(): Promise<any[]> {
-        const allAutores = conn
-            .query(
-                `SELECT CD_AUTOR, NM_MUSICO AS NM_AUTOR FROM MUSICOS UNION
-                                       SELECT CD_AUTOR, NM_BANDA AS NM_AUTOR FROM BANDAS ORDER BY CD_AUTOR;`,
-            )
-            .then((res) => res.rows);
-
-        return allAutores;
-    }
-
-    public static async selectAllMusicosInBanda(): Promise<any[]> {
-        const musicosInBanda = conn
-            .query(
-                `SELECT DISTINCT NM_ARTISTICO, NM_MUSICO, NM_BANDA FROM MUSICOS_EM_BANDA  LEFT JOIN MUSICOS USING(NR_REG) LEFT JOIN BANDAS USING(CD_BANDA)`,
-            )
-            .then((res) => res.rows);
-
-        return musicosInBanda;
-    }
-
-    public static async selectMusicosFromBanda(cdBanda: number): Promise<Musico[]> {
-        const musicosDaBanda = await conn
-            .query(
-                'SELECT * FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) WHERE CD_BANDA = $1',
-                [cdBanda],
-            )
-            .then((res) => {
-                return res.rows.map((row: any) => Musico.fromPostgresSql(row));
-            });
-
-        return musicosDaBanda;
-    }
-
-    public static async newCdAutor(): Promise<number> {
-        return await conn.query('SELECT CRIA_AUTOR()').then((res) => res.rows[0].cria_autor);
-    }
-
-    public static async getCdAutorFromMusico(nrReg: number): Promise<number> {
-        return await conn
-            .query('SELECT CD_AUTOR FROM MUSICOS WHERE NR_REG = $1', [nrReg])
-            .then((res) => res.rows[0].nr_reg);
-    }
-
-    public static async getCdAutorFromBanda(cdBanda: number): Promise<number> {
-        return await conn
-            .query('SELECT CD_AUTOR FROM BANDAS WHERE NR_REG = $1', [cdBanda])
-            .then((res) => res.rows[0].nr_reg);
-    }
-
-    public static async getAutoresDaMusica(cdMusica: number): Promise<any> {
-        return await conn
-            .query(
-                'SELECT * FROM AUTORES LEFT JOIN AUTORES_DA_MUSICA USING(CD_AUTOR) LEFT JOIN MUSICA USING CD_MUSICA = $1',
-                [cdMusica],
-            )
-            .then((res) => res.rows);
-    }
-
     public static async insertMusico(musico: Musico): Promise<number> {
         try {
             const result = await conn.query(
@@ -111,19 +48,6 @@ export default class autorPersistence {
             return nrReg;
         } catch (err) {
             throw `Ocorreu um erro na inserção do novo músico: ${err}`;
-        }
-    }
-
-    public static async assignMusicoInBanda(nrReg: number, cdBanda: number): Promise<string> {
-        try {
-            await conn.query('INSERT INTO MUSICOS_EM_BANDA (NR_REG, CD_BANDA) VALUES ($1, $2)', [
-                nrReg,
-                cdBanda,
-            ]);
-
-            return `Músico de código ${nrReg} entrou na banda ${cdBanda}!`;
-        } catch (err) {
-            throw `Ocorreu um erro na inserção do músico na banda: ${err}`;
         }
     }
 
@@ -163,6 +87,24 @@ export default class autorPersistence {
                 throw `Ocorreu um erro na remoção do músico com Nr. Reg ${nrReg}: ${err}`;
             }
         }
+    }
+
+    public static async selectAllBandas(): Promise<Banda[]> {
+        const allBandas = await conn.query('SELECT * FROM BANDAS').then((res) => {
+            return res.rows.map((row: any) => Banda.fromPostgresSql(row));
+        });
+
+        return allBandas;
+    }
+
+    public static async selectBanda(cdBanda: number): Promise<Banda> {
+        const banda = await conn
+            .query('SELECT * FROM BANDAS WHERE CD_BANDA = $1', [cdBanda])
+            .then((res) => {
+                return Banda.fromPostgresSql(res.rows[0]);
+            });
+
+        return banda;
     }
 
     public static async insertBanda(banda: Banda): Promise<number> {
@@ -209,4 +151,61 @@ export default class autorPersistence {
             }
         }
     }
+
+    public static async selectAllMusicosInBandas(): Promise<any[]> {
+        const musicosInBanda = conn
+            .query(
+                `SELECT DISTINCT NM_ARTISTICO, NM_MUSICO, NM_BANDA FROM MUSICOS_EM_BANDA  LEFT JOIN MUSICOS USING(NR_REG) LEFT JOIN BANDAS USING(CD_BANDA)`,
+            )
+            .then((res) => res.rows);
+
+        return musicosInBanda;
+    }
+
+    public static async selectMusicosInBanda(cdBanda: number): Promise<Musico[]> {
+        const musicosInBanda = await conn
+            .query(
+                'SELECT * FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) WHERE CD_BANDA = $1',
+                [cdBanda],
+            )
+            .then((res) => {
+                return res.rows.map((row: any) => Musico.fromPostgresSql(row));
+            });
+
+        return musicosInBanda;
+    }
+
+    public static async assignMusicoInBanda(nrReg: number, cdBanda: number): Promise<string> {
+        try {
+            await conn.query('INSERT INTO MUSICOS_EM_BANDA (NR_REG, CD_BANDA) VALUES ($1, $2)', [
+                nrReg,
+                cdBanda,
+            ]);
+
+            return `Músico de código ${nrReg} entrou na banda ${cdBanda}!`;
+        } catch (err) {
+            throw `Ocorreu um erro na inserção do músico na banda: ${err}`;
+        }
+    }
+
+    public static async getAutoresDaMusica(cdMusica: number): Promise<any> {
+        return await conn
+            .query(
+                'SELECT * FROM AUTORES LEFT JOIN AUTORES_DA_MUSICA USING(CD_AUTOR) LEFT JOIN MUSICA USING CD_MUSICA = $1',
+                [cdMusica],
+            )
+            .then((res) => res.rows);
+    }
+
+    // public static async getCdAutorFromMusico(nrReg: number): Promise<number> {
+    //     return await conn
+    //         .query('SELECT CD_AUTOR FROM MUSICOS WHERE NR_REG = $1', [nrReg])
+    //         .then((res) => res.rows[0].nr_reg);
+    // }
+
+    // public static async getCdAutorFromBanda(cdBanda: number): Promise<number> {
+    //     return await conn
+    //         .query('SELECT CD_AUTOR FROM BANDAS WHERE NR_REG = $1', [cdBanda])
+    //         .then((res) => res.rows[0].nr_reg);
+    // }
 }

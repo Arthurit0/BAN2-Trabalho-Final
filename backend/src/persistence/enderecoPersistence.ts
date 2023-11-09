@@ -34,7 +34,7 @@ export default class enderecoPersistence {
                     endereco.nmEstado,
                     endereco.nmPais,
                     endereco.dsTelefone,
-                ]
+                ],
             );
             const cdEndereco = result.rows[0].cd_endereco;
 
@@ -59,7 +59,7 @@ export default class enderecoPersistence {
                     endereco.nmPais,
                     endereco.dsTelefone,
                     endereco.cdEndereco,
-                ]
+                ],
             );
 
             return `Endereço com código ${endereco.cdEndereco} alterado com sucesso!`;

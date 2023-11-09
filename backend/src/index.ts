@@ -22,5 +22,5 @@ app.use('/', instrumentoRouter);
 app.use('/', musicaRouter);
 
 app.listen(port, () => {
-    console.log(`Servidor escutando na porta ${port}`);
+    console.log(`Servidor Backend na porta ${port}`);
 });

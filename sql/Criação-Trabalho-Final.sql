@@ -69,7 +69,7 @@ CREATE TABLE discos(
     cd_disco serial PRIMARY KEY,
     cd_autor int NOT NULL,
     cd_local_gravacao int,
-    dt_grav date NOT NULL,
+    dt_gravacao date NOT NULL,
     ds_titulo varchar(100) NOT NULL,
     CONSTRAINT autor_fk FOREIGN KEY (cd_autor) REFERENCES autores(cd_autor) ON DELETE CASCADE,
     CONSTRAINT local_gravacao_fk FOREIGN KEY (cd_local_gravacao) REFERENCES estudios(cd_estudio) ON DELETE SET NULL
@@ -85,8 +85,8 @@ CREATE TABLE musicas_em_disco(
 CREATE TABLE instrumentos (
     cd_instrumento serial PRIMARY KEY,
     cd_estudio int NOT NULL,
-    nm_instr varchar(25) NOT NULL,
-    tip_instr varchar(25),
+    nm_instrumento varchar(25) NOT NULL,
+    tipo_intrumento varchar(25),
     nm_marca varchar(50),
     CONSTRAINT estudio_fk FOREIGN KEY (cd_estudio) REFERENCES estudios(cd_estudio) ON DELETE CASCADE
 );
@@ -164,7 +164,7 @@ INSERT INTO estudios (cd_endereco, nm_estudio) VALUES
 (3, 'Estudio W'),
 (4, 'Estudio X');
 
-INSERT INTO discos (cd_autor, cd_local_gravacao, dt_grav, ds_titulo) VALUES
+INSERT INTO discos (cd_autor, cd_local_gravacao, dt_gravacao, ds_titulo) VALUES
 (1, 1, '2022-01-01', 'Disco Y'),
 (2, 2, '2022-02-02', 'Disco Z'),
 (3, 3, '2022-03-03', 'Disco AA'),
@@ -176,7 +176,7 @@ INSERT INTO musicas_em_disco (cd_disco, cd_musica) VALUES
 (2, 3),
 (2, 4);
 
-INSERT INTO instrumentos (cd_estudio, nm_instr, tip_instr, nm_marca) VALUES
+INSERT INTO instrumentos (cd_estudio, nm_instrumento, tipo_intrumento, nm_marca) VALUES
 (1, 'Guitarra', 'Corda', 'Fender'),
 (2, 'Baixo', 'Corda', 'Gibson'),
 (3, 'Bateria', 'Percussão', 'Yamaha'),

@@ -18,12 +18,11 @@
             <a href="#disco">Disco</a>
             <a href="#instrumento">Instrumento</a>
             <a href="#endereco">Endereço</a>
-            
-            
         </nav>
 
         <section id="autor">
             <h2>Autor</h2>
+            <!-- Botões de tabs da seção de Autor -->
             <div class="tabs">
                 <button class="tablinks" id="botao-autores">Todos</button>
                 <button class="tablinks" id="botao-musico">Músico</button>
@@ -33,58 +32,69 @@
 
             <div id="autores" class="tabcontent">
                 <table id="tabela-autores" class="db-table">
-                    <!-- Conteúdo de Autores será inserido aqui -->
+                    <!-- Registros de autores do Banco de Dados serão inseridos aqui -->
                 </table>
             </div>
 
             <div id="musico" class="tabcontent">
-                <table id="tabela-musicos" class="db-table"></table>
+                <table id="tabela-musicos" class="db-table">
+                    <!-- Registros de músicos do Banco de Dados serão inseridos aqui -->
+                </table>
+
                 <button class="toggleForm" data-form="musicoForm">
                     Mostrar Formulário de Músico
                 </button>
+
                 <form id="musicoForm" class="formContent hidden">
-                    <label for="selectEnderecoMusico">Endereço:</label>
-                    <select name="SelectEnderecoMusico" class="selectEndereco"></select>
+                    <label for="enderecoMusico">Endereço:</label>
+                    <select name="enderecoMusico" class="selectEndereco"></select>
 
-                    <label for="inputNmMusico">Nome Musico:</label>
-                    <input type="text" id="nmMusico" name="inputNmMusico" required />
+                    <label for="nmMusico">Nome Musico:</label>
+                    <input type="text" name="nmMusico" required />
 
-                    <label for="inputNmArtistico">Nome Artistico:</label>
-                    <input type="text" id="NmArtistico" name="inputNmArtistico" />
+                    <label for="nmArtistico">Nome Artistico:</label>
+                    <input type="text" name="nmArtistico" />
                     <button type="submit">Adicionar Músico</button>
                 </form>
             </div>
 
             <div id="banda" class="tabcontent">
-                <table id="tabela-bandas" class="db-table"></table>
+                <table id="tabela-bandas" class="db-table">
+                    <!-- Registros de bandas do Banco de Dados serão inseridos aqui -->
+                </table>
 
                 <button class="toggleForm" data-form="bandaForm">
                     Mostrar Formulário de Banda
                 </button>
-                <form id="bandaForm" class="formContent hidden">
-                    <label for="inputNomeBanda">Nome Banda:</label>
-                    <input type="text" id="nmBanda" name="inputNomeBanda" required />
 
-                    <label for="inputDataFormacao">Data de formacao:</label>
-                    <input type="date" id="dtFormacao" name="inputDataFormacao" required />
+                <form id="bandaForm" class="formContent hidden">
+                    <label for="nmBanda">Nome Banda:</label>
+                    <input type="text" name="nmBanda" required />
+
+                    <label for="dtFormacao">Data de formacao:</label>
+                    <input type="date" name="dtFormacao" required />
 
                     <button type="submit">Adicionar Banda</button>
                 </form>
             </div>
 
             <div id="musicos-in-banda" class="tabcontent">
-                <table id="tabela-musicos-in-banda" class="db-table"></table>
+                <table id="tabela-musicos-in-banda" class="db-table">
+                    <!-- Dados da tabela de relacionamento músicos em banda será inserida aqui -->
+                </table>
 
                 <button class="toggleForm" data-form="musicosInBandaForm">
                     Inserir Músico em Banda
                 </button>
                 <form id="musicosInBandaForm" class="formContent hidden">
-                    <label for="selectMusicoInBanda">Músico:</label>
-                    <select class="selectMusico" name="selectMusicoInBanda"></select>
+                    <label for="musicoInBanda">Músico:</label>
+                    <select name="musicoInBanda" class="selectMusico">
+                        <!-- Opções de músicos do Banco de Dados serão inseridos aqui -->
+                    </select>
 
-                    <label for="selectBandaForMusico">Banda:</label>
-                    <select class="selectBanda" name="selectBandaForMusico">
-                        <!-- Opções de bandas serão inseridas aqui -->
+                    <label for="bandaForMusico">Banda:</label>
+                    <select name="bandaForMusico" class="selectBanda">
+                        <!-- Opções de bandas do Banco de Dados serão inseridos aqui -->
                     </select>
 
                     <button type="submit">Relacionar</button>
@@ -92,108 +102,26 @@
             </div>
         </section>
 
-        <section id="disco">
-            <h2>Disco</h2>
-            <table id="tabela-discos" class="db-table"></table>
-
-            <button class="toggleForm" data-form="discoForm">Mostrar Formulário de Disco</button>
-
-            <form id="discoForm" class="formContent hidden">
-                <label for="selectAutorDisco">Autor:</label>
-                <select name="selectAutorDisco" class="selectAutor"></select>
-
-                <label for="selectEstudioDisco">Local Gravação:</label>
-                <select name="selectEstudioDisco" class="selectEstudio"></select>
-
-                <label for="inputDataGravacao">Data Gravação:</label>
-                <input type="date" id="dtGravacao" name="inputDataGravacao" required />
-
-                <label for="inputDiscoTitulo">Título do Disco:</label>
-                <input type="text" id="dsTitulo" name="inputDiscoTitulo" required />
-
-                <button type="submit">Adicionar Disco</button>
-            </form>
-
-            </div>
-        </section>
-
-        <section id="endereco">
-            <h2>Endereço</h2>
-            <table id="tabela-enderecos" class="db-table"></table>
-            <button class="toggleForm" data-form="enderecoForm">
-                Mostrar Formulário de Endereço
-            </button>
-            <form id="enderecoForm" class="formContent hidden">
-                <label for="inputNomeRua">Nome Rua:</label>
-                <input type="text" id="nmRua" name="inputNomeRua" required />
-
-                <label for="inputNumeroCasa">Número Casa:</label>
-                <input type="number" id="nrCasa" name="inputNumeroCasa" required />
-
-                <label for="inputNomeBairro">Nome Bairro:</label>
-                <input type="text" id="nmBairro" name="inputNomeBairro" required />
-
-                <label for="inputNomeCidade">Nome Cidade:</label>
-                <input type="text" id="nmCidade" name="inputNomeCidade" required />
-
-                <label for="inputNomeEstado">Nome Estado:</label>
-                <input type="text" id="nmEstado" name="inputNomeEstado" required />
-
-                <label for="inputNomePais">Nome País:</label>
-                <input type="text" id="nmPais" name="inputNomePais" required />
-
-                <label for="inputTelefoneEstudio">Telefone Contato:</label>
-                <input type="text" id="dsTelefoneEstudio" name="inputTelefoneEstudio" required />
-
-                <button type="submit">Adicionar Endereço</button>
-            </form>
-        </section>
-
-        <section id="instrumento">
-            <h2>Instrumento</h2>
-            <table id="tabela-instrumentos" class="db-table"></table>
-            <button class="toggleForm" data-form="instrumentoForm">
-                Mostrar Formulário de Instrumento
-            </button>
-            <form id="instrumentoForm" class="formContent hidden">
-                <label for="selectEstudioInstrumento">Estúdio:</label>
-                <select name="selectEstudioInstrumento" class="selectEstudio"></select>
-
-                <label for="inputNomeInstrumento">Nome Instrumento:</label>
-                <input type="text" id="inputNomeInstrumento" name="inputNomeInstrumento" required />
-
-                <label for="inputTipoInstrumento">Tipo Instrumento:</label>
-                <input type="text" id="inputTipoInstrumento" name="inputTipoInstrumento" />
-
-                <label for="inputMarcaInstrumento">Nome da Marca:</label>
-                <input
-                    type="text"
-                    id="inputMarcaInstrumento"
-                    name="inputMarcaInstrumento"
-                />
-
-                <button type="submit">Adicionar Instrumento</button>
-            </form>
-        </section>
-
         <section id="musica">
             <h2>Música</h2>
             <table id="tabela-musicas" class="db-table">
-                <!-- Conteúdo da tabela Músicas será inserido aqui -->
+                 <!-- Registros de músicas do Banco de Dados serão inseridos aqui -->
             </table>
+
             <button class="toggleForm" data-form="musicaForm">Mostrar Formulário de Música</button>
+            
             <form id="musicaForm" class="formContent hidden">
-                <label for="inputTituloMusica">Título da Música:</label>
-                <input type="text" id="inputTituloMusica" name="inputTituloMusica" required />
+                <label for="dsTitulo">Título da Música:</label>
+                <input type="text" name="dsTitulo" required />
 
-                <label for="inputGeneroMusica">Gênero Música:</label>
-                <input type="text" id="inputGeneroMusica" name="inputGeneroMusica" />
+                <label for="dsGenero">Gênero Música:</label>
+                <input type="text" name="dsGenero" />
 
-                <label for="inputDuracaoMusica">Duração (em segundos):</label>
-                <input type="number" id="inputDuracaoMusica" name="inputDuracaoMusica" />
+                <label for="tpDuracao">Duração (em segundos):</label>
+                <input type="number" name="tpDuracao" />
 
-                <label for="inputFormatoArquivo">Formato do Arquivo:</label>
-                <input type="text" id="inputFormatoArquivo" name="inputFormatoArquivo" />
+                <label for="fmtArquivo">Formato do Arquivo:</label>
+                <input type="text" name="fmtArquivo" />
 
                 <button type="submit">Adicionar Música</button>
             </form>
@@ -202,19 +130,109 @@
         <section id="estudio">
             <h2>Estúdios</h2>
             <table id="tabela-estudios" class="db-table">
-                <!-- Conteúdo da tabela Estúdios será inserido aqui -->
+                <!-- Registros de estúdios do Banco de Dados serão inseridos aqui -->
             </table>
             <button class="toggleForm" data-form="estudioForm">
                 Mostrar Formulário de Estúdio
             </button>
             <form id="estudioForm" class="formContent hidden">
-                <label for="SelectEnderecoMusico">Código Endereço:</label>
-                <select name="SelectEnderecoMusico" class="selectEndereco" required></select>
+                <label for="enderecoEstudio">Código Endereço:</label>
+                <select name="enderecoEstudio" class="selectEndereco" required></select>
 
-                <label for="inputNomeEstudio">Nome do Estúdio:</label>
-                <input type="text" id="inputNomeEstudio" name="inputNomeEstudio" required />
+                <label for="nmEstudio">Nome do Estúdio:</label>
+                <input type="text" name="nmEstudio" required />
 
                 <button type="submit">Adicionar Estúdio</button>
+            </form>
+        </section>
+
+        <section id="disco">
+            <h2>Disco</h2>
+            <table id="tabela-discos" class="db-table">
+                <!-- Registros de discos do Banco de Dados serão inseridos aqui -->
+            </table>
+
+            <button class="toggleForm" data-form="discoForm">Mostrar Formulário de Disco</button>
+
+            <form id="discoForm" class="formContent hidden">
+                <label for="autorDisco">Autor:</label>
+                <select name="autorDisco" class="selectAutor"></select>
+
+                <label for="estudioDisco">Local Gravação:</label>
+                <select name="estudioDisco" class="selectEstudio"></select>
+
+                <label for="dtGravacao">Data Gravação:</label>
+                <input type="date" name="dtGravacao" required />
+
+                <label for="dsTituloDisco">Título do Disco:</label>
+                <input type="text" name="dsTituloDisco" required />
+
+                <button type="submit">Adicionar Disco</button>
+            </form>
+
+            </div>
+        </section>
+
+        <section id="instrumento">
+            <h2>Instrumento</h2>
+            <table id="tabela-instrumentos" class="db-table">
+                <!-- Registros de instrumentos do Banco de Dados serão inseridos aqui -->
+            </table>
+
+            <button class="toggleForm" data-form="instrumentoForm">
+                Mostrar Formulário de Instrumento
+            </button>
+
+            <form id="instrumentoForm" class="formContent hidden">
+                <label for="estudioInstrumento">Estúdio:</label>
+                <select name="estudioInstrumento" class="selectEstudio"></select>
+
+                <label for="nmInstrumento">Nome Instrumento:</label>
+                <input type="text" name="nmInstrumento" required />
+
+                <label for="tipoInstrumento">Tipo Instrumento:</label>
+                <input type="text" name="tipoInstrumento" />
+
+                <label for="nmMarca">Nome da Marca:</label>
+                <input type="text" name="nmMarca" />
+
+                <button type="submit">Adicionar Instrumento</button>
+            </form>
+        </section>
+
+        <section id="endereco">
+            <h2>Endereço</h2>
+            <table id="tabela-enderecos" class="db-table">
+                <!-- Registros de endereços do Banco de Dados serão inseridos aqui -->
+            </table>
+
+            <button class="toggleForm" data-form="enderecoForm">
+                Mostrar Formulário de Endereço
+            </button>
+
+            <form id="enderecoForm" class="formContent hidden">
+                <label for="nmRua">Nome Rua:</label>
+                <input type="text" name="nmRua" required />
+
+                <label for="nrCasa">Número Casa:</label>
+                <input type="number" name="nrCasa" required />
+
+                <label for="nmBairro">Nome Bairro:</label>
+                <input type="text" name="nmBairro" required />
+
+                <label for="nmCidade">Nome Cidade:</label>
+                <input type="text" name="nmCidade" required />
+
+                <label for="nmEstado">Nome Estado:</label>
+                <input type="text" name="nmEstado" required />
+
+                <label for="nmPais">Nome País:</label>
+                <input type="text" name="nmPais" required />
+
+                <label for="dsTelefoneEstudio">Telefone Contato:</label>
+                <input type="text" name="dsTelefoneEstudio" required />
+
+                <button type="submit">Adicionar Endereço</button>
             </form>
         </section>
 

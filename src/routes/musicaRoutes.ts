@@ -2,13 +2,9 @@ import express from 'express';
 import _ from 'lodash';
 import musicaPersistence from '../persistence/musicaPersistence';
 import Musica from '../models/Musica';
+import { updateIfDiff } from '../utils/utils';
 
 const musicaRouter = express.Router();
-
-// Função utilitária para atualizar se os valores são diferentes
-function updtIfDiff(orig: any, updt: any) {
-    return updt && orig !== updt ? updt : orig;
-}
 
 // Selecionar todas as músicas
 musicaRouter.get('/musicas', async (req, res) => {
@@ -16,7 +12,8 @@ musicaRouter.get('/musicas', async (req, res) => {
         const allMusicas = await musicaPersistence.selectAllMusicas();
         res.json(allMusicas);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -27,7 +24,8 @@ musicaRouter.get('/musicas/:cdMusica', async (req, res) => {
         const musica = await musicaPersistence.selectMusica(cdMusica);
         res.json(musica);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -45,7 +43,8 @@ musicaRouter.post('/musicas', async (req, res) => {
 
         res.status(201).json({ cdMusica });
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -57,15 +56,16 @@ musicaRouter.put('/musicas/:cdMusica', async (req, res) => {
         const musicaOrig = await musicaPersistence.selectMusica(cdMusica);
         const musicaUpdt = _.cloneDeep(musicaOrig);
 
-        musicaUpdt.dsTitulo = updtIfDiff(musicaUpdt.dsTitulo, updtData.dsTitulo);
-        musicaUpdt.dsGenero = updtIfDiff(musicaUpdt.dsGenero, updtData.dsGenero);
-        musicaUpdt.tpDuracao = updtIfDiff(musicaUpdt.tpDuracao, updtData.tpDuracao);
-        musicaUpdt.fmtArquivo = updtIfDiff(musicaUpdt.fmtArquivo, updtData.fmtArquivo);
+        musicaUpdt.dsTitulo = updateIfDiff(musicaUpdt.dsTitulo, updtData.dsTitulo);
+        musicaUpdt.dsGenero = updateIfDiff(musicaUpdt.dsGenero, updtData.dsGenero);
+        musicaUpdt.tpDuracao = updateIfDiff(musicaUpdt.tpDuracao, updtData.tpDuracao);
+        musicaUpdt.fmtArquivo = updateIfDiff(musicaUpdt.fmtArquivo, updtData.fmtArquivo);
 
         const message = await musicaPersistence.updateMusica(musicaUpdt);
 
         res.send(message);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -77,8 +77,33 @@ musicaRouter.delete('/musicas/:cdMusica', async (req, res) => {
         const message = await musicaPersistence.deleteMusica(cdMusica);
         res.send(message);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
+
+musicaRouter.get('/autores-in-musica', async (req, res) => {
+    try {
+        const autoresInMusica = await musicaPersistence.selectAutoresInMusica();
+        res.json(autoresInMusica);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+    }
+});
+
+// musicaRouter.post('/musico-in-banda', async (req, res) => {
+//     try {
+//         const autorInMusicaData = req.body;
+//         const { cdAutor, cdBanda } = autorInMusicaData;
+
+//         const message = await musicaPersistence.assignMusicoInBanda(cdAutor, cdBanda);
+
+//         res.send(message);
+//     } catch (err: any) {
+//         console.log(err);
+//         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+//     }
+// });
 
 export default musicaRouter;

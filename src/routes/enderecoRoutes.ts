@@ -2,13 +2,9 @@ import express from 'express';
 import _ from 'lodash';
 import enderecoPersistence from '../persistence/enderecoPersistence';
 import Endereco from '../models/Endereco';
+import { updateIfDiff } from '../utils/utils';
 
 const enderecoRouter = express.Router();
-
-// Função utilitária para atualizar se os valores são diferentes
-function updtIfDiff(orig: any, updt: any) {
-    return updt && orig !== updt ? updt : orig;
-}
 
 // Selecionar todos os endereços
 enderecoRouter.get('/enderecos', async (req, res) => {
@@ -16,7 +12,8 @@ enderecoRouter.get('/enderecos', async (req, res) => {
         const allEnderecos = await enderecoPersistence.selectAllEnderecos();
         res.json(allEnderecos);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -27,7 +24,8 @@ enderecoRouter.get('/enderecos/:cdEndereco', async (req, res) => {
         const endereco = await enderecoPersistence.selectEndereco(cdEndereco);
         res.json(endereco);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -48,7 +46,8 @@ enderecoRouter.post('/enderecos', async (req, res) => {
 
         res.status(201).json({ cdEndereco });
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -60,18 +59,19 @@ enderecoRouter.put('/enderecos/:cdEndereco', async (req, res) => {
         const enderecoOrig = await enderecoPersistence.selectEndereco(cdEndereco);
         const enderecoUpdt = _.cloneDeep(enderecoOrig);
 
-        enderecoUpdt.nmRua = updtIfDiff(enderecoUpdt.nmRua, updtData.nmRua);
-        enderecoUpdt.nrCasa = updtIfDiff(enderecoUpdt.nrCasa, updtData.nrCasa);
-        enderecoUpdt.nmBairro = updtIfDiff(enderecoUpdt.nmBairro, updtData.nmBairro);
-        enderecoUpdt.nmCidade = updtIfDiff(enderecoUpdt.nmCidade, updtData.nmCidade);
-        enderecoUpdt.nmEstado = updtIfDiff(enderecoUpdt.nmEstado, updtData.nmEstado);
-        enderecoUpdt.nmPais = updtIfDiff(enderecoUpdt.nmPais, updtData.nmPais);
-        enderecoUpdt.dsTelefone = updtIfDiff(enderecoUpdt.dsTelefone, updtData.dsTelefone);
+        enderecoUpdt.nmRua = updateIfDiff(enderecoUpdt.nmRua, updtData.nmRua);
+        enderecoUpdt.nrCasa = updateIfDiff(enderecoUpdt.nrCasa, updtData.nrCasa);
+        enderecoUpdt.nmBairro = updateIfDiff(enderecoUpdt.nmBairro, updtData.nmBairro);
+        enderecoUpdt.nmCidade = updateIfDiff(enderecoUpdt.nmCidade, updtData.nmCidade);
+        enderecoUpdt.nmEstado = updateIfDiff(enderecoUpdt.nmEstado, updtData.nmEstado);
+        enderecoUpdt.nmPais = updateIfDiff(enderecoUpdt.nmPais, updtData.nmPais);
+        enderecoUpdt.dsTelefone = updateIfDiff(enderecoUpdt.dsTelefone, updtData.dsTelefone);
 
         const message = await enderecoPersistence.updateEndereco(enderecoUpdt);
 
         res.send(message);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -83,7 +83,8 @@ enderecoRouter.delete('/enderecos/:cdEndereco', async (req, res) => {
         const message = await enderecoPersistence.deleteEndereco(cdEndereco);
         res.send(message);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 

@@ -2,13 +2,9 @@ import express from 'express';
 import _ from 'lodash';
 import instrumentoPersistence from '../persistence/instrumentoPersistence';
 import Instrumento from '../models/Instrumento';
+import { updateIfDiff } from '../utils/utils';
 
 const instrumentoRouter = express.Router();
-
-// Função utilitária para atualizar se os valores são diferentes
-function updtIfDiff(orig: any, updt: any) {
-    return updt && orig !== updt ? updt : orig;
-}
 
 // Selecionar todos os instrumentos
 instrumentoRouter.get('/instrumentos', async (req, res) => {
@@ -16,7 +12,8 @@ instrumentoRouter.get('/instrumentos', async (req, res) => {
         const allInstrumentos = await instrumentoPersistence.selectAllInstrumentos();
         res.json(allInstrumentos);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -27,7 +24,8 @@ instrumentoRouter.get('/instrumentos/:cdInstr', async (req, res) => {
         const instrumento = await instrumentoPersistence.selectInstrumento(cdInstr);
         res.json(instrumento);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -38,15 +36,16 @@ instrumentoRouter.post('/instrumentos', async (req, res) => {
         const newInstrumento = new Instrumento();
 
         newInstrumento.cdEstudio = instrumentoData.cdEstudio;
-        newInstrumento.nmInstr = instrumentoData.nmInstr;
-        newInstrumento.tipInstr = instrumentoData.tipInstr;
+        newInstrumento.nmInstrumento = instrumentoData.nmInstr;
+        newInstrumento.tipoInstrumento = instrumentoData.tipInstr;
         newInstrumento.nmMarca = instrumentoData.nmMarca;
 
         const cdInstr = await instrumentoPersistence.insertInstrumento(newInstrumento);
 
         res.status(201).json({ cdInstr });
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -58,15 +57,22 @@ instrumentoRouter.put('/instrumentos/:cdInstr', async (req, res) => {
         const instrumentoOrig = await instrumentoPersistence.selectInstrumento(cdInstr);
         const instrumentoUpdt = _.cloneDeep(instrumentoOrig);
 
-        instrumentoUpdt.cdEstudio = updtIfDiff(instrumentoUpdt.cdEstudio, updtData.cdEstudio);
-        instrumentoUpdt.nmInstr = updtIfDiff(instrumentoUpdt.nmInstr, updtData.nmInstr);
-        instrumentoUpdt.tipInstr = updtIfDiff(instrumentoUpdt.tipInstr, updtData.tipInstr);
-        instrumentoUpdt.nmMarca = updtIfDiff(instrumentoUpdt.nmMarca, updtData.nmMarca);
+        instrumentoUpdt.cdEstudio = updateIfDiff(instrumentoUpdt.cdEstudio, updtData.cdEstudio);
+        instrumentoUpdt.nmInstrumento = updateIfDiff(
+            instrumentoUpdt.nmInstrumento,
+            updtData.nmInstr,
+        );
+        instrumentoUpdt.tipoInstrumento = updateIfDiff(
+            instrumentoUpdt.tipoInstrumento,
+            updtData.tipInstr,
+        );
+        instrumentoUpdt.nmMarca = updateIfDiff(instrumentoUpdt.nmMarca, updtData.nmMarca);
 
         const message = await instrumentoPersistence.updateInstrumento(instrumentoUpdt);
 
         res.send(message);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -78,7 +84,8 @@ instrumentoRouter.delete('/instrumentos/:cdInstr', async (req, res) => {
         const message = await instrumentoPersistence.deleteInstrumento(cdInstr);
         res.send(message);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 

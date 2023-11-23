@@ -2,13 +2,9 @@ import express, { Request, Response } from 'express';
 import _ from 'lodash';
 import estudioPersistence from '../persistence/estudioPersistence';
 import Estudio from '../models/Estudio';
+import { updateIfDiff } from '../utils/utils';
 
 const estudioRouter = express.Router();
-
-// Função utilitária para atualizar se os valores são diferentes
-function updtIfDiff(orig: any, updt: any) {
-    return updt && orig !== updt ? updt : orig;
-}
 
 // Selecionar todos os estúdios
 estudioRouter.get('/estudios', async (req: Request, res: Response) => {
@@ -16,7 +12,8 @@ estudioRouter.get('/estudios', async (req: Request, res: Response) => {
         const allEstudios = await estudioPersistence.selectAllEstudios();
         res.json(allEstudios);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -27,7 +24,8 @@ estudioRouter.get('/estudios/:cdEstudio', async (req: Request, res: Response) =>
         const estudio = await estudioPersistence.selectEstudio(cdEstudio);
         res.json(estudio);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -43,7 +41,8 @@ estudioRouter.post('/estudios', async (req: Request, res: Response) => {
 
         res.status(201).json({ cdEstudio });
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 
@@ -55,13 +54,14 @@ estudioRouter.put('/estudios/:cdEstudio', async (req: Request, res: Response) =>
         const estudioOrig = await estudioPersistence.selectEstudio(cdEstudio);
         const estudioUpdt = _.cloneDeep(estudioOrig);
 
-        estudioUpdt.cdEndereco = updtIfDiff(estudioUpdt.cdEndereco, updtData.cdEndereco);
-        estudioUpdt.nmEstudio = updtIfDiff(estudioUpdt.nmEstudio, updtData.nmEstudio);
+        estudioUpdt.cdEndereco = updateIfDiff(estudioUpdt.cdEndereco, updtData.cdEndereco);
+        estudioUpdt.nmEstudio = updateIfDiff(estudioUpdt.nmEstudio, updtData.nmEstudio);
 
         const message = await estudioPersistence.updateEstudio(estudioUpdt);
 
         res.send(message);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -73,7 +73,8 @@ estudioRouter.delete('/estudios/:cdEstudio', async (req: Request, res: Response)
         const message = await estudioPersistence.deleteEstudio(cdEstudio);
         res.send(message);
     } catch (err: any) {
-        res.status(500).send(err.message);
+        console.log(err);
+        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
 

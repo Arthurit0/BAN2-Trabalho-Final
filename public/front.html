@@ -22,6 +22,7 @@
 
         <section id="autor">
             <h2>Autor</h2>
+            
             <!-- Botões de tabs da seção de Autor -->
             <div class="tabs">
                 <button class="tablinks" id="botao-autores">Todos</button>
@@ -104,11 +105,18 @@
 
         <section id="musica">
             <h2>Música</h2>
-            <table id="tabela-musicas" class="db-table">
-                 <!-- Registros de músicas do Banco de Dados serão inseridos aqui -->
-            </table>
 
-            <button class="toggleForm" data-form="musicaForm">Mostrar Formulário de Música</button>
+            <div class="tabs">
+                <button class="tablinks" id="botao-musicas">Músicas</button>
+                <button class="tablinks" id="botao-autores-in-musica">Autores em Música</button>
+            </div>
+
+            <div id="musicas" class="tabcontent">
+                <table id="tabela-musicas" class="db-table">
+                    <!-- Registros de músicas do Banco de Dados serão inseridos aqui -->
+               </table>
+
+               <button class="toggleForm" data-form="musicaForm">Mostrar Formulário de Música</button>
             
             <form id="musicaForm" class="formContent hidden">
                 <label for="dsTitulo">Título da Música:</label>
@@ -125,6 +133,32 @@
 
                 <button type="submit">Adicionar Música</button>
             </form>
+            </div>
+
+            <div id="autores-in-musica" class="tabcontent">
+                <table id="tabela-autores-in-musica" class="db-table">
+                    <!-- Dados da tabela de relacionamento autores em música será inserida aqui -->
+                </table>
+
+                <button class="toggleForm" data-form="autoresInMusicaForm">
+                    Inserir Participação de Autor em Músca
+                </button>
+                <form id="autoresInMusicaForm" class="formContent hidden">
+                    <label for="autorEmMusica">Autor:</label>
+                    <select name="autorEmMusica" class="selectAutor">
+                        <!-- Opções de autores do Banco de Dados serão inseridos aqui -->
+                    </select>
+
+                    <label for="bandaForMusico">Banda:</label>
+                    <select name="bandaForMusico" class="selectBanda">
+                        <!-- Opções de bandas do Banco de Dados serão inseridos aqui -->
+                    </select>
+
+                    <button type="submit">Relacionar</button>
+                </form>
+            </div>
+
+            
         </section>
 
         <section id="estudio">

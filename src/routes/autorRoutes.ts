@@ -2,12 +2,9 @@ import express from 'express';
 import _ from 'lodash';
 import autorPersistence from '../persistence/autorPersistence';
 import { Banda, Musico } from '../models/Autor';
+import { updateIfDiff } from '../utils/utils';
 
 const autorRouter = express.Router();
-
-function updtIfDiff(orig: any, updt: any) {
-    return updt && orig !== updt ? updt : orig;
-}
 
 // Rotas de Músicos:
 
@@ -17,6 +14,7 @@ autorRouter.get('/musicos', async (req, res) => {
         const allMusicos = await autorPersistence.selectAllMusicos();
         res.json(allMusicos);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -28,6 +26,7 @@ autorRouter.get('/musicos', async (req, res) => {
         const musico = await autorPersistence.selectMusico(nrReg);
         res.json(musico);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -48,6 +47,7 @@ autorRouter.post('/musicos', async (req, res) => {
 
         res.status(201).json({ nrReg });
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -60,15 +60,16 @@ autorRouter.put('/musicos', async (req, res) => {
         const musicoOrig = await autorPersistence.selectMusico(nrReg);
         const musicoUpdt = _.cloneDeep(musicoOrig);
 
-        musicoUpdt.cdAutor = updtIfDiff(musicoUpdt.cdAutor, cdAutor);
-        musicoUpdt.cdEndereco = updtIfDiff(musicoUpdt.cdEndereco, cdEndereco);
-        musicoUpdt.nmMusico = updtIfDiff(musicoUpdt.nmMusico, nmMusico);
-        musicoUpdt.nmArtistico = updtIfDiff(musicoUpdt.nmArtistico, nmArtistico);
+        musicoUpdt.cdAutor = updateIfDiff(musicoUpdt.cdAutor, cdAutor);
+        musicoUpdt.cdEndereco = updateIfDiff(musicoUpdt.cdEndereco, cdEndereco);
+        musicoUpdt.nmMusico = updateIfDiff(musicoUpdt.nmMusico, nmMusico);
+        musicoUpdt.nmArtistico = updateIfDiff(musicoUpdt.nmArtistico, nmArtistico);
 
         const message = await autorPersistence.updateMusico(musicoUpdt);
 
         res.send(message);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -79,6 +80,7 @@ autorRouter.delete('/musicos/:nrReg', async (req, res) => {
         const message = await autorPersistence.deleteMusico(nrReg);
         res.send(message);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -88,6 +90,7 @@ autorRouter.get('/bandas', async (req, res) => {
         const allBandas = await autorPersistence.selectAllBandas();
         res.json(allBandas);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -98,6 +101,7 @@ autorRouter.get('/bandas/:cdBanda', async (req, res) => {
         const banda = await autorPersistence.selectBanda(cdBanda);
         res.json(banda);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -107,6 +111,7 @@ autorRouter.get('/autores', async (req, res) => {
         const allAutores = await autorPersistence.selectAllAutores();
         res.json(allAutores);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -116,6 +121,7 @@ autorRouter.get('/musicos-in-banda', async (req, res) => {
         const musicosInBanda = await autorPersistence.selectAllMusicosInBandas();
         res.json(musicosInBanda);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -131,6 +137,7 @@ autorRouter.post('/bandas', async (req, res) => {
 
         res.status(201).json({ cdBanda });
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -142,13 +149,14 @@ autorRouter.put('/bandas/:cdBanda', async (req, res) => {
         const bandaOrig = await autorPersistence.selectBanda(cdBanda);
         const bandaUpdt = _.cloneDeep(bandaOrig);
 
-        bandaUpdt.nmBanda = updtIfDiff(bandaUpdt.nmBanda, updtData.nmBanda);
-        bandaUpdt.dtFormacao = updtIfDiff(bandaUpdt.dtFormacao, updtData.dtFormacao);
+        bandaUpdt.nmBanda = updateIfDiff(bandaUpdt.nmBanda, updtData.nmBanda);
+        bandaUpdt.dtFormacao = updateIfDiff(bandaUpdt.dtFormacao, updtData.dtFormacao);
 
         const message = await autorPersistence.updateBanda(bandaUpdt);
 
         res.send(message);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -159,6 +167,7 @@ autorRouter.delete('/bandas/:cdBanda', async (req, res) => {
         const message = await autorPersistence.deleteBanda(cdBanda);
         res.send(message);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -172,6 +181,7 @@ autorRouter.post('/musico-in-banda', async (req, res) => {
 
         res.send(message);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });
@@ -182,6 +192,7 @@ autorRouter.get('/musicos/:nrReg', async (req, res) => {
         const musico = await autorPersistence.selectMusico(nrReg);
         res.json(musico);
     } catch (err: any) {
+        console.log(err);
         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
     }
 });

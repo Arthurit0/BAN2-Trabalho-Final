@@ -3,8 +3,8 @@ import _ from 'lodash';
 export default class Instrumento {
     private _cdInstrumento!: number;
     private _cdEstudio!: number;
-    private _nmInstr?: string;
-    private _tipInstr?: string;
+    private _nmInstrumento?: string;
+    private _tipoInstrumento?: string;
     private _nmMarca?: string;
 
     // constructor(
@@ -16,8 +16,8 @@ export default class Instrumento {
     // ) {
     //     this._cdInstrumento = cdInstrumento;
     //     this._cdStudio = cdEstudio;
-    //     this._nmInstr = nmInstr;
-    //     this._tipInstr = tipInstr;
+    //     this._nmInstrumento = nmInstr;
+    //     this._tipoInstrumento = tipInstr;
     //     this._nmMarca = nmMarca;
     // }
 
@@ -37,20 +37,20 @@ export default class Instrumento {
         this._cdEstudio = cdEstudio;
     }
 
-    public get nmInstr(): string | undefined {
-        return this._nmInstr;
+    public get nmInstrumento(): string | undefined {
+        return this._nmInstrumento;
     }
 
-    public set nmInstr(nmInstr: string | undefined) {
-        this._nmInstr = nmInstr;
+    public set nmInstrumento(nmInstr: string | undefined) {
+        this._nmInstrumento = nmInstr;
     }
 
-    public get tipInstr(): string | undefined {
-        return this._tipInstr;
+    public get tipoInstrumento(): string | undefined {
+        return this._tipoInstrumento;
     }
 
-    public set tipInstr(tipInstr: string | undefined) {
-        this._tipInstr = tipInstr;
+    public set tipoInstrumento(tipInstr: string | undefined) {
+        this._tipoInstrumento = tipInstr;
     }
 
     public get nmMarca(): string | undefined {
@@ -69,8 +69,8 @@ export default class Instrumento {
         const instrumento = new this();
         instrumento._cdInstrumento = res.cd_instrumento;
         instrumento._cdEstudio = res.cd_estudio;
-        instrumento._nmInstr = res.nm_instr;
-        instrumento._tipInstr = res.tip_instr;
+        instrumento._nmInstrumento = res.nm_instrumento;
+        instrumento._tipoInstrumento = res.tipo_instrumento;
         instrumento._nmMarca = res.nm_marca;
         return instrumento;
     }

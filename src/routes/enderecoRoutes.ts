@@ -13,7 +13,7 @@ enderecoRouter.get('/enderecos', async (req, res) => {
         res.json(allEnderecos);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -25,7 +25,7 @@ enderecoRouter.get('/enderecos/:cdEndereco', async (req, res) => {
         res.json(endereco);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -47,7 +47,7 @@ enderecoRouter.post('/enderecos', async (req, res) => {
         res.status(201).json({ cdEndereco });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -72,7 +72,7 @@ enderecoRouter.put('/enderecos/:cdEndereco', async (req, res) => {
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -84,7 +84,7 @@ enderecoRouter.delete('/enderecos/:cdEndereco', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 

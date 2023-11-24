@@ -11,7 +11,7 @@ export default class instrumentoPersistence {
                 return res.rows.map((row: any) => Instrumento.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de instrumentos: ${err}`;
+                throw `Ocorreu um erro no select de instrumentos: \n\n${err}`;
             });
 
         return allInstrumentos;
@@ -24,7 +24,7 @@ export default class instrumentoPersistence {
                 return Instrumento.fromPostgresSql(res.rows[0]);
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select do instrumento com cod. ${cdInstrumento}: ${err}`;
+                throw `Ocorreu um erro no select do instrumento com cod. ${cdInstrumento}: \n\n${err}`;
             });
 
         return instrumento;
@@ -42,7 +42,7 @@ export default class instrumentoPersistence {
                 ],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na inserção do novo instrumento: ${err}`;
+                throw `Ocorreu um erro na inserção do novo instrumento: \n\n${err}`;
             });
         const cdInstrumento = result.rows[0].cd_instrumento;
 
@@ -64,7 +64,7 @@ export default class instrumentoPersistence {
                 ],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na alteração do instrumento com código ${instrumento.cdInstrumento}: ${err}`;
+                throw `Ocorreu um erro na alteração do instrumento com código ${instrumento.cdInstrumento}: \n\n${err}`;
             });
 
         return `Instrumento com código ${instrumento.cdInstrumento} alterado com sucesso!`;
@@ -81,9 +81,40 @@ export default class instrumentoPersistence {
             await conn
                 .query('DELETE FROM INSTRUMENTOS WHERE CD_INSTRUMENTO = $1', [cdInstrumento])
                 .catch((err) => {
-                    throw `Ocorreu um erro na remoção do instrumento com código ${cdInstrumento}: ${err}`;
+                    throw `Ocorreu um erro na remoção do instrumento com código ${cdInstrumento}: \n\n${err}`;
                 });
             return `Deleção do instrumento com código ${cdInstrumento} bem sucedida.`;
         }
+    }
+
+    public static async selectAllInstrumentosByMusico(): Promise<any[]> {
+        const instrumentoByMusico = conn
+            .query(
+                `SELECT DISTINCT NM_MUSICO, NM_ARTISTICO, CD_INSTRUMENTO, NM_INSTRUMENTO, DT_USO FROM TOCA_INSTR LEFT JOIN INSTRUMENTOS USING(CD_INSTRUMENTO) LEFT JOIN MUSICOS USING(NR_REG) ORDER BY CD_INSTRUMENTO`,
+            )
+            .then((res) => res.rows)
+            .catch((err) => {
+                throw `Ocorreu um erro no select de instrumentos usados por músicos: \n\n${err}`;
+            });
+
+        return instrumentoByMusico;
+    }
+
+    public static async assignInstrumentoByMusico(
+        nrReg: number,
+        cdInstrumento: number,
+        dtUso: string,
+    ): Promise<string> {
+        await conn
+            .query('INSERT INTO TOCA_INSTR (NR_REG, CD_INSTRUMENTO, DT_USO) VALUES ($1, $2, $3)', [
+                nrReg,
+                cdInstrumento,
+                dtUso,
+            ])
+            .catch((err) => {
+                throw `Ocorreu um erro na inserção do músico com nrReg ${nrReg} tocando instrumento com cod. ${cdInstrumento} no dia ${dtUso}: \n\n${err}`;
+            });
+
+        return `Músico de cod. ${nrReg} tocou instrumento de cod. ${cdInstrumento} no dia ${dtUso}!`;
     }
 }

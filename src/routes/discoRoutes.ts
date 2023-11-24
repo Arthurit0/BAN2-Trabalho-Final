@@ -14,7 +14,7 @@ discoRouter.get('/discos', async (req, res) => {
         res.json(allDiscos);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -26,7 +26,7 @@ discoRouter.get('/discos/:cdDisco', async (req, res) => {
         res.json(disco);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -45,7 +45,7 @@ discoRouter.post('/discos', async (req, res) => {
         res.status(201).json({ cdDisco });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -70,7 +70,7 @@ discoRouter.put('/discos/:cdDisco', async (req, res) => {
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -82,7 +82,31 @@ discoRouter.delete('/discos/:cdDisco', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
+    }
+});
+
+discoRouter.get('/musicas-in-disco', async (req, res) => {
+    try {
+        const musicasInDisco = await discoPersistence.selectAllMusicasInDiscos();
+        res.json(musicasInDisco);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
+
+discoRouter.post('/musicas-in-disco', async (req, res) => {
+    try {
+        const musicaInDiscoData = req.body;
+        const { cdMusica, cdDisco } = musicaInDiscoData;
+
+        const message = await discoPersistence.assignMusicaInDisco(cdMusica, cdDisco);
+
+        res.send(message);
+    } catch (err: any) {
+        console.log(err);
+        res.status(500).send(err);
     }
 });
 

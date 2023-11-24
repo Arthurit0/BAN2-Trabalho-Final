@@ -3,6 +3,7 @@ import _ from 'lodash';
 import instrumentoPersistence from '../persistence/instrumentoPersistence';
 import Instrumento from '../models/Instrumento';
 import { updateIfDiff } from '../utils/utils';
+import moment from 'moment';
 
 const instrumentoRouter = express.Router();
 
@@ -13,7 +14,7 @@ instrumentoRouter.get('/instrumentos', async (req, res) => {
         res.json(allInstrumentos);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -25,7 +26,7 @@ instrumentoRouter.get('/instrumentos/:cdInstr', async (req, res) => {
         res.json(instrumento);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -45,7 +46,7 @@ instrumentoRouter.post('/instrumentos', async (req, res) => {
         res.status(201).json({ cdInstr });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -73,7 +74,7 @@ instrumentoRouter.put('/instrumentos/:cdInstr', async (req, res) => {
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -85,7 +86,41 @@ instrumentoRouter.delete('/instrumentos/:cdInstr', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
+    }
+});
+
+instrumentoRouter.get('/instrumento-by-musico', async (req, res) => {
+    try {
+        const instrumentosByMusico = await instrumentoPersistence.selectAllInstrumentosByMusico();
+
+        // Tratamento de formato de data
+        instrumentosByMusico.forEach((instrumentoByMusico) => {
+            instrumentoByMusico.dt_uso = moment(instrumentoByMusico.dt_uso).format('DD/MM/YYYY');
+        });
+
+        res.json(instrumentosByMusico);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
+
+instrumentoRouter.post('/instrumento-by-musico', async (req, res) => {
+    try {
+        const instrumentoByMusico = req.body;
+        const { nrReg, cdInstrumento, dtUso } = instrumentoByMusico;
+
+        const message = await instrumentoPersistence.assignInstrumentoByMusico(
+            nrReg,
+            cdInstrumento,
+            dtUso,
+        );
+
+        res.send(message);
+    } catch (err: any) {
+        console.log(err);
+        res.status(500).send(err);
     }
 });
 

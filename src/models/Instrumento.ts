@@ -7,20 +7,6 @@ export default class Instrumento {
     private _tipoInstrumento?: string;
     private _nmMarca?: string;
 
-    // constructor(
-    //     cdInstrumento: number,
-    //     cdEstudio: number,
-    //     nmInstr?: string,
-    //     tipInstr?: string,
-    //     nmMarca?: string
-    // ) {
-    //     this._cdInstrumento = cdInstrumento;
-    //     this._cdStudio = cdEstudio;
-    //     this._nmInstrumento = nmInstr;
-    //     this._tipoInstrumento = tipInstr;
-    //     this._nmMarca = nmMarca;
-    // }
-
     public get cdInstrumento(): number {
         return this._cdInstrumento;
     }

@@ -13,7 +13,7 @@ musicaRouter.get('/musicas', async (req, res) => {
         res.json(allMusicas);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -25,7 +25,7 @@ musicaRouter.get('/musicas/:cdMusica', async (req, res) => {
         res.json(musica);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -44,7 +44,7 @@ musicaRouter.post('/musicas', async (req, res) => {
         res.status(201).json({ cdMusica });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -66,7 +66,7 @@ musicaRouter.put('/musicas/:cdMusica', async (req, res) => {
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -78,7 +78,7 @@ musicaRouter.delete('/musicas/:cdMusica', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -88,22 +88,22 @@ musicaRouter.get('/autores-in-musica', async (req, res) => {
         res.json(autoresInMusica);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
-// musicaRouter.post('/musico-in-banda', async (req, res) => {
-//     try {
-//         const autorInMusicaData = req.body;
-//         const { cdAutor, cdBanda } = autorInMusicaData;
+musicaRouter.post('/autor-in-musica', async (req, res) => {
+    try {
+        const autorInMusicaData = req.body;
+        const { cdAutor, cdMusica } = autorInMusicaData;
 
-//         const message = await musicaPersistence.assignMusicoInBanda(cdAutor, cdBanda);
+        const message = await musicaPersistence.assignAutorInMusica(cdAutor, cdMusica);
 
-//         res.send(message);
-//     } catch (err: any) {
-//         console.log(err);
-//         res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
-//     }
-// });
+        res.send(message);
+    } catch (err: any) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
 
 export default musicaRouter;

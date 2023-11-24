@@ -15,7 +15,7 @@ autorRouter.get('/musicos', async (req, res) => {
         res.json(allMusicos);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -27,7 +27,7 @@ autorRouter.get('/musicos', async (req, res) => {
         res.json(musico);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -48,11 +48,10 @@ autorRouter.post('/musicos', async (req, res) => {
         res.status(201).json({ nrReg });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
-// Atualizar um músico
 autorRouter.put('/musicos', async (req, res) => {
     try {
         const { nrReg, cdAutor, cdEndereco, nmMusico, nmArtistico } = req.body;
@@ -70,7 +69,7 @@ autorRouter.put('/musicos', async (req, res) => {
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -81,7 +80,7 @@ autorRouter.delete('/musicos/:nrReg', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -91,7 +90,7 @@ autorRouter.get('/bandas', async (req, res) => {
         res.json(allBandas);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -102,7 +101,7 @@ autorRouter.get('/bandas/:cdBanda', async (req, res) => {
         res.json(banda);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -112,7 +111,7 @@ autorRouter.get('/autores', async (req, res) => {
         res.json(allAutores);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -122,7 +121,7 @@ autorRouter.get('/musicos-in-banda', async (req, res) => {
         res.json(musicosInBanda);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -138,7 +137,7 @@ autorRouter.post('/bandas', async (req, res) => {
         res.status(201).json({ cdBanda });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -157,7 +156,7 @@ autorRouter.put('/bandas/:cdBanda', async (req, res) => {
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -168,7 +167,7 @@ autorRouter.delete('/bandas/:cdBanda', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -182,7 +181,7 @@ autorRouter.post('/musico-in-banda', async (req, res) => {
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -193,7 +192,7 @@ autorRouter.get('/musicos/:nrReg', async (req, res) => {
         res.json(musico);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 

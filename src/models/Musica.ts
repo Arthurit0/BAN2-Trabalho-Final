@@ -7,13 +7,6 @@ export default class Musica {
     private _tpDuracao?: number;
     private _fmtArquivo?: string;
 
-    // constructor(cdMusica: number, dsTitulo: string, tpDuracao?: number, fmtArquivo?: string) {
-    //     this._cdMusica = cdMusica;
-    //     this._dsTitulo = dsTitulo;
-    //     this._tpDuracao = tpDuracao;
-    //     this._fmtArquivo = fmtArquivo;
-    // }
-
     public get cdMusica(): number {
         return this._cdMusica;
     }

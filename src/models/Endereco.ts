@@ -10,26 +10,6 @@ export default class Endereco {
     private _nmPais?: string;
     private _dsTelefone?: string;
 
-    // constructor(
-    //     cdEndereco: number,
-    //     nmRua?: string,
-    //     nrCasa?: number,
-    //     nmBairro?: string,
-    //     nmCidade?: string,
-    //     nmEstado?: string,
-    //     nmPais?: string,
-    //     dsTelefone?: string
-    // ) {
-    //     this._cdEndereco = cdEndereco;
-    //     this._nmRua = nmRua;
-    //     this._nrCasa = nrCasa;
-    //     this._nmBairro = nmBairro;
-    //     this._nmCidade = nmCidade;
-    //     this._nmEstado = nmEstado;
-    //     this._nmPais = nmPais;
-    //     this._dsTelefone = dsTelefone;
-    // }
-
     public get cdEndereco(): number {
         return this._cdEndereco;
     }

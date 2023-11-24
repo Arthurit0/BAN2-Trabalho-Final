@@ -11,7 +11,7 @@ export default class estudioPersistence {
                 return res.rows.map((row: any) => Estudio.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de estudios: ${err}`;
+                throw `Ocorreu um erro no select de estudios: \n\n${err}`;
             });
 
         return allEstudios;
@@ -24,7 +24,7 @@ export default class estudioPersistence {
                 return Estudio.fromPostgresSql(res.rows[0]);
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select do estúdio com cod. ${cdEstudio}: ${err}`;
+                throw `Ocorreu um erro no select do estúdio com cod. ${cdEstudio}: \n\n${err}`;
             });
 
         return estudio;
@@ -37,7 +37,7 @@ export default class estudioPersistence {
                 [estudio.cdEndereco, estudio.nmEstudio],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na inserção do estúdio: ${err}`;
+                throw `Ocorreu um erro na inserção do estúdio: \n\n${err}`;
             });
         const cdEstudio = result.rows[0].cd_estudio;
 
@@ -54,7 +54,7 @@ export default class estudioPersistence {
                 estudio.cdEstudio,
             ])
             .catch((err) => {
-                throw `Ocorreu um erro na alteração do estúdio com código ${estudio.cdEstudio}: ${err}`;
+                throw `Ocorreu um erro na alteração do estúdio com código ${estudio.cdEstudio}: \n\n${err}`;
             });
 
         return `Estúdio com código ${estudio.cdEstudio} alterado com sucesso!`;
@@ -71,7 +71,7 @@ export default class estudioPersistence {
             await conn
                 .query('DELETE FROM ESTUDIOS WHERE CD_ESTUDIO = $1', [cdEstudio])
                 .catch((err) => {
-                    throw `Ocorreu um erro na remoção do estúdio com código ${cdEstudio}: ${err}`;
+                    throw `Ocorreu um erro na remoção do estúdio com código ${cdEstudio}: \n\n${err}`;
                 });
             return `Deleção do estúdio com código ${cdEstudio} bem sucedido.`;
         }

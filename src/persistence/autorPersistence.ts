@@ -9,7 +9,7 @@ export default class autorPersistence {
             .query('SELECT CRIA_AUTOR()')
             .then((res) => res.rows[0].cria_autor)
             .catch((err) => {
-                throw `Ocorreu um erro na criação de um novo código de autor: ${err}`;
+                throw `Ocorreu um erro na criação de um novo código de autor: \n\n${err}`;
             });
     }
 
@@ -20,7 +20,7 @@ export default class autorPersistence {
             )
             .then((res) => res.rows)
             .catch((err) => {
-                throw `Ocorreu um erro no select de autores: ${err}`;
+                throw `Ocorreu um erro no select de autores: \n\n${err}`;
             });
 
         return allAutores;
@@ -33,7 +33,7 @@ export default class autorPersistence {
                 return res.rows.map((row: any) => Musico.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de músicos: ${err}`;
+                throw `Ocorreu um erro no select de músicos: \n\n${err}`;
             });
 
         return allMusicos;
@@ -46,7 +46,7 @@ export default class autorPersistence {
                 return Musico.fromPostgresSql(res.rows[0]);
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select do músico com nrReg ${nrReg}: ${err}`;
+                throw `Ocorreu um erro no select do músico com nrReg ${nrReg}: \n\n${err}`;
             });
 
         return musico;
@@ -59,7 +59,7 @@ export default class autorPersistence {
                 [musico.cdAutor, musico.cdEndereco, musico.nmMusico, musico.nmArtistico],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na inserção do músico: ${err}`;
+                throw `Ocorreu um erro na inserção do músico: \n\n${err}`;
             });
 
         const nrReg = result.rows[0].nr_reg;
@@ -82,7 +82,7 @@ export default class autorPersistence {
                 ],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na alteração do músico com Nr. Reg ${musico.nrReg}: ${err}`;
+                throw `Ocorreu um erro na alteração do músico com Nr. Reg ${musico.nrReg}: \n\n${err}`;
             });
 
         return `Músico com Nr. Reg ${musico.nrReg} alterado com sucesso!`;
@@ -97,7 +97,7 @@ export default class autorPersistence {
             return `Músico com Nr. Reg ${nrReg} não existe!`;
         } else {
             await conn.query('DELETE FROM MUSICOS WHERE NR_REG = $1', [nrReg]).catch((err) => {
-                throw `Ocorreu um erro na remoção do músico com Nr. Reg ${nrReg}: ${err}`;
+                throw `Ocorreu um erro na remoção do músico com Nr. Reg ${nrReg}: \n\n${err}`;
             });
             return `Deleção do músico com Nr. Reg ${nrReg} bem sucedida.`;
         }
@@ -110,7 +110,7 @@ export default class autorPersistence {
                 return res.rows.map((row: any) => Banda.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de bandas: ${err}`;
+                throw `Ocorreu um erro no select de bandas: \n\n${err}`;
             });
 
         return allBandas;
@@ -123,7 +123,7 @@ export default class autorPersistence {
                 return Banda.fromPostgresSql(res.rows[0]);
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select da banda de cod. ${cdBanda}: ${err}`;
+                throw `Ocorreu um erro no select da banda de cod. ${cdBanda}: \n\n${err}`;
             });
 
         return banda;
@@ -136,7 +136,7 @@ export default class autorPersistence {
                 [banda.cdAutor, banda.nmBanda, banda.dtFormacao],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na inserção da banda: ${err}`;
+                throw `Ocorreu um erro na inserção da banda: \n\n${err}`;
             });
 
         const cdBanda = result.rows[0].cd_banda;
@@ -154,7 +154,7 @@ export default class autorPersistence {
                 banda.cdBanda,
             ])
             .catch((err) => {
-                throw `Ocorreu um erro na alteração da banda com código ${banda.cdBanda}: ${err}`;
+                throw `Ocorreu um erro na alteração da banda com código ${banda.cdBanda}: \n\n${err}`;
             });
         return `Banda com código ${banda.cdBanda} alterada com sucesso!`;
     }
@@ -168,7 +168,7 @@ export default class autorPersistence {
             return `Banda com código ${cdBanda} não existe!`;
         } else {
             await conn.query('DELETE FROM BANDAS WHERE CD_BANDA = $1', [cdBanda]).catch((err) => {
-                throw `Ocorreu um erro na remoção da banda com código ${cdBanda}: ${err}`;
+                throw `Ocorreu um erro na remoção da banda com código ${cdBanda}: \n\n${err}`;
             });
             return `Deleção da banda com código ${cdBanda} bem sucedida.`;
         }
@@ -181,27 +181,27 @@ export default class autorPersistence {
             )
             .then((res) => res.rows)
             .catch((err) => {
-                throw `Ocorreu um erro no select de músicos em bandas: ${err}`;
+                throw `Ocorreu um erro no select de músicos em bandas: \n\n${err}`;
             });
 
         return musicosInBanda;
     }
 
-    public static async selectMusicosInBanda(cdBanda: number): Promise<Musico[]> {
-        const musicosInBanda = await conn
-            .query(
-                'SELECT * FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) WHERE CD_BANDA = $1',
-                [cdBanda],
-            )
-            .then((res) => {
-                return res.rows.map((row: any) => Musico.fromPostgresSql(row));
-            })
-            .catch((err) => {
-                throw `Ocorreu um erro no select de músicos na banda com cod. ${cdBanda}: ${err}`;
-            });
+    // public static async selectMusicosInBanda(cdBanda: number): Promise<Musico[]> {
+    //     const musicosInBanda = await conn
+    //         .query(
+    //             'SELECT * FROM MUSICOS LEFT JOIN MUSICOS_EM_BANDA USING(NR_REG) WHERE CD_BANDA = $1',
+    //             [cdBanda],
+    //         )
+    //         .then((res) => {
+    //             return res.rows.map((row: any) => Musico.fromPostgresSql(row));
+    //         })
+    //         .catch((err) => {
+    //             throw `Ocorreu um erro no select de músicos na banda com cod. ${cdBanda}: \n\n${err}`;
+    //         });
 
-        return musicosInBanda;
-    }
+    //     return musicosInBanda;
+    // }
 
     public static async assignMusicoInBanda(nrReg: number, cdBanda: number): Promise<string> {
         await conn
@@ -210,7 +210,7 @@ export default class autorPersistence {
                 cdBanda,
             ])
             .catch((err) => {
-                throw `Ocorreu um erro na inserção do músico com nrReg ${nrReg} na banda com cod. ${cdBanda}: ${err}`;
+                throw `Ocorreu um erro na inserção do músico com nrReg ${nrReg} na banda com cod. ${cdBanda}: \n\n${err}`;
             });
 
         return `Músico de código ${nrReg} entrou na banda ${cdBanda}!`;

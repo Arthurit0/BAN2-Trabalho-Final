@@ -7,10 +7,15 @@ import estudioRouter from './routes/estudioRoutes';
 import instrumentoRouter from './routes/instrumentoRoutes';
 import musicaRouter from './routes/musicaRoutes';
 
-// Instanciando server para backend
-const backend = express();
-let port = 8080;
+console.clear();
 
+const backend = express();
+const frontend = express();
+
+const portBack = 8080;
+const portFront = 3000;
+
+// Configurando server para backend
 backend.use(cors());
 backend.use(express.json());
 
@@ -21,16 +26,11 @@ backend.use('/', estudioRouter);
 backend.use('/', instrumentoRouter);
 backend.use('/', musicaRouter);
 
-console.clear();
-
-backend.listen(port, () => {
-    console.log(`Servidor Backend rodando na porta ${port}`);
+backend.listen(portBack, () => {
+    console.log(`Servidor Backend rodando na porta ${portBack}`);
 });
 
-// Instanciando server para frontend
-const frontend = express();
-let portFront = 3000;
-
+// Configurando server para frontend
 frontend.use(express.static('public'));
 
 frontend.get('/', (req, res) => {
@@ -38,5 +38,5 @@ frontend.get('/', (req, res) => {
 });
 
 frontend.listen(portFront, () => {
-    console.log(`\nServidor Frontend rodando na porta ${portFront}`);
+    console.log(`Servidor Frontend rodando na porta ${portFront}`);
 });

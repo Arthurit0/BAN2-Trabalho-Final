@@ -11,7 +11,7 @@ export default class musicaPersistence {
                 return res.rows.map((row: any) => Musica.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de músicas: ${err}`;
+                throw `Ocorreu um erro no select de músicas: \n\n${err}`;
             });
 
         return allMusicas;
@@ -27,7 +27,7 @@ export default class musicaPersistence {
                 return res.rows.map((row: any) => Musica.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de músicas do disco com cod. ${cdDisco}: ${err}`;
+                throw `Ocorreu um erro no select de músicas do disco com cod. ${cdDisco}: \n\n${err}`;
             });
 
         return musicasDoDisco;
@@ -50,7 +50,7 @@ export default class musicaPersistence {
                 [musica.dsTitulo, musica.dsGenero, musica.tpDuracao, musica.fmtArquivo],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na inserção da música: ${err}`;
+                throw `Ocorreu um erro na inserção da música: \n\n${err}`;
             });
 
         const cdMusica = result.rows[0].cd_musica;
@@ -73,7 +73,7 @@ export default class musicaPersistence {
                 ],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na alteração da música com código ${musica.cdMusica}: ${err}`;
+                throw `Ocorreu um erro na alteração da música com código ${musica.cdMusica}: \n\n${err}`;
             });
 
         return `Música com código ${musica.cdMusica} alterada com sucesso!`;
@@ -90,7 +90,7 @@ export default class musicaPersistence {
             await conn
                 .query('DELETE FROM MUSICAS WHERE CD_MUSICA = $1', [cdMusica])
                 .catch((err) => {
-                    throw `Ocorreu um erro na remoção da música com código ${cdMusica}: ${err}`;
+                    throw `Ocorreu um erro na remoção da música com código ${cdMusica}: \n\n${err}`;
                 });
             return `Deleção da música com código ${cdMusica} bem sucedida.`;
         }
@@ -99,24 +99,24 @@ export default class musicaPersistence {
     public static async selectAutoresInMusica(): Promise<any> {
         return await conn
             .query(
-                `SELECT A.CD_AUTOR,
-                CASE
-                    WHEN M.NM_MUSICO IS NOT NULL THEN M.NM_MUSICO
-                    WHEN B.NM_BANDA IS NOT NULL THEN B.NM_BANDA
-                    ELSE NULL
-                END AS NM_AUTOR,
-                MUS.*
-            FROM
-                AUTORES A
-                LEFT JOIN MUSICOS M ON A.CD_AUTOR = M.CD_AUTOR
-                LEFT JOIN BANDAS B ON A.CD_AUTOR = B.CD_AUTOR
-                INNER JOIN AUTORES_DA_MUSICA AM ON A.CD_AUTOR = AM.CD_AUTOR
-                INNER JOIN MUSICAS MUS ON AM.CD_MUSICA = MUS.CD_MUSICA
-            ORDER BY CD_AUTOR`,
+                `SELECT DISTINCT A.CD_AUTOR,
+                    CASE
+                        WHEN M.NM_MUSICO IS NOT NULL THEN M.NM_MUSICO
+                        WHEN B.NM_BANDA IS NOT NULL THEN B.NM_BANDA
+                        ELSE NULL
+                    END AS NM_AUTOR,
+                    MUS.*
+                FROM
+                    AUTORES A
+                    LEFT JOIN MUSICOS M ON A.CD_AUTOR = M.CD_AUTOR
+                    LEFT JOIN BANDAS B ON A.CD_AUTOR = B.CD_AUTOR
+                    INNER JOIN AUTORES_DA_MUSICA AM ON A.CD_AUTOR = AM.CD_AUTOR
+                    INNER JOIN MUSICAS MUS ON AM.CD_MUSICA = MUS.CD_MUSICA
+                ORDER BY CD_AUTOR`,
             )
             .then((res) => res.rows)
             .catch((err) => {
-                throw `Erro no select dos autores de músicas: ${err}`;
+                throw `Erro no select dos autores de músicas: \n\n${err}`;
             });
     }
 
@@ -127,7 +127,7 @@ export default class musicaPersistence {
                 cdMusica,
             ])
             .catch((err) => {
-                throw `Ocorreu um erro na inserção do autor com cod ${cdAutor} como participante da música com cod ${cdMusica}: ${err}`;
+                throw `Ocorreu um erro na inserção do autor com cod ${cdAutor} como participante da música com cod ${cdMusica}: \n\n${err}`;
             });
 
         return `Autor de código ${cdAutor} foi registrado como participante da música com código ${cdMusica}!`;

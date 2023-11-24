@@ -11,7 +11,7 @@ export default class enderecoPersistence {
                 return res.rows.map((row: any) => Endereco.fromPostgresSql(row));
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select de endereços: ${err}`;
+                throw `Ocorreu um erro no select de endereços: \n\n${err}`;
             });
 
         return allEnderecos;
@@ -24,7 +24,7 @@ export default class enderecoPersistence {
                 return Endereco.fromPostgresSql(res.rows[0]);
             })
             .catch((err) => {
-                throw `Ocorreu um erro no select do endereço com cod. ${cdEndereco}: ${err}`;
+                throw `Ocorreu um erro no select do endereço com cod. ${cdEndereco}: \n\n${err}`;
             });
 
         return endereco;
@@ -45,7 +45,7 @@ export default class enderecoPersistence {
                 ],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na inserção do novo endereço: ${err}`;
+                throw `Ocorreu um erro na inserção do novo endereço: \n\n${err}`;
             });
         const cdEndereco = result.rows[0].cd_endereco;
 
@@ -70,7 +70,7 @@ export default class enderecoPersistence {
                 ],
             )
             .catch((err) => {
-                throw `Ocorreu um erro na alteração do endereço com código ${endereco.cdEndereco}: ${err}`;
+                throw `Ocorreu um erro na alteração do endereço com código ${endereco.cdEndereco}: \n\n${err}`;
             });
 
         return `Endereço com código ${endereco.cdEndereco} alterado com sucesso!`;
@@ -81,7 +81,7 @@ export default class enderecoPersistence {
             .query('SELECT 1 FROM ENDERECOS WHERE CD_ENDERECO = $1', [cdEndereco])
             .then((res) => res.rowCount)
             .catch((err) => {
-                throw `Ocorreu um erro na remoção do endereço com código ${cdEndereco}: ${err}`;
+                throw `Ocorreu um erro na remoção do endereço com código ${cdEndereco}: \n\n${err}`;
             });
 
         if (!verExistencia) {

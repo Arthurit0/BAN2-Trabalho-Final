@@ -8,21 +8,6 @@ export default class Disco {
     private _dtGravacao?: Date | string;
     private _dsTitulo?: string;
 
-    // constructor(
-    //     cdDisco: number,
-    //     cdAutor: number,
-    //     cdLocalGravacao?: number,
-    //     dtGrav?: Date,
-    //     fmtGrav?: string,
-    //     dsTitulo?: string
-    // ) {
-    //     this._cdDisco = cdDisco;
-    //     this._cdAutor = cdAutor;
-    //     this._cdLocalGravacao = cdLocalGravacao;
-    //     this._dtGravacao = dtGrav;
-    //     this._dsTitulo = dsTitulo;
-    // }
-
     public get cdDisco(): number {
         return this._cdDisco;
     }

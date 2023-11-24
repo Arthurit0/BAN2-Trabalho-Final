@@ -27,20 +27,6 @@ export class Musico extends Autor {
     private _nmMusico!: string;
     private _nmArtistico?: string;
 
-    // constructor(
-    //     cdAutor: number,
-    //     nrReg: number,
-    //     cdEnd?: number,
-    //     nmMusico?: string,
-    //     nmArtistico?: string
-    // ) {
-    //     super(cdAutor);
-    //     this._nrReg = nrReg;
-    //     this._cdEnd = cdEnd;
-    //     this._nmMusico = nmMusico;
-    //     this._nmArtistico = nmArtistico;
-    // }
-
     public set nrReg(nrReg: number) {
         this._nrReg = nrReg;
     }

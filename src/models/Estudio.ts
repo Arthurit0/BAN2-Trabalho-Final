@@ -5,12 +5,6 @@ export default class Estudio {
     private _cdEndereco?: number;
     private _nmEstudio?: string;
 
-    // constructor(cdEstudio: number, cdEndereco: number, nmEstudio?: string) {
-    //     this._cdEstudio = cdEstudio;
-    //     this._cdEndereco = cdEndereco;
-    //     this._nmEstudio = nmEstudio;
-    // }
-
     public get cdEstudio(): number {
         return this._cdEstudio;
     }

@@ -10,10 +10,11 @@ const estudioRouter = express.Router();
 estudioRouter.get('/estudios', async (req: Request, res: Response) => {
     try {
         const allEstudios = await estudioPersistence.selectAllEstudios();
+
         res.json(allEstudios);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -25,7 +26,7 @@ estudioRouter.get('/estudios/:cdEstudio', async (req: Request, res: Response) =>
         res.json(estudio);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -42,7 +43,7 @@ estudioRouter.post('/estudios', async (req: Request, res: Response) => {
         res.status(201).json({ cdEstudio });
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -62,7 +63,7 @@ estudioRouter.put('/estudios/:cdEstudio', async (req: Request, res: Response) =>
         res.send(message);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 
@@ -74,7 +75,7 @@ estudioRouter.delete('/estudios/:cdEstudio', async (req: Request, res: Response)
         res.send(message);
     } catch (err: any) {
         console.log(err);
-        res.status(500).send(err instanceof Error ? err.message : 'Unknown error');
+        res.status(500).send(err);
     }
 });
 

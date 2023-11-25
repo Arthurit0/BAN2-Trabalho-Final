@@ -78,13 +78,6 @@ export class Banda extends Autor {
     private _nmBanda?: string;
     private _dtFormacao?: Date | string;
 
-    // constructor(cdAutor: number, cdBanda: number, nmBanda?: string, dtFormacao?: Date | string) {
-    //     super(cdAutor);
-    //     this._cdBanda = cdBanda;
-    //     this._nmBanda = nmBanda;
-    //     this._dtFormacao = dtFormacao;
-    // }
-
     public get cdBanda(): number {
         return this._cdBanda;
     }
@@ -107,10 +100,6 @@ export class Banda extends Autor {
 
     public set dtFormacao(dtFormacao: Date | string) {
         this._dtFormacao = dtFormacao;
-    }
-
-    public equals(obj: Banda): boolean {
-        return _.isEqual(obj, this);
     }
 
     public static fromPostgresSql(res: any): Banda {

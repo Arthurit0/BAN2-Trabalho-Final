@@ -48,10 +48,6 @@ export default class Disco {
         this._dsTitulo = dsTitulo;
     }
 
-    public equals(obj: Disco) {
-        return _.isEqual(obj, this);
-    }
-
     public static fromPostgresSql(res: any): Disco {
         const disco = new this();
         disco._cdDisco = res.cd_disco;

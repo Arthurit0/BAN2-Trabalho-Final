@@ -74,10 +74,6 @@ export default class Endereco {
         this._dsTelefone = dsTelefone;
     }
 
-    public equals(obj: Endereco): boolean {
-        return _.isEqual(obj, this);
-    }
-
     public static fromPostgresSql(res: any): Endereco {
         const endereco = new this();
         endereco._cdEndereco = res.cd_endereco;

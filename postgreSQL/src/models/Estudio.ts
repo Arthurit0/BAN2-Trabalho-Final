@@ -29,10 +29,6 @@ export default class Estudio {
         this._nmEstudio = nmEstudio;
     }
 
-    public equals(obj: Estudio) {
-        return _.isEqual(obj, this);
-    }
-
     public static fromPostgresSql(res: any): Estudio {
         const estudio = new Estudio();
         estudio._cdEstudio = res.cd_estudio;

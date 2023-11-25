@@ -47,10 +47,6 @@ export default class Instrumento {
         this._nmMarca = nmMarca;
     }
 
-    public equals(obj: Instrumento) {
-        return _.isEqual(obj, this);
-    }
-
     public static fromPostgresSql(res: any): Instrumento {
         const instrumento = new this();
         instrumento._cdInstrumento = res.cd_instrumento;

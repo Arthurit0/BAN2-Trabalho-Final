@@ -6,8 +6,15 @@ import enderecoRouter from './routes/enderecoRoutes';
 import estudioRouter from './routes/estudioRoutes';
 import instrumentoRouter from './routes/instrumentoRoutes';
 import musicaRouter from './routes/musicaRoutes';
+import connectDB from './db/connectMongoDB';
+import seedDB from '../seed/seed';
+import autorPersistence from './persistence/autorPersistence';
+import { Autor, Musico } from './models/Autor';
 
 console.clear();
+
+await connectDB();
+await seedDB();
 
 const backend = express();
 const frontend = express();

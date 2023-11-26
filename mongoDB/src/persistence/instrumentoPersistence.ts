@@ -1,119 +1,76 @@
-import connectDB from '../db/connectMongoDB';
-import Instrumento from '../models/Instrumento';
-
-const conn = new connectDB();
+import moment from 'moment';
+import { IMusico, Musico } from '../models/Autor';
+import Instrumento, {
+    IInstrumento,
+    InstrumentoModel,
+    InstrumentosByMusicoModel,
+} from '../models/Instrumento';
 
 export default class instrumentoPersistence {
     public static async selectAllInstrumentos(): Promise<Instrumento[]> {
-        const allInstrumentos = await conn
-            .query('SELECT * FROM INSTRUMENTOS')
-            .then((res) => {
-                return res.rows.map((row: any) => Instrumento.fromPostgresSql(row));
-            })
-            .catch((err) => {
-                throw `Ocorreu um erro no select de instrumentos: \n\n${err}`;
-            });
+        const instrumentosDocs = await InstrumentoModel.find({}).catch((err) => {
+            throw `Ocorreu um erro no select de instrumentos: \n\n${err}`;
+        });
+
+        const allInstrumentos = instrumentosDocs.map((intrumento) => {
+            return Instrumento.fromMongoDB(intrumento);
+        });
 
         return allInstrumentos;
     }
 
-    public static async selectInstrumento(cdInstrumento: number): Promise<Instrumento> {
-        const instrumento = await conn
-            .query('SELECT * FROM INSTRUMENTOS WHERE CD_INSTRUMENTO = $1', [cdInstrumento])
-            .then((res) => {
-                return Instrumento.fromPostgresSql(res.rows[0]);
-            })
-            .catch((err) => {
-                throw `Ocorreu um erro no select do instrumento com cod. ${cdInstrumento}: \n\n${err}`;
-            });
+    public static async insertInstrumento(instrumento: Instrumento): Promise<string> {
+        const { cdEstudio, nmInstrumento, nmMarca, tipoInstrumento } = instrumento;
 
-        return instrumento;
+        const newInstrumento = await InstrumentoModel.create({
+            cdEstudio,
+            nmInstrumento,
+            nmMarca,
+            tipoInstrumento,
+        }).catch((err) => {
+            throw `Ocorreu um erro na inserção do novo instrumento: \n\n${err}`;
+        });
+
+        return newInstrumento._id.toString();
     }
 
-    public static async insertInstrumento(instrumento: Instrumento): Promise<number> {
-        const result = await conn
-            .query(
-                'INSERT INTO INSTRUMENTOS (CD_ESTUDIO, NM_INSTRUMENTO, TIPO_INSTRUMENTO, NM_MARCA) VALUES ($1, $2, $3, $4) RETURNING CD_INSTRUMENTO',
-                [
-                    instrumento.cdEstudio,
-                    instrumento.nmInstrumento,
-                    instrumento.tipoInstrumento,
-                    instrumento.nmMarca,
-                ],
-            )
-            .catch((err) => {
-                throw `Ocorreu um erro na inserção do novo instrumento: \n\n${err}`;
-            });
-        const cdInstrumento = result.rows[0].cd_instrumento;
-
-        return cdInstrumento;
-    }
-
-    public static async updateInstrumento(instrumento: Instrumento): Promise<string> {
-        if (!instrumento.cdInstrumento) return 'Código do instrumento a alterar não informado!';
-
-        await conn
-            .query(
-                'UPDATE INSTRUMENTOS SET CD_ESTUDIO = $1, NM_INSTRUMENTO = $2, TIPO_INSTRUMENTO = $3, NM_MARCA = $4 WHERE CD_INSTRUMENTO = $5',
-                [
-                    instrumento.cdEstudio,
-                    instrumento.nmInstrumento,
-                    instrumento.tipoInstrumento,
-                    instrumento.nmMarca,
-                    instrumento.cdInstrumento,
-                ],
-            )
-            .catch((err) => {
-                throw `Ocorreu um erro na alteração do instrumento com código ${instrumento.cdInstrumento}: \n\n${err}`;
-            });
-
-        return `Instrumento com código ${instrumento.cdInstrumento} alterado com sucesso!`;
-    }
-
-    public static async deleteInstrumento(cdInstrumento: number): Promise<string> {
-        const verExistencia = await conn
-            .query('SELECT 1 FROM INSTRUMENTOS WHERE CD_INSTRUMENTO = $1', [cdInstrumento])
-            .then((res) => res.rowCount);
-
-        if (!verExistencia) {
-            return `Instrumento com código ${cdInstrumento} não existe!`;
-        } else {
-            await conn
-                .query('DELETE FROM INSTRUMENTOS WHERE CD_INSTRUMENTO = $1', [cdInstrumento])
-                .catch((err) => {
-                    throw `Ocorreu um erro na remoção do instrumento com código ${cdInstrumento}: \n\n${err}`;
-                });
-            return `Deleção do instrumento com código ${cdInstrumento} bem sucedida.`;
-        }
-    }
-
-    public static async selectAllInstrumentosByMusico(): Promise<any[]> {
-        const instrumentoByMusico = conn
-            .query(
-                `SELECT DISTINCT NM_MUSICO, NM_ARTISTICO, CD_INSTRUMENTO, NM_INSTRUMENTO, DT_USO FROM TOCA_INSTR LEFT JOIN INSTRUMENTOS USING(CD_INSTRUMENTO) LEFT JOIN MUSICOS USING(NR_REG) ORDER BY CD_INSTRUMENTO`,
-            )
-            .then((res) => res.rows)
+    public static async selectAllInstrumentosByMusico(): Promise<Object[]> {
+        const instrumentosByMusicoDocs = await InstrumentosByMusicoModel.find({})
+            .populate('cdInstrumento')
+            .populate('nrReg')
             .catch((err) => {
                 throw `Ocorreu um erro no select de instrumentos usados por músicos: \n\n${err}`;
             });
 
-        return instrumentoByMusico;
+        const allInstrumentosByMusico = instrumentosByMusicoDocs.map((instrumentoByMusico) => {
+            const cdInstrumentodoc = instrumentoByMusico.cdInstrumento as unknown as IInstrumento;
+            const nrRegDoc = instrumentoByMusico.nrReg as unknown as IMusico;
+
+            const cdInstrumento = Instrumento.fromMongoDB(cdInstrumentodoc);
+            const nrReg = Musico.fromMongoDb(nrRegDoc);
+
+            return {
+                cdInstrumento,
+                nrReg,
+                dtUso: moment.utc(instrumentoByMusico.dtUso).format('DD/MM/YYYY'),
+            };
+        });
+
+        return allInstrumentosByMusico;
     }
 
     public static async assignInstrumentoByMusico(
         nrReg: number,
         cdInstrumento: number,
         dtUso: string,
-    ): Promise<string> {
-        await conn
-            .query('INSERT INTO TOCA_INSTR (NR_REG, CD_INSTRUMENTO, DT_USO) VALUES ($1, $2, $3)', [
-                nrReg,
-                cdInstrumento,
-                dtUso,
-            ])
-            .catch((err) => {
-                throw `Ocorreu um erro na inserção do músico com nrReg ${nrReg} tocando instrumento com cod. ${cdInstrumento} no dia ${dtUso}: \n\n${err}`;
-            });
+    ): Promise<String> {
+        await InstrumentosByMusicoModel.create({
+            nrReg,
+            cdInstrumento,
+            dtUso,
+        }).catch((err) => {
+            throw `Ocorreu um erro na inserção do músico com nrReg ${nrReg} tocando instrumento com cod. ${cdInstrumento} no dia ${dtUso}: \n\n${err}`;
+        });
 
         return `Músico de cod. ${nrReg} tocou instrumento de cod. ${cdInstrumento} no dia ${dtUso}!`;
     }

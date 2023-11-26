@@ -1,20 +1,21 @@
 import _ from 'lodash';
+import mongoose from 'mongoose';
 
 export default class Endereco {
-    private _cdEndereco!: number;
+    private _cdEndereco!: string;
     private _nmRua?: string;
-    private _nrCasa?: number;
+    private _nrCasa?: Number;
     private _nmBairro?: string;
     private _nmCidade?: string;
     private _nmEstado?: string;
     private _nmPais?: string;
     private _dsTelefone?: string;
 
-    public get cdEndereco(): number {
+    public get cdEndereco(): string {
         return this._cdEndereco;
     }
 
-    public set cdEndereco(cdEndereco: number) {
+    public set cdEndereco(cdEndereco: string) {
         this._cdEndereco = cdEndereco;
     }
 
@@ -26,11 +27,11 @@ export default class Endereco {
         this._nmRua = nmRua;
     }
 
-    public get nrCasa(): number | undefined {
+    public get nrCasa(): Number | undefined {
         return this._nrCasa;
     }
 
-    public set nrCasa(nmCasa: number) {
+    public set nrCasa(nmCasa: Number) {
         this._nrCasa = nmCasa;
     }
 
@@ -74,12 +75,9 @@ export default class Endereco {
         this._dsTelefone = dsTelefone;
     }
 
-    public equals(obj: Endereco): boolean {
-        return _.isEqual(obj, this);
-    }
-
     public static fromPostgresSql(res: any): Endereco {
         const endereco = new this();
+
         endereco._cdEndereco = res.cd_endereco;
         endereco._nmRua = res.nm_rua;
         endereco._nrCasa = res.nr_casa;
@@ -91,4 +89,42 @@ export default class Endereco {
 
         return endereco;
     }
+
+    public static fromMongoDb(res: IEndereco): Endereco {
+        const endereco = new this();
+
+        endereco._cdEndereco = res._id.toString();
+        endereco._nmRua = res.nmRua;
+        endereco._nrCasa = res.nrCasa;
+        endereco._nmBairro = res.nmBairro;
+        endereco._nmCidade = res.nmCidade;
+        endereco._nmEstado = res.nmEstado;
+        endereco._nmPais = res.nmPais;
+        endereco._dsTelefone = res.dsTelefone;
+
+        return endereco;
+    }
 }
+
+const enderecoSchema = new mongoose.Schema({
+    nmRua: 'string',
+    nrCasa: Number,
+    nmBairro: 'string',
+    nmCidade: 'string',
+    nmEstado: 'string',
+    nmPais: 'string',
+    dsTelefone: 'string',
+});
+
+export interface IEndereco extends mongoose.Document {
+    _id: mongoose.Types.ObjectId;
+    nmRua?: string;
+    nrCasa?: Number;
+    nmBairro?: string;
+    nmCidade?: string;
+    nmEstado?: string;
+    nmPais?: string;
+    dsTelefone?: string;
+}
+
+export const EnderecoModel = mongoose.model<IEndereco>('Endereco', enderecoSchema);

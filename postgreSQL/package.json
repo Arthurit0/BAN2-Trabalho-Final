@@ -16,6 +16,6 @@
         "pg": "^8.11.3"
     },
     "scripts": {
-        "start": "bun run --watch src/index.ts "
+        "start": "bun run --watch postgreSQL/src/index.ts "
     }
 }

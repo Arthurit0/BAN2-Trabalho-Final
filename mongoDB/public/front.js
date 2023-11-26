@@ -413,8 +413,9 @@ function fetchAutores() {
 
             autores.forEach((autor) => {
                 const linha = tbody.insertRow();
-                linha.insertCell(0).textContent = autor.cd_autor;
-                linha.insertCell(1).textContent = autor.nm_autor;
+                linha.insertCell(0).textContent = autor._cdAutor;
+                linha.insertCell(1).textContent =
+                    autor._nmArtistico || autor._nmMusico || autor._nmBanda;
             });
         })
         .catch((err) => console.error(err.response.data));
@@ -442,8 +443,8 @@ function fetchMusicosInBanda() {
             musicosInBandas.forEach((musicoInBanda) => {
                 const linha = tbody.insertRow();
                 linha.insertCell(0).textContent =
-                    musicoInBanda.nm_artistico || musicoInBanda.nm_musico;
-                linha.insertCell(1).textContent = musicoInBanda.nm_banda;
+                    musicoInBanda.nrReg._nmArtistico || musicoInBanda.nrReg._nmMusico;
+                linha.insertCell(1).textContent = musicoInBanda.cdBanda._nmBanda;
             });
         })
         .catch((err) => console.error(err.response.data));
@@ -501,8 +502,11 @@ function fetchAutoresInMusicas() {
 
             autoresInMusicas.forEach((autorInMusica) => {
                 const linha = tbody.insertRow();
-                linha.insertCell(0).textContent = autorInMusica.nm_autor;
-                linha.insertCell(1).textContent = autorInMusica.ds_titulo;
+                linha.insertCell(0).textContent =
+                    autorInMusica.cdAutor.nmArtistico ||
+                    autorInMusica.cdAutor.nmMusico ||
+                    autorInMusica.cdAutor.nmBanda;
+                linha.insertCell(1).textContent = autorInMusica.cdMusica.dsTitulo;
             });
         })
         .catch((err) => console.error(err.response.data));
@@ -542,6 +546,8 @@ function fetchDiscos() {
         .get('http://localhost:8080/discos')
         .then((response) => response.data)
         .then((discos) => {
+            console.log(discos);
+
             const tabela = document.getElementById('tabela-discos');
             tabela.innerHTML = '';
 
@@ -589,8 +595,8 @@ function fetchMusicasInDiscos() {
 
             musicasInDiscos.forEach((musicaInDisco) => {
                 const linha = tbody.insertRow();
-                linha.insertCell(0).textContent = musicaInDisco.ds_titulo_musica;
-                linha.insertCell(1).textContent = musicaInDisco.ds_titulo_disco;
+                linha.insertCell(0).textContent = musicaInDisco.cdMusica._dsTitulo;
+                linha.insertCell(1).textContent = musicaInDisco.cdDisco._dsTitulo;
             });
         })
         .catch((err) => console.error(err.response.data));
@@ -649,10 +655,10 @@ function fetchInstrumentosByMusico() {
             instrumentosByMusicos.forEach((instrumentoByMusico) => {
                 const linha = tbody.insertRow();
                 linha.insertCell(0).textContent =
-                    instrumentoByMusico.nm_artistico || instrumentoByMusico.nm_musico;
-                linha.insertCell(1).textContent = instrumentoByMusico.cd_instrumento;
-                linha.insertCell(2).textContent = instrumentoByMusico.nm_instrumento;
-                linha.insertCell(3).textContent = instrumentoByMusico.dt_uso;
+                    instrumentoByMusico.nrReg._nmArtistico || instrumentoByMusico.nrReg._nmMusico;
+                linha.insertCell(1).textContent = instrumentoByMusico.cdInstrumento._cdInstrumento;
+                linha.insertCell(2).textContent = instrumentoByMusico.cdInstrumento._nmInstrumento;
+                linha.insertCell(3).textContent = instrumentoByMusico.dtUso;
             });
         })
         .catch((err) => console.error(err.response.data));
@@ -834,8 +840,8 @@ function fetchAutoresParaSelecao() {
 
                 autores.forEach((autor) => {
                     const option = document.createElement('option');
-                    option.value = autor.cd_autor;
-                    option.textContent = autor.nm_autor;
+                    option.value = autor._cdAutor;
+                    option.textContent = autor._nmArtistico || autor._nmMusico || autor._nmBanda;
                     selectAutor.appendChild(option);
                 });
             });

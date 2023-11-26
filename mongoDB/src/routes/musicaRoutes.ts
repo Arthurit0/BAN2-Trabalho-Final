@@ -2,11 +2,9 @@ import express from 'express';
 import _ from 'lodash';
 import musicaPersistence from '../persistence/musicaPersistence';
 import Musica from '../models/Musica';
-import { updateIfDiff } from '../utils/utils';
 
 const musicaRouter = express.Router();
 
-// Selecionar todas as músicas
 musicaRouter.get('/musicas', async (req, res) => {
     try {
         const allMusicas = await musicaPersistence.selectAllMusicas();
@@ -17,19 +15,8 @@ musicaRouter.get('/musicas', async (req, res) => {
     }
 });
 
-// Selecionar uma música específica
-musicaRouter.get('/musicas/:cdMusica', async (req, res) => {
-    try {
-        const cdMusica = parseInt(req.params.cdMusica);
-        const musica = await musicaPersistence.selectMusica(cdMusica);
-        res.json(musica);
-    } catch (err: any) {
-        console.log(err);
-        res.status(500).send(err);
-    }
-});
+musicaRouter.get('/musicas/:cdMusica', async (req, res) => {});
 
-// Inserir uma nova música
 musicaRouter.post('/musicas', async (req, res) => {
     try {
         const musicaData = req.body;
@@ -48,39 +35,9 @@ musicaRouter.post('/musicas', async (req, res) => {
     }
 });
 
-// Atualizar uma música existente
-musicaRouter.put('/musicas/:cdMusica', async (req, res) => {
-    try {
-        const cdMusica = parseInt(req.params.cdMusica);
-        const updtData = req.body;
-        const musicaOrig = await musicaPersistence.selectMusica(cdMusica);
-        const musicaUpdt = _.cloneDeep(musicaOrig);
+musicaRouter.put('/musicas/:cdMusica', async (req, res) => {});
 
-        musicaUpdt.dsTitulo = updateIfDiff(musicaUpdt.dsTitulo, updtData.dsTitulo);
-        musicaUpdt.dsGenero = updateIfDiff(musicaUpdt.dsGenero, updtData.dsGenero);
-        musicaUpdt.tpDuracao = updateIfDiff(musicaUpdt.tpDuracao, updtData.tpDuracao);
-        musicaUpdt.fmtArquivo = updateIfDiff(musicaUpdt.fmtArquivo, updtData.fmtArquivo);
-
-        const message = await musicaPersistence.updateMusica(musicaUpdt);
-
-        res.send(message);
-    } catch (err) {
-        console.log(err);
-        res.status(500).send(err);
-    }
-});
-
-// Deletar uma música
-musicaRouter.delete('/musicas/:cdMusica', async (req, res) => {
-    try {
-        const cdMusica = parseInt(req.params.cdMusica);
-        const message = await musicaPersistence.deleteMusica(cdMusica);
-        res.send(message);
-    } catch (err: any) {
-        console.log(err);
-        res.status(500).send(err);
-    }
-});
+musicaRouter.delete('/musicas/:cdMusica', async (req, res) => {});
 
 musicaRouter.get('/autores-in-musica', async (req, res) => {
     try {

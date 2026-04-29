@@ -1,0 +1,22 @@
+info:
+  name: insertBanda
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{local}}/bandas/"
+  body:
+    type: json
+    data: |-
+      {
+          "nmBanda": "os manos",
+          "dtFormacao": "01/01/2023"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

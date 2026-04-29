@@ -1,0 +1,15 @@
+opencollection: 1.0.0
+
+info:
+  name: BAN2 - Trabalho final
+
+request:
+  variables:
+    - name: local
+      value: localhost:8080
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

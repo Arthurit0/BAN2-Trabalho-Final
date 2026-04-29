@@ -1,0 +1,26 @@
+info:
+  name: insertDisco
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{local}}/discos/"
+  body:
+    type: json
+    data: |-
+      {
+          "cdAutor": 2,
+          "cdProdutor": 1,
+          "cdLocalGravacao": 3,
+          "dtGrav": "01/01/2000",
+          "fmtGrav": "Ogg",
+          "dsTitulo": "Virada do Milenio" 
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

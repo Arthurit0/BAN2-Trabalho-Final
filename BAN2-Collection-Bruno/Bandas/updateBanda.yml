@@ -1,0 +1,26 @@
+info:
+  name: updateBanda
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{local}}/bandas/:cdBanda"
+  params:
+    - name: cdBanda
+      value: "5"
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "nmBanda": "A123",
+          "dtFormacao": "11/12/2013"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

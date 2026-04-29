@@ -1,0 +1,23 @@
+info:
+  name: insertMusico
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{local}}/musicos"
+  body:
+    type: json
+    data: |-
+      {
+          "cdEndereco": null,
+          "nmMusico": "Arthur 2",
+          "nmArtistico": "Arthurito 2 a vingança"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

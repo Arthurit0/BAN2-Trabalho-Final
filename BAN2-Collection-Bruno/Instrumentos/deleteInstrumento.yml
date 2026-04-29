@@ -1,0 +1,19 @@
+info:
+  name: deleteInstrumento
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{local}}/instrumentos/:cdInstrumento"
+  params:
+    - name: cdInstrumento
+      value: "6"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

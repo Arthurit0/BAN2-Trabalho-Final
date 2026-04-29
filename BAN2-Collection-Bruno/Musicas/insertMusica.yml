@@ -1,0 +1,24 @@
+info:
+  name: insertMusica
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{local}}/musicas/"
+  body:
+    type: json
+    data: |-
+      {
+          "dsTitulo": "Tuts tuts",
+          "dsGenero": "Eletronica",
+          "tpDuracao": 120,
+          "fmtArquivo": "mp3"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

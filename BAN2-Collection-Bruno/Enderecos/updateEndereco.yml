@@ -1,0 +1,27 @@
+info:
+  name: updateEndereco
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{local}}/enderecos/:cdEndereco"
+  params:
+    - name: cdEndereco
+      value: "5"
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "nmRua": "Rua Imaginária",
+          "nrCasa": 99,
+          "dsTelefone": "(47) 123456789"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

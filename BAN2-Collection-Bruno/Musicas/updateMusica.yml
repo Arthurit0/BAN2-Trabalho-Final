@@ -1,0 +1,28 @@
+info:
+  name: updateMusica
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{local}}/musicas/:cdMusica"
+  params:
+    - name: cdMusica
+      value: "5"
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "dsTitulo": "uau que legal",
+          "dsGenero": "Pop",
+          "tpDuracao": 200,
+          "fmtArquivo": "oggdele"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

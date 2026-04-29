@@ -1,0 +1,19 @@
+info:
+  name: deleteMusico
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{local}}/musicos/:nrReg"
+  params:
+    - name: nrReg
+      value: "1"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

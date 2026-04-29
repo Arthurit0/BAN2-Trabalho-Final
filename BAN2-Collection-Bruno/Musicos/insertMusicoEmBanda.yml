@@ -1,0 +1,22 @@
+info:
+  name: insertMusicoEmBanda
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{local}}/musicos/:nrReg/bandas/:cdBanda"
+  params:
+    - name: nrReg
+      value: "2"
+      type: path
+    - name: cdBanda
+      value: "4"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
